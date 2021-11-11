@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard } from 'react-native'
 import { Input, Icon,Button,Text } from '@ui-kitten/components'
 
- function Login() {
+ function Login(props) {
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
@@ -21,6 +21,7 @@ import { Input, Icon,Button,Text } from '@ui-kitten/components'
             <StatusBar backgroundColor='#ffffff'/>
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
             <Input
+            accessoryRight={<Icon name='person-outline'/>}
             style={styles.input}
             textAlign='center'
              placeholder='User Name'
@@ -33,7 +34,9 @@ import { Input, Icon,Button,Text } from '@ui-kitten/components'
       accessoryRight={renderIcon}
       secureTextEntry={secureTextEntry}
     />
-     <Button style={styles.button} appearance='filled' status='primary'>
+     <Button  onPress={()=>{
+       props.navigation.navigate('Dashboard')
+     }} style={styles.button} appearance='filled' status='primary'>
       Login
     </Button>
     <View style={styles.hint}>
@@ -44,7 +47,8 @@ import { Input, Icon,Button,Text } from '@ui-kitten/components'
     <Text style={{
         textAlign:'center',
         marginLeft:10,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        
     }} appearance='hint'>
       Help
     </Text>
@@ -71,8 +75,8 @@ const styles=StyleSheet.create({
      marginTop:20
  },
  button:{
-     width:'50%',
-     marginTop:20
+     width:'90%',
+     marginTop:40
  },
  hint:{
    display:'flex',
