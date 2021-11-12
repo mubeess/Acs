@@ -1,8 +1,9 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import Clients from './Clients';
+import DispatchMobile from './Units/DispatchMobile';
 const Stack = createStackNavigator();
-function MyStack() {
+function MyStackk() {
     return (
       <Stack.Navigator screenOptions={
         {
@@ -10,13 +11,22 @@ function MyStack() {
         }
       } initialRouteName='Main'>
         <Stack.Screen name="Main" component={Clients} />
+        <Stack.Screen name="Mobile" component={DispatchMobile} />
         {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
       </Stack.Navigator>
     );
   }
 
   export default function MainScree(props) {
-      return(
-          <MyStack></MyStack>
-      )
+    return (
+      <Stack.Navigator screenOptions={
+        {
+          headerShown:false
+        }
+      } initialRouteName='Main'>
+        <Stack.Screen name="Main" component={Clients} />
+        <Stack.Screen name="Mobile" component={DispatchMobile} />
+        {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
+      </Stack.Navigator>
+    );
   }

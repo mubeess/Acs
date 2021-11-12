@@ -3,21 +3,21 @@ import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 
 
- function ClientDetail({dispatchNavigation}) {
+ function HighRisk() {
     const [visible,setVisible]=useState(false)
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
-        <Avatar source={require('../assets/avatar.png')}/>
+        <Avatar source={require('../assets/avatar3.png')}/>
+        <Text>01/01/01</Text>
+        </View>
+   
+        <View style={styles.indi2}>
         <Text>ACS/001</Text>
         </View>
    
         <View style={styles.indi2}>
         <Text>Karewa extension, 10999888</Text>
-        </View>
-   
-        <View style={styles.indi2}>
-        <Text status='success'>Low Risk</Text>
         <Popover
              anchor={()=>(
                <TouchableOpacity onPress={()=>{
@@ -35,10 +35,7 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
                  setVisible(false)
              }}>
              <Layout style={styles.content}>
-             <TouchableOpacity onPress={()=>{
-                 dispatchNavigation('Mobile')
-                 setVisible(false)
-             }}>
+              <TouchableOpacity>
                   <Text appearance='hint' category='h6'>Dispatch Mobile Unit</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
@@ -147,4 +144,4 @@ const styles=StyleSheet.create({
       }
     
 })
-export default ClientDetail
+export default HighRisk

@@ -2,9 +2,14 @@ import { Divider,Icon,Text,Avatar,Popover,Layout } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 import ClientDetail from './ClientDetail'
+import HighRisk from './HighRisk'
 
- function Clients() {
+ function Clients(props) {
      const [visible,setVisible]=useState(false)
+     const dispatchNavigation=(chanel)=>{
+     
+      props.navigation.push(`${chanel}`)
+     }
     return (
         <View style={{
             backgroundColor:'#ffffff',
@@ -25,9 +30,10 @@ import ClientDetail from './ClientDetail'
     </View>
 
   
-  <ClientDetail></ClientDetail>
-  <ClientDetail></ClientDetail>
-  <ClientDetail></ClientDetail>
+  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
+  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
+  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
+  
 
     <Text style={styles.text} status='basic'>High Risk Clients Action Table</Text>
             <Divider style={styles.divide}/>
@@ -37,58 +43,18 @@ import ClientDetail from './ClientDetail'
       <Text style={styles.text2} status='control'>Client Location</Text>
     </View>
 
+    <HighRisk></HighRisk>
+    <HighRisk></HighRisk>
+    <HighRisk></HighRisk>
+    
 
-    <View style={styles.indi}>
-     <View style={styles.indi1}>
-     <Avatar source={require('../assets/avatar2.png')}/>
-     <Text>01/02/01</Text>
-     </View>
 
-     <View style={styles.indi2}>
-     <Text>Karewa extension, 10999888</Text>
-     </View>
+    
 
-     <View style={styles.indi2}>
-     <Text status='danger'>High Risk</Text>
+
+
+
      
-     </View>
-     </View>
-
-
-
-     <View style={styles.indi}>
-     <View style={styles.indi1}>
-     <Avatar source={require('../assets/avatar2.png')}/>
-     <Text>01/02/01</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text>Karewa extension, 10999888</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text status='danger'>High Risk</Text>
-     </View>
-     </View>
-
-
-
-
-
-     <View style={styles.indi}>
-     <View style={styles.indi1}>
-     <Avatar source={require('../assets/avatar2.png')}/>
-     <Text>01/02/01</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text>Karewa extension, 10999888</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text status='danger'>High Risk</Text>
-     </View>
-     </View>
 
 
 
@@ -96,21 +62,6 @@ import ClientDetail from './ClientDetail'
 
 
 
-
-     <View style={styles.indi}>
-     <View style={styles.indi1}>
-     <Avatar source={require('../assets/avatar2.png')}/>
-     <Text>ACS/001</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text>Karewa extension, 10999888</Text>
-     </View>
-
-     <View style={styles.indi2}>
-     <Text status='danger'>High Risk</Text>
-     </View>
-     </View>
 
 
 
