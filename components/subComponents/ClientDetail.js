@@ -39,28 +39,34 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
                  dispatchNavigation('Mobile')
                  setVisible(false)
              }}>
-                  <Text appearance='hint' category='h6'>Dispatch Mobile Unit</Text>
+                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Dispatch Mobile Unit</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
    
-              <TouchableOpacity>
-                  <Text appearance='hint' category='h6'>Contact Virtual Councellor</Text>
+              <TouchableOpacity onPress={()=>{
+                 dispatchNavigation('Virtual')
+                 setVisible(false)
+             }}>
+                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Virtual Councellor</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
    
    
-              <TouchableOpacity>
-                  <Text appearance='hint' category='h6'>Contact First Responder</Text>
+              <TouchableOpacity onPress={()=>{
+                 dispatchNavigation('CallFirst')
+                 setVisible(false)
+             }}>
+                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact First Responder</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
 
               <TouchableOpacity>
-                  <Text appearance='hint' category='h6'>Contact Client</Text>
+                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Client</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
 
               <TouchableOpacity>
-                  <Text appearance='hint' category='h6'>Contact Referal Service</Text>
+                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Referal Service</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
    

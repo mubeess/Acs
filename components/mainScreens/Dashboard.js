@@ -12,11 +12,21 @@ const AlertIcon = (props) => (
     <Icon {...props} name='message-circle-outline'/>
   );
 
+  const ProfileIcon = (props) => (
+    <Icon {...props} name='person-outline'/>
+  );
+
 const { Navigator, Screen } = createBottomTabNavigator();
 
 const Im = () => (
   <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text category='h1'>IM</Text>
+  </Layout>
+);
+
+const Pro = () => (
+  <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text category='h1'>Pro</Text>
   </Layout>
 );
 
@@ -26,6 +36,7 @@ const BottomTabBar = ({ navigation, state }) => (
     onSelect={index => navigation.navigate(state.routeNames[index])}>
    <BottomNavigationTab title='ALERTS' icon={AlertIcon}/>
    <BottomNavigationTab title='IM' icon={MessageIcon}/>
+   <BottomNavigationTab title='PROFILE' icon={ProfileIcon}/>
   </BottomNavigation>
 );
 
@@ -35,6 +46,7 @@ const TabNavigator = () => (
   }} tabBar={props => <BottomTabBar {...props} />}>
     <Screen name='Alerts' component={MainScree}/>
     <Screen name='Im' component={Im}/>
+    <Screen name='Profile' component={Pro}/>
   </Navigator>
 );
 
