@@ -134,10 +134,10 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             }}>
             <Text style={{marginLeft:20}}>Dispatch User</Text> 
             <Input
-            disabled
+        disabled={true}
         multiline={true}
         placeholder='ACS/001, ABJ-JABI,High Risk'
-        status='basic'
+        
        
       /> 
       <View style={{

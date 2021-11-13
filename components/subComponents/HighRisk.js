@@ -1,4 +1,4 @@
-import { Divider,Icon,Text,Avatar,Popover,Layout } from '@ui-kitten/components'
+import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 
@@ -18,7 +18,25 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
    
         <View style={styles.indi2}>
         <Text>Karewa extension, 10999888</Text>
-        <Popover
+        <OverflowMenu
+          anchor={()=>(
+            <TouchableOpacity onPress={()=>{
+                setVisible(true)
+            }}>
+            <Icon fill='black' name='more-vertical-outline' style={{
+                width:30,
+                height:20
+            }}/>
+        </TouchableOpacity>
+          )}
+          visible={visible}
+          placement='left'
+          onBackdropPress={() => setVisible(false)}>
+          <MenuItem title='Users'/>
+          <MenuItem title='Orders'/>
+          <MenuItem title='Transactions'/>
+        </OverflowMenu>
+        {/* <Popover
              anchor={()=>(
                <TouchableOpacity onPress={()=>{
                    setVisible(true)
@@ -62,7 +80,7 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
               <Divider style={{width:'100%'}}/>
    
              </Layout>
-           </Popover>
+           </Popover> */}
         
         </View>
         </View>

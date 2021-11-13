@@ -1,4 +1,4 @@
-import { Divider,Icon,Text,Avatar,Popover,Layout } from '@ui-kitten/components'
+import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 
@@ -18,60 +18,47 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
    
         <View style={styles.indi2}>
         <Text status='success'>Low Risk</Text>
-        <Popover
-             anchor={()=>(
-               <TouchableOpacity onPress={()=>{
-                   setVisible(true)
-               }}>
-               <Icon fill='black' name='more-vertical-outline' style={{
-                   width:30,
-                   height:20
-               }}/>
-           </TouchableOpacity>
-             )}
-             visible={visible}
-             placement='left'
-             onBackdropPress={() => {
-                 setVisible(false)
-             }}>
-             <Layout style={styles.content}>
-             <TouchableOpacity onPress={()=>{
+        <OverflowMenu
+          anchor={()=>(
+            <TouchableOpacity onPress={()=>{
+                setVisible(true)
+            }}>
+            <Icon fill='black' name='more-vertical-outline' style={{
+                width:30,
+                height:20
+            }}/>
+        </TouchableOpacity>
+          )}
+          visible={visible}
+          placement='left'
+          onBackdropPress={() => setVisible(false)}>
+          <MenuItem onPress={()=>{
                  dispatchNavigation('Mobile')
                  setVisible(false)
-             }}>
-                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Dispatch Mobile Unit</Text>
-              </TouchableOpacity>
-              <Divider style={{width:'100%'}}/>
-   
-              <TouchableOpacity onPress={()=>{
+             }} title='Dispatch Mobile Unit'/>
+          <MenuItem onPress={()=>{
                  dispatchNavigation('Virtual')
                  setVisible(false)
-             }}>
-                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Virtual Councellor</Text>
-              </TouchableOpacity>
-              <Divider style={{width:'100%'}}/>
-   
-   
-              <TouchableOpacity onPress={()=>{
+             }} title='Contact Virtual Councellor'/>
+          <MenuItem onPress={()=>{
                  dispatchNavigation('CallFirst')
                  setVisible(false)
-             }}>
-                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact First Responder</Text>
-              </TouchableOpacity>
-              <Divider style={{width:'100%'}}/>
-
-              <TouchableOpacity>
-                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Client</Text>
-              </TouchableOpacity>
-              <Divider style={{width:'100%'}}/>
-
-              <TouchableOpacity>
-                  <Text style={{fontWeight:'100'}} appearance='hint' category='h6'>Contact Referal Service</Text>
-              </TouchableOpacity>
-              <Divider style={{width:'100%'}}/>
-   
-             </Layout>
-           </Popover>
+                 
+             }} title='Contact First Responder'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('ContactClient')
+                 setVisible(false)
+               
+                 
+             }} title='Contact Client'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('CallRef')
+                 setVisible(false)
+                 
+                 
+             }} title='Contact Referal Service'/>
+        </OverflowMenu>
+        
         
         </View>
         </View>

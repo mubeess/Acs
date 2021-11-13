@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Layout, Text,Icon } from '@ui-kitten/components';
 import Clients from '../subComponents/Clients';
 import MainScree from '../subComponents/MainScreen';
+import Messaging from '../subComponents/Messages/Messaging';
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-triangle-outline'/>
   );
@@ -45,7 +46,7 @@ const TabNavigator = () => (
       headerShown:false
   }} tabBar={props => <BottomTabBar {...props} />}>
     <Screen name='Alerts' component={MainScree}/>
-    <Screen name='Im' component={Im}/>
+    <Screen name='Im' component={Messaging}/>
     <Screen name='Profile' component={Pro}/>
   </Navigator>
 );

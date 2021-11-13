@@ -5,7 +5,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
 
- function CallFirst(props) {
+ function ContactClient(props) {
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -28,10 +28,22 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             
             </View>
             <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Call First Responder</Text>
+            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Call Client</Text>
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
-           <Text style={{marginLeft:20}}>Client Demographics</Text>
+            <View style={{
+                display:'flex',
+                flexDirection:'row'
+            }}>
+            <Text style={{marginLeft:20}}>Client Demographics</Text>
+            <Button style={{
+                marginLeft:'25%'
+            }} size='tiny'  appearance='filled' status='basic' accessoryLeft={<Icon name='edit-outline'/>}>
+                Edit
+            </Button>
+
+            </View>
+          
         <View style={styles.clientDet}> 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
@@ -256,4 +268,4 @@ const styles=StyleSheet.create({
     }
 
 })
-export default CallFirst
+export default ContactClient
