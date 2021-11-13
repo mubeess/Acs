@@ -3,7 +3,7 @@ import {Avatar, Divider, Icon, Input, Text} from '@ui-kitten/components'
 import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
- function StaffList() {
+ function StaffList(props) {
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -26,7 +26,9 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
              size='small'/>
              
              <ScrollView style={styles.main}>
-                 <TouchableOpacity>
+                 <TouchableOpacity onPress={()=>{
+                 props.navigation.navigate('Message')
+                 }}>
                  <View style={styles.individual}>
                      <View style={styles.avatar}>
                      <Avatar size='large' source={require('../../assets/avatar.png')}/>
@@ -195,7 +197,9 @@ individual:{
     display:'flex',
     flexDirection:'row',
     borderRadius:10,
-    marginTop:10
+    marginTop:10,
+    borderBottomColor:'lightgray',
+    borderBottomWidth:1/2
 },
 avatar:{
     height:50,

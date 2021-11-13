@@ -40,7 +40,14 @@ const BottomTabBar = ({ navigation, state }) => (
    <BottomNavigationTab title='PROFILE' icon={ProfileIcon}/>
   </BottomNavigation>
 );
-
+const getTabBarVisibility=(route)=>{
+  const routeName=route.state?route.state.routes[route.state.index].name:''
+  if (routeName=='Message') {
+    return false
+  }else{
+    return true
+  }
+}
 const TabNavigator = () => (
   <Navigator screenOptions={{
       headerShown:false
