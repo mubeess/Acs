@@ -61,7 +61,9 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
 
-                 <TouchableOpacity>
+                 <TouchableOpacity onPress={()=>{
+                 props.navigation.navigate('Message')
+                 }}>
                  <View style={styles.individual}>
                      <View style={styles.avatar}>
                      <Avatar size='large' source={require('../../assets/avatar3.png')}/>
@@ -101,7 +103,9 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
 
-                 <TouchableOpacity>
+                 <TouchableOpacity onPress={()=>{
+                 props.navigation.navigate('Message')
+                 }}>
                  <View style={styles.individual}>
                      <View style={styles.avatar}>
                      <Avatar size='large' source={require('../../assets/logo.png')}/>
@@ -140,7 +144,9 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
 
-                 <TouchableOpacity>
+                 <TouchableOpacity onPress={()=>{
+                 props.navigation.navigate('Message')
+                 }}>
                  <View style={styles.individual}>
                      <View style={styles.avatar}>
                      <Avatar size='large' source={require('../../assets/logo.png')}/>

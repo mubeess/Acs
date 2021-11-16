@@ -36,7 +36,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
                 flexDirection:'row'
             }}>
             <Text style={{marginLeft:20}}>Client Demographics</Text>
-            <Button style={{
+            <Button onPress={()=>{
+                props.navigation.navigate('Edit')
+            }} style={{
                 marginLeft:'25%'
             }} size='tiny'  appearance='filled' status='basic' accessoryLeft={<Icon name='edit-outline'/>}>
                 Edit

@@ -5,6 +5,7 @@ import { BottomNavigation, BottomNavigationTab, Layout, Text,Icon } from '@ui-ki
 import Clients from '../subComponents/Clients';
 import MainScree from '../subComponents/MainScreen';
 import Messaging from '../subComponents/Messages/Messaging';
+import MyProfile from '../subComponents/Profile/MyProfile';
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-triangle-outline'/>
   );
@@ -19,17 +20,7 @@ const AlertIcon = (props) => (
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const Im = () => (
-  <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text category='h1'>IM</Text>
-  </Layout>
-);
 
-const Pro = () => (
-  <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text category='h1'>Pro</Text>
-  </Layout>
-);
 
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
@@ -40,21 +31,14 @@ const BottomTabBar = ({ navigation, state }) => (
    <BottomNavigationTab title='PROFILE' icon={ProfileIcon}/>
   </BottomNavigation>
 );
-const getTabBarVisibility=(route)=>{
-  const routeName=route.state?route.state.routes[route.state.index].name:''
-  if (routeName=='Message') {
-    return false
-  }else{
-    return true
-  }
-}
+
 const TabNavigator = () => (
   <Navigator screenOptions={{
       headerShown:false
   }} tabBar={props => <BottomTabBar {...props} />}>
     <Screen name='Alerts' component={MainScree}/>
     <Screen name='Im' component={Messaging}/>
-    <Screen name='Profile' component={Pro}/>
+    <Screen name='Profile' component={MyProfile}/>
   </Navigator>
 );
 

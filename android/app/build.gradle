@@ -146,6 +146,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+      storeFile file('mubarak.keystore')
+      storePassword '64942224'
+      keyAlias 'your_key_alias'
+      keyPassword '64942224'
+    }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

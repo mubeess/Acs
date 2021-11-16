@@ -57,6 +57,13 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
                  
                  
              }} title='Contact Referal Service'/>
+
+         <MenuItem onPress={()=>{
+                 dispatchNavigation('Document')
+                 setVisible(false)
+                 
+                 
+             }} title='Document High Risk'/>
         </OverflowMenu>
         
         

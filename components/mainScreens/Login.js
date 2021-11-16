@@ -1,8 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
+import SplashScreen from 'react-native-splash-screen'
 import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard } from 'react-native'
 import { Input, Icon,Button,Text } from '@ui-kitten/components'
 
  function Login(props) {
+   useEffect(()=>{
+   SplashScreen.hide()
+   },[])
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
