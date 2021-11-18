@@ -1,10 +1,14 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
 import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard } from 'react-native'
-import { Input, Icon,Button,Text } from '@ui-kitten/components'
+import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
+import AppContext from '../../Context/app/appContext'
+import Modal from "react-native-modal";
 
  function Login(props) {
+   const appProps=useContext(AppContext)
    useEffect(()=>{
+    console.log(appProps)
    SplashScreen.hide()
    },[])
     const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -21,6 +25,7 @@ import { Input, Icon,Button,Text } from '@ui-kitten/components'
         <TouchableWithoutFeedback onPress={()=>{
             Keyboard.dismiss()
         }} style={styles.container}>
+          <>
         <View style={styles.container}>
             <StatusBar backgroundColor='#ffffff'/>
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
@@ -59,7 +64,16 @@ import { Input, Icon,Button,Text } from '@ui-kitten/components'
     </TouchableWithoutFeedback>
     </View>
         </View>
+      <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={false} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
+      </>
         </TouchableWithoutFeedback>
+       
     )
 }
 const styles=StyleSheet.create({

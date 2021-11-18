@@ -6,6 +6,8 @@ import { ApplicationProvider,IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import Dashboard from './components/mainScreens/Dashboard';
 import Login from './components/mainScreens/Login';
+import AppState from './Context/app/appState'
+
 
 const Stack = createStackNavigator();
 
@@ -24,12 +26,14 @@ function MyStack() {
 function App() {
   return(
     <>
+    <AppState>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
     <NavigationContainer>
      <MyStack></MyStack>
     </NavigationContainer>
     </ApplicationProvider>
+    </AppState>
     </>
   )
 }
