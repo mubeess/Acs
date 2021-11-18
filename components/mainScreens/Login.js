@@ -1,14 +1,15 @@
 import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
-import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard } from 'react-native'
+import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert } from 'react-native'
 import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
 import AppContext from '../../Context/app/appContext'
 import Modal from "react-native-modal";
 
  function Login(props) {
-   const appProps=useContext(AppContext)
+   const [userName,setUserName]=useState('')
+   const [password,setPassword]=useState('')
+   const [isLoading,setLoading]=useState(false)
    useEffect(()=>{
-    console.log(appProps)
    SplashScreen.hide()
    },[])
     const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -25,11 +26,14 @@ import Modal from "react-native-modal";
         <TouchableWithoutFeedback onPress={()=>{
             Keyboard.dismiss()
         }} style={styles.container}>
-          <>
+        
         <View style={styles.container}>
             <StatusBar backgroundColor='#ffffff'/>
             <Image source={require('../assets/logo.png')} style={styles.logo}/>
             <Input
+             onChangeText={(text)=>{
+              setUserName(text)
+              }}
             accessoryRight={<Icon name='person-outline'/>}
             style={styles.input}
             textAlign='center'
@@ -37,14 +41,56 @@ import Modal from "react-native-modal";
     />
 
    <Input
+  onChangeText={(text)=>{
+  setPassword(text)
+  }}
    textAlign='center'
    style={styles.input}
       placeholder='Password'
       accessoryRight={renderIcon}
       secureTextEntry={secureTextEntry}
     />
-     <Button  onPress={()=>{
-       props.navigation.navigate('Dashboard')
+     <Button onPress={()=>{
+      if (userName=='' || password=='') {
+        return Alert.alert(
+          "Error",
+          "Username or Password not entered!",
+          [
+            {
+              text: "Back",
+              style: "cancel"
+            },
+        
+          ]
+        );
+      }else{
+        setLoading(true)
+        const myUser={
+          username:userName,
+          password
+        }
+        fetch('https://tim-acs.herokuapp.com/staff/login',{
+          method:'POST',
+          headers:{
+            "Content-Type":'application/json'
+          },
+          body:JSON.stringify(myUser)
+        }).then(res=>{
+          setLoading(false)
+          res.json()
+          .then(data=>{
+            console.log(data)
+          }).catch(err=>{
+            setLoading(false)
+          })
+        }).catch(err=>{
+          setLoading(false)
+        })
+
+      }
+      
+     
+      //  props.navigation.navigate('Dashboard')
      }} style={styles.button} appearance='filled' status='primary'>
       Login
     </Button>
@@ -63,15 +109,16 @@ import Modal from "react-native-modal";
     </Text>
     </TouchableWithoutFeedback>
     </View>
-        </View>
-      <Modal style={{
+    <Modal style={{
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
-      }} coverScreen={true} isVisible={false} animationIn='fadeIn' animationOut='fadeOutDown'>
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
         <Spinner status='basic'/>
       </Modal>
-      </>
+        </View>
+     
+  
         </TouchableWithoutFeedback>
        
     )
