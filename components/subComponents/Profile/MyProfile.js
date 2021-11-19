@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Avatar, Divider, Icon, Input, Text,Button} from '@ui-kitten/components'
 import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
-
+import AppContext from '../../../Context/app/appContext'
 function MyProfile() {
+    const appProps=useContext(AppContext)
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -33,7 +34,7 @@ function MyProfile() {
                 <Text  appearance='hint'>Name</Text>
                 <Text style={{
                     fontWeight:'bold'
-                }}>Mubarak Ibrahim</Text>
+                }}>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
 
             </View>
 
@@ -41,7 +42,7 @@ function MyProfile() {
                 <Text  appearance='hint'>Staff Id</Text>
                 <Text style={{
                     fontWeight:'bold'
-                }}>ACS/0022</Text>
+                }}>{appProps.staff.username}</Text>
 
             </View>
 
@@ -49,7 +50,7 @@ function MyProfile() {
                 <Text  appearance='hint'>Phone</Text>
                 <Text style={{
                     fontWeight:'bold'
-                }}>08164942224</Text>
+                }}>{appProps.staff.phone}</Text>
 
             </View>
             <Divider style={{width:'100%'}}/>

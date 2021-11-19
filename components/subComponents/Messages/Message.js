@@ -23,6 +23,7 @@ function Message(props) {
         _id: 1,
         text: `${appProps.staff.firstName}`,
         createdAt: new Date(),
+        avatar: 'https://placeimg.com/140/140/any',
         user: {
           _id: 2,
           name: `${appProps.chatter.firstName}`,

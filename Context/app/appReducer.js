@@ -2,7 +2,8 @@ import {
     SET_LOADING,
     SET_ISLOGED,
     SET_STAFF,
-    SET_CHAT
+    SET_CHAT,
+    SET_CURRENT_ALERT
    
 }from '../types'
 
@@ -31,6 +32,12 @@ const AppReducer= (state,action)=>{
                             ...state,
                             chatter:action.payload
                         }
+
+           case SET_CURRENT_ALERT:
+                            return {
+                                ...state,
+                                currentAlert:action.payload
+                            }
             
         default:
         return state;

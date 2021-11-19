@@ -1,9 +1,9 @@
 import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem } from '@ui-kitten/components'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
-
-
+import AppContext from '../../Context/app/appContext'
  function ClientDetail({dispatchNavigation,detail}) {
+     const appProps=useContext(AppContext)
     const [visible,setVisible]=useState(false)
     return (
         <View style={styles.indi}>
@@ -33,6 +33,7 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
           placement='left'
           onBackdropPress={() => setVisible(false)}>
           <MenuItem onPress={()=>{
+                 appProps.setCurrentAlert(detail)
                  dispatchNavigation('Mobile')
                  setVisible(false)
              }} title='Dispatch Mobile Unit'/>

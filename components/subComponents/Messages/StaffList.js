@@ -41,37 +41,43 @@ import AppContext from '../../../Context/app/appContext'
              <ScrollView style={styles.main}>
                  {
                      allStaff.length>0&&(
-                         allStaff.map(staf=>(
-                            <TouchableOpacity onPress={()=>{
-                                props.navigation.navigate('Message')
-                                appProps.setChatter(staf)
-                                }}>
-                                <View style={styles.individual}>
-                                    <View style={styles.avatar}>
-                                    <Avatar size='large' source={require('../../assets/avatar.png')}/>
-                                    </View>
-                                    <View style={styles.mainDet}>
-                                        <View style={styles.names}>
-                                        <Text style={{
-                                            fontWeight:'bold'
-                                        }}>{staf.firstName} {staf.lastName}</Text>
-                                        <Text appearance='hint' style={{
-                                            marginLeft:'auto',
-                                            marginRight:10,
-                                            fontWeight:'100'
-                                        }}>10:00</Text>
+                         allStaff.map((staf,ind)=>{
+                            if (staf.username==appProps.staff.username) {
+                                return null 
+                            }else{
+                                return(
+                                    <TouchableOpacity key={ind} onPress={()=>{
+                                        props.navigation.navigate('Message')
+                                        appProps.setChatter(staf)
+                                        }}>
+                                        <View style={styles.individual}>
+                                            <View style={styles.avatar}>
+                                            <Avatar size='large' source={require('../../assets/avatar.png')}/>
+                                            </View>
+                                            <View style={styles.mainDet}>
+                                                <View style={styles.names}>
+                                                <Text style={{
+                                                    fontWeight:'bold'
+                                                }}>{staf.firstName} {staf.lastName}</Text>
+                                                <Text appearance='hint' style={{
+                                                    marginLeft:'auto',
+                                                    marginRight:10,
+                                                    fontWeight:'100'
+                                                }}>10:00</Text>
+                                                </View>
+                                                <View>
+                                                <Text appearance='hint'>
+                                                   {staf.username}
+                                                </Text>
+                                                </View>
+                       
+                                            </View>
+                       
                                         </View>
-                                        <View>
-                                        <Text appearance='hint'>
-                                           {staf.username}
-                                        </Text>
-                                        </View>
-               
-                                    </View>
-               
-                                </View>
-                                </TouchableOpacity>
-                         ))
+                                        </TouchableOpacity>
+                                )
+                            }
+                         })
                      )
                  }
 

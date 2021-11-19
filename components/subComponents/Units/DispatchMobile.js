@@ -1,11 +1,12 @@
 import { Avatar, Button, Card, Divider, Icon,Input,Text } from '@ui-kitten/components'
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
-
+import AppContext from '../../../Context/app/appContext'
 
 
 
  function DispatchMobile(props) {
+     const appProps=useContext(AppContext)
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -23,7 +24,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>One Musty.zee</Text>
+                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
             </View>
@@ -127,7 +128,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <Divider style={{width:'100%'}}/>
             <View style={{alignItems:'center'}}>
             <Avatar source={require('../../assets/avatar.png')}></Avatar>
-            <Text>African Coder</Text> 
+            <Text>{appProps.staff.username}</Text> 
             </View>
             <View style={{
                 position:'relative'
@@ -136,7 +137,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <Input
         disabled={true}
         multiline={true}
-        placeholder='ACS/001, ABJ-JABI,High Risk'
+        placeholder={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
         
        
       /> 
@@ -146,7 +147,29 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
        marginLeft:'80%',
        marginTop:20
     }}>
-      <Button  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
+      <Button onPress={()=>{
+           const record={
+               clientId:appProps.currentAlert.clientId,
+               clientActions:{
+                   staffAction:'Mobile Unit',
+                   staffId:appProps.staff.username,
+                   staffName:appProps.staff.firstName,
+                   documentation:''
+               }
+           }
+           fetch('https://polar-brook-59807.herokuapp.com/staff/save-client-action',{
+            method:'PUT',
+            headers:{
+              "Content-Type":'application/json'
+            },
+            body:JSON.stringify(record)
+          }).then(res=>{
+              res.json()
+              .then(data=>{
+                  console.log(data)
+              })
+          })
+      }}  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
       </View>
     
             </View>

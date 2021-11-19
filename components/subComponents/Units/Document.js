@@ -6,7 +6,16 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
  function Document(props) {
+    const myData=['Mobile Unit','Documentation']
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+    const [action,setAction]=useState('')
+    const [userName,setUsername]=useState('')
+    const [actionTime,setActionTime]=useState('')
+    const [actionMessage,setActionMessage]=useState('')
+    const displayValue = myData[selectedIndex.row];
+    const renderOption = (title) => (
+        <SelectItem title={title}/>
+      );
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -32,7 +41,8 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <Text style={{marginLeft:20}} appearance='hint' category='h6'>High Risk Action Documentation</Text>
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
-         <Select
+         {/* <Select
+         value={myData[selectedIndex.row]}
          style={{
              width:'90%',
              marginRight:'auto',
@@ -40,13 +50,35 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
              marginTop:10
          }}
          label='Action Type'
+        selectedIndex={myData[selectedIndex.row]}
+        onSelect={(index)=>{
+            console.log(index)
+        } }>
+            {
+                myData.map((dat,ind)=>(
+                    <SelectItem key={ind}  title={dat}/>  
+                ))
+            }
+      
+      </Select> */}
+      <Select
+        style={{
+            width:'90%',
+            marginRight:'auto',
+            marginLeft:'auto',
+            marginTop:10
+        }}
+        placeholder='Default'
+        value={displayValue}
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}>
-        <SelectItem title='Option 1'/>
-        <SelectItem title='Option 2'/>
-        <SelectItem title='Option 3'/>
+        {myData.map(renderOption)}
       </Select>
+
       <Input
+      onTextInput={(text)=>{
+        setUsername(text)
+    }}
          style={{
             width:'90%',
             marginRight:'auto',
@@ -54,11 +86,15 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             marginTop:10
         }}
         placeholder='User Name'
+        value={userName}
          
       /> 
 
 
 <Input
+onTextInput={(text)=>{
+    setActionTime(text)
+}}
          style={{
             width:'90%',
             marginRight:'auto',
@@ -66,25 +102,33 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             marginTop:10
         }}
         placeholder='Action Time'
+        value={actionTime}
          
       /> 
 
 
 
 <Input
+onTextInput={(text)=>{
+    setActionMessage(text)
+}}
          style={{
             width:'90%',
             marginRight:'auto',
             marginLeft:'auto',
             marginTop:50
         }}
-        placeholder='Action Time'
+        placeholder='Action Message'
         multiline={true}
         textStyle={{ minHeight: 84 }}
+        value={actionMessage}
          
       /> 
 
-<Button         
+<Button
+onPress={()=>{
+    console.log(myData[selectedIndex.row])
+}}         
  style={{
             width:'90%',
             marginRight:'auto',

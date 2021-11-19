@@ -4,11 +4,29 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
 import ClientDetail from './ClientDetail'
 import HighRisk from './HighRisk'
 import Pusher from 'pusher-js/react-native';
+import notifee from '@notifee/react-native';
 
  function Clients(props) {
      const [visible,setVisible]=useState(false)
      const [allAlerts,setAlerts]=useState([])
      const [loading,setLoading]=useState(true)
+     const [filteredAl,setFiltered]=useState([])
+
+     async function onDisplayNotification() {
+      // Create a channel
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+      });
+      // Display a notification
+      await notifee.displayNotification({
+        title: 'Alert',
+        body: `New Alert Recived`,
+        android: {
+          channelId
+        },
+      });
+    }
     
      const pusher = new Pusher('4fd41dcde3de7004fcf0', {
       cluster: 'mt1'
@@ -44,14 +62,19 @@ import Pusher from 'pusher-js/react-native';
         console.log(err)
       })
     }
+
+    function filterAlert() {
+      const filteredAll=allAlerts.length>0?allAlerts.filter(mainAl=>mainAl.riskLevel=='high'):[]
+      filteredAll.length>0?setFiltered(filteredAll):null
+
+    }
      useEffect(()=>{
       channel.bind('alert', function(data) {
-        // console.log(data);
-       
-          setAlerts(data.allAlert)
-        
+        onDisplayNotification()
+          setAlerts(data.allAlert) 
       });
       loadAlerts()
+      filterAlert()
      },[])
      const dispatchNavigation=(chanel)=>{
      
@@ -135,7 +158,17 @@ import Pusher from 'pusher-js/react-native';
      )
    }
     
-  
+  {
+    filterAlert.length==0&&(
+      <View style={styles.empty}>
+        <Text appearance='hint'>No High Risk Alerts!!</Text>
+        <Icon fill='black' name='alert-triangle-outline' style={{
+                width:30,
+                height:20
+            }}/>
+      </View>
+    )
+  }
     
 
 
@@ -252,7 +285,8 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginLeft:'auto',
-        marginRight:'auto'
+        marginRight:'auto',
+        marginTop:10
       }
     
 })
