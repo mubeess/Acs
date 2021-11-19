@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text} from '@ui-kitten/components'
 import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
+import AppContext from '../../../Context/app/appContext'
 
 
  function StaffList(props) {
+     const appProps=useContext(AppContext)
+     const [allStaff,setAllStaff]=useState([])
+     useEffect(()=>{
+         fetch('https://tim-acs.herokuapp.com/staff/get-all-staff')
+         .then(res=>{
+             res.json()
+             .then(data=>{
+                 console.log(data)
+                 setAllStaff(data.message)
+             })
+         })
+     })
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -26,69 +39,41 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
              size='small'/>
              
              <ScrollView style={styles.main}>
-                 <TouchableOpacity onPress={()=>{
-                 props.navigation.navigate('Message')
-                 }}>
-                 <View style={styles.individual}>
-                     <View style={styles.avatar}>
-                     <Avatar size='large' source={require('../../assets/avatar.png')}/>
-                     </View>
-                     <View style={styles.mainDet}>
-                         <View style={styles.names}>
-                         <Text style={{
-                             fontWeight:'bold'
-                         }}>Mubarak</Text>
-                         <Text appearance='hint' style={{
-                             marginLeft:'auto',
-                             marginRight:10,
-                             fontWeight:'100'
-                         }}>10:00</Text>
-                         </View>
-                         <View>
-                         <Text appearance='hint'>
-                             hsggs shjvhvyd sddsv d  sdsd   sdds ds dd  sddds ddd  sd.........
-                         </Text>
-                         </View>
-
-                     </View>
-
-                 </View>
-                 </TouchableOpacity>
-
-
-
-
-
-
-
-                 <TouchableOpacity onPress={()=>{
-                 props.navigation.navigate('Message')
-                 }}>
-                 <View style={styles.individual}>
-                     <View style={styles.avatar}>
-                     <Avatar size='large' source={require('../../assets/avatar3.png')}/>
-                     </View>
-                     <View style={styles.mainDet}>
-                         <View style={styles.names}>
-                         <Text style={{
-                             fontWeight:'bold'
-                         }}>Onemusty.zee</Text>
-                         <Text appearance='hint' style={{
-                             marginLeft:'auto',
-                             marginRight:10,
-                             fontWeight:'100'
-                         }}>12:00</Text>
-                         </View>
-                         <View>
-                         <Text appearance='hint'>
-                             hsggs shjvhvyd sddsv d  sdsd   sdds ds dd  sddds ddd  sd.........
-                         </Text>
-                         </View>
-
-                     </View>
-
-                 </View>
-                 </TouchableOpacity>
+                 {
+                     allStaff.length>0&&(
+                         allStaff.map(staf=>(
+                            <TouchableOpacity onPress={()=>{
+                                props.navigation.navigate('Message')
+                                appProps.setChatter(staf)
+                                }}>
+                                <View style={styles.individual}>
+                                    <View style={styles.avatar}>
+                                    <Avatar size='large' source={require('../../assets/avatar.png')}/>
+                                    </View>
+                                    <View style={styles.mainDet}>
+                                        <View style={styles.names}>
+                                        <Text style={{
+                                            fontWeight:'bold'
+                                        }}>{staf.firstName} {staf.lastName}</Text>
+                                        <Text appearance='hint' style={{
+                                            marginLeft:'auto',
+                                            marginRight:10,
+                                            fontWeight:'100'
+                                        }}>10:00</Text>
+                                        </View>
+                                        <View>
+                                        <Text appearance='hint'>
+                                           {staf.username}
+                                        </Text>
+                                        </View>
+               
+                                    </View>
+               
+                                </View>
+                                </TouchableOpacity>
+                         ))
+                     )
+                 }
 
 
 
@@ -97,40 +82,7 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
 
-
-
-
-
-
-
-                 <TouchableOpacity onPress={()=>{
-                 props.navigation.navigate('Message')
-                 }}>
-                 <View style={styles.individual}>
-                     <View style={styles.avatar}>
-                     <Avatar size='large' source={require('../../assets/logo.png')}/>
-                     </View>
-                     <View style={styles.mainDet}>
-                         <View style={styles.names}>
-                         <Text style={{
-                             fontWeight:'bold'
-                         }}>African Coder</Text>
-                         <Text appearance='hint' style={{
-                             marginLeft:'auto',
-                             marginRight:10,
-                             fontWeight:'100'
-                         }}>10:00</Text>
-                         </View>
-                         <View>
-                         <Text appearance='hint'>
-                             hsggs shjvhvyd sddsv d  sdsd   sdds ds dd  sddds ddd  sd.........
-                         </Text>
-                         </View>
-
-                     </View>
-
-                 </View>
-                 </TouchableOpacity>
+                
 
 
 
@@ -139,39 +91,14 @@ import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 
 
+                
 
 
 
 
 
-                 <TouchableOpacity onPress={()=>{
-                 props.navigation.navigate('Message')
-                 }}>
-                 <View style={styles.individual}>
-                     <View style={styles.avatar}>
-                     <Avatar size='large' source={require('../../assets/logo.png')}/>
-                     </View>
-                     <View style={styles.mainDet}>
-                         <View style={styles.names}>
-                         <Text style={{
-                             fontWeight:'bold'
-                         }}>Mr. Tim</Text>
-                         <Text appearance='hint' style={{
-                             marginLeft:'auto',
-                             marginRight:10,
-                             fontWeight:'100'
-                         }}>12:00</Text>
-                         </View>
-                         <View>
-                         <Text appearance='hint'>
-                             hsggs shjvhvyd sddsv d  sdsd   sdds ds dd  sddds ddd  sd.........
-                         </Text>
-                         </View>
 
-                     </View>
 
-                 </View>
-                 </TouchableOpacity>
              </ScrollView>
         </View>
     )

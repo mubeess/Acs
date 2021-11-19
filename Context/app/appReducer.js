@@ -1,7 +1,8 @@
 import {
     SET_LOADING,
     SET_ISLOGED,
-    SET_STAFF
+    SET_STAFF,
+    SET_CHAT
    
 }from '../types'
 
@@ -25,6 +26,11 @@ const AppReducer= (state,action)=>{
                         ...state,
                         staff:action.payload
                     }
+            case SET_CHAT:
+                        return {
+                            ...state,
+                            chatter:action.payload
+                        }
             
         default:
         return state;

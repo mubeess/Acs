@@ -1,4 +1,4 @@
-import { Divider,Icon,Text,Avatar,Popover,Layout } from '@ui-kitten/components'
+import { Divider,Icon,Text,Avatar,Popover,Layout, Modal, Spinner } from '@ui-kitten/components'
 import React, { useEffect, useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 import ClientDetail from './ClientDetail'
@@ -7,14 +7,51 @@ import Pusher from 'pusher-js/react-native';
 
  function Clients(props) {
      const [visible,setVisible]=useState(false)
+     const [allAlerts,setAlerts]=useState([])
+     const [loading,setLoading]=useState(true)
+    
      const pusher = new Pusher('4fd41dcde3de7004fcf0', {
       cluster: 'mt1'
     });
     const channel = pusher.subscribe('notifications');
+    const loadAlerts=()=>{
+      fetch('https://tim-acs.herokuapp.com/client/get-all-alert')
+      .then(res=>{
+        res.json()
+        .then(data=>{
+          if (data.success==true) {
+          setLoading(false)
+          setAlerts(data.message)
+          }else{
+            Alert.alert(
+              "Error",
+              "Something went wrong when fetching data!",
+              [
+                {
+                  text: "Back",
+                  style: "cancel"
+                },
+            
+              ]
+            );
+            setLoading(false)
+          }
+          
+        }).catch(err=>{
+          console.log(err)
+        })
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
      useEffect(()=>{
       channel.bind('alert', function(data) {
-        console.log(data);
+        // console.log(data);
+       
+          setAlerts(data.allAlert)
+        
       });
+      loadAlerts()
      },[])
      const dispatchNavigation=(chanel)=>{
      
@@ -38,11 +75,27 @@ import Pusher from 'pusher-js/react-native';
       <Text style={styles.text2} status='control'>Client Location</Text>
       <Text style={styles.text2} status='control'>Level Of Risk</Text>
     </View>
-
+   
+   {
+     allAlerts.length>0&&(
+       allAlerts.map((indAl,ind)=>(
+        <ClientDetail detail={indAl} key={ind} dispatchNavigation={dispatchNavigation}></ClientDetail>
+       ))
+     )
+   }
   
-  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
-  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
-  <ClientDetail dispatchNavigation={dispatchNavigation}></ClientDetail>
+   {
+     allAlerts.length==0&&(
+       <View style={styles.empty}>
+         <Text appearance='hint'>No Alerts Available</Text>
+         <Icon fill='black' name='alert-triangle-outline' style={{
+                width:30,
+                height:20
+            }}/>
+       </View>
+     )
+   }
+  
   
 
     <Text style={styles.text} status='basic'>High Risk Clients Action Table</Text>
@@ -52,10 +105,37 @@ import Pusher from 'pusher-js/react-native';
       <Text style={styles.text2} status='control'>Client Code</Text>
       <Text style={styles.text2} status='control'>Client Location</Text>
     </View>
+     {
+       
+        allAlerts.length>0&&(
+          allAlerts.map((indAl,ind)=>{
+            if (indAl.riskLevel=='high') {
+              return(
+               <HighRisk detail={indAl} key={ind} dispatchNavigation={dispatchNavigation}></HighRisk>
+              )
+            }else{
+              return null
+            }
+   
+          })
+        )
+      
+     }
 
-    <HighRisk></HighRisk>
-    <HighRisk></HighRisk>
-    <HighRisk></HighRisk>
+
+{
+     allAlerts.length==0&&(
+       <View style={styles.empty}>
+         <Text appearance='hint'>No Alerts Available</Text>
+         <Icon fill='black' name='alert-triangle-outline' style={{
+                width:30,
+                height:20
+            }}/>
+       </View>
+     )
+   }
+    
+  
     
 
 
@@ -77,7 +157,13 @@ import Pusher from 'pusher-js/react-native';
 
 
 
-
+    <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={loading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
 </ScrollView>
     
    
@@ -157,6 +243,16 @@ const styles=StyleSheet.create({
         minHeight:140,
         backgroundColor:'rgba(0,0,0,0)',
         
+      },
+      empty:{
+        width:'80%',
+        height:70,
+        backgroundColor:'#f9f9f9',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+        marginLeft:'auto',
+        marginRight:'auto'
       }
     
 })

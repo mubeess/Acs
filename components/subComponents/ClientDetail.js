@@ -3,21 +3,21 @@ import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 
 
- function ClientDetail({dispatchNavigation}) {
+ function ClientDetail({dispatchNavigation,detail}) {
     const [visible,setVisible]=useState(false)
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
         <Avatar source={require('../assets/avatar.png')}/>
-        <Text>ACS/001</Text>
+        <Text>{detail.clientId}</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>Karewa extension, 10999888</Text>
+        <Text>{detail.clientLocation}</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text status='success'>Low Risk</Text>
+        <Text status={detail.riskLevel=='high'?'danger':'success'}>{detail.riskLevel}</Text>
         <OverflowMenu
           anchor={()=>(
             <TouchableOpacity onPress={()=>{

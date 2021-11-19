@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 
 
- function HighRisk() {
+ function HighRisk({dispatchNavigation,detail}) {
     const [visible,setVisible]=useState(false)
     return (
         <View style={styles.indi}>
@@ -13,11 +13,11 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
         </View>
    
         <View style={styles.indi2}>
-        <Text>ACS/001</Text>
+        <Text>{detail.clientId}</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>Karewa extension, 10999888</Text>
+        <Text>{detail.clientLocation}</Text>
         <OverflowMenu
           anchor={()=>(
             <TouchableOpacity onPress={()=>{
@@ -32,10 +32,40 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
           visible={visible}
           placement='left'
           onBackdropPress={() => setVisible(false)}>
-          <MenuItem title='Users'/>
-          <MenuItem title='Orders'/>
-          <MenuItem title='Transactions'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('Mobile')
+                 setVisible(false)
+             }} title='Dispatch Mobile Unit'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('Virtual')
+                 setVisible(false)
+             }} title='Contact Virtual Councellor'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('CallFirst')
+                 setVisible(false)
+                 
+             }} title='Contact First Responder'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('ContactClient')
+                 setVisible(false)
+               
+                 
+             }} title='Contact Client'/>
+          <MenuItem onPress={()=>{
+                 dispatchNavigation('CallRef')
+                 setVisible(false)
+                 
+                 
+             }} title='Contact Referal Service'/>
+
+         <MenuItem onPress={()=>{
+                 dispatchNavigation('Document')
+                 setVisible(false)
+                 
+                 
+             }} title='Document High Risk'/>
         </OverflowMenu>
+        
         {/* <Popover
              anchor={()=>(
                <TouchableOpacity onPress={()=>{
