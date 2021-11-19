@@ -1,11 +1,21 @@
 import { Divider,Icon,Text,Avatar,Popover,Layout } from '@ui-kitten/components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 import ClientDetail from './ClientDetail'
 import HighRisk from './HighRisk'
+import Pusher from 'pusher-js/react-native';
 
  function Clients(props) {
      const [visible,setVisible]=useState(false)
+     const pusher = new Pusher('4fd41dcde3de7004fcf0', {
+      cluster: 'mt1'
+    });
+    const channel = pusher.subscribe('notifications');
+     useEffect(()=>{
+      channel.bind('alert', function(data) {
+        console.log(data);
+      });
+     },[])
      const dispatchNavigation=(chanel)=>{
      
       props.navigation.push(`${chanel}`)

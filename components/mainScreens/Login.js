@@ -9,6 +9,7 @@ import Modal from "react-native-modal";
    const [userName,setUserName]=useState('')
    const [password,setPassword]=useState('')
    const [isLoading,setLoading]=useState(false)
+   const appProps=useContext(AppContext)
    useEffect(()=>{
    SplashScreen.hide()
    },[])
@@ -76,10 +77,26 @@ import Modal from "react-native-modal";
           },
           body:JSON.stringify(myUser)
         }).then(res=>{
-          setLoading(false)
           res.json()
           .then(data=>{
-            console.log(data)
+            if(data.success==true){
+              props.navigation.navigate('Dashboard')
+              appProps.setStaff(data.newUser) 
+              setLoading(false)  
+            }else{
+              Alert.alert(
+                "Error",
+                "Username or Password incorrect",
+                [
+                  {
+                    text: "Back",
+                    style: "cancel"
+                  },
+              
+                ]
+              );
+              setLoading(false)
+            }
           }).catch(err=>{
             setLoading(false)
           })
