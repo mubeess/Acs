@@ -1,11 +1,13 @@
-import { Avatar, Button, Card, Divider, Icon,Input,Text } from '@ui-kitten/components'
-import React from 'react'
-import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
-
+import { Avatar, Button, Card, Divider, Icon,Input,Modal,Spinner,Text } from '@ui-kitten/components'
+import React, { useContext, useState } from 'react'
+import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
+import AppContext from '../../../Context/app/appContext'
 
 
 
  function VirtualCouncellor(props) {
+     const [isLoading,setLoading]=useState(false)
+     const appProps=useContext(AppContext)
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -146,8 +148,73 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
        marginLeft:'80%',
        marginTop:20
     }}>
-      <Button  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
+      <Button onPress={()=>{
+          setLoading(true)
+          const record={
+              clientId:`${appProps.currentAlert.clientId}`,
+              clientActions:{
+                  actionName:'Contact Counsellor',
+                  staffId:appProps.staff.username,
+                  staffName:appProps.staff.firstName,
+                  documentation:''
+              }
+          }
+          fetch('https://tim-acs.herokuapp.com/staff/save-client-action',{
+           method:'PUT',
+           headers:{
+             "Content-Type":'application/json'
+           },
+           body:JSON.stringify(record)
+         }).then(res=>{
+             res.json()
+             .then(data=>{
+               if (data.success) {
+                   Alert.alert(
+                       "Success",
+                       "Successfuly Dispatched",
+                       [
+                         {
+                           text: "Back",
+                           style: "cancel"
+                         },
+                     
+                       ]
+                     );
+                     setLoading(false)
+                     props.navigation.goBack()
+               }else{
+                   Alert.alert(
+                       "Error",
+                       "An error occured",
+                       [
+                         {
+                           text: "Back",
+                           style: "cancel"
+                         },
+                     
+                       ]
+                     );
+                     setLoading(false)
+
+               }
+                 console.log(data)
+             }).catch(err=>{
+                 setLoading(false)
+                 console.log(err)
+             })
+         }).catch(err=>{
+           setLoading(false)
+           console.log(err)
+       })
+      }}  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
       </View>
+      <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
     
             </View>
             

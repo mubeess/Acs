@@ -84,7 +84,7 @@ import Modal from "react-native-modal";
             if(data.success==true){
               props.navigation.navigate('Dashboard')
               appProps.setStaff(data.newUser) 
-              console.log(data.newUser)
+              // console.log(data.newUser)
               setLoading(false)  
             }else{
               Alert.alert(

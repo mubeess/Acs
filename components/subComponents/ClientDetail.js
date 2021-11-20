@@ -9,7 +9,7 @@ import AppContext from '../../Context/app/appContext'
         <View style={styles.indi}>
         <View style={styles.indi1}>
         <Avatar source={require('../assets/avatar.png')}/>
-        <Text>{detail.clientId}</Text>
+        <Text>{detail.clientId.split('').slice(0,10).map(dt=>dt)}</Text>
         </View>
    
         <View style={styles.indi2}>

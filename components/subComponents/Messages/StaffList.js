@@ -12,11 +12,11 @@ import AppContext from '../../../Context/app/appContext'
          .then(res=>{
              res.json()
              .then(data=>{
-                 console.log(data)
+                //  console.log(data)
                  setAllStaff(data.message)
              })
          })
-     })
+     },[])
     return (
         <View style={styles.container}>
             <View style={styles.nav}>

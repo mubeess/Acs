@@ -1,9 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text,Button} from '@ui-kitten/components'
 import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
+import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 function MyProfile() {
     const appProps=useContext(AppContext)
+    const [name,setName]=useState('')
+    const [phone,setPhone]=useState('')
+    const [mail,setEmail]=useState('')
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -19,7 +23,40 @@ function MyProfile() {
                 width:100,
                 marginTop:5
             }}  size='giant' source={require('../../assets/prof.jpeg')}/>
-            <TouchableOpacity style={{
+            <TouchableOpacity onPress={async ()=>{
+
+launchImageLibrary({
+    mediaType:'photo'
+
+},(response) => {
+    console.log('Response = ', response);
+  
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.error) {
+      console.log('ImagePicker Error: ', response.error);
+    }else {
+      const source = { uri: response.uri };
+      console.log('Response = ', source);
+  
+      // You can also display the image using data:
+      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+  
+   
+    }
+  });
+            //  const result = await launchImageLibrary({
+            //         mediaType:'photo',
+            //         selectionLimit:1
+            //     });
+                // launchImageLibrary({
+                //     mediaType:'photo',
+                //     selectionLimit:1
+                // }, (res)=>{
+                // console.log(res)
+                // })
+
+            }} style={{
                 marginTop:'auto',
                 marginBottom:30
 
@@ -55,6 +92,10 @@ function MyProfile() {
             </View>
             <Divider style={{width:'100%'}}/>
             <Input
+            onChangeText={(txt)=>{
+                setName(txt)
+            }}
+            value={name}
             style={{
                 marginTop:5,
                 width:'90%',
@@ -66,6 +107,10 @@ function MyProfile() {
     />
 
 <Input
+ onChangeText={(txx)=>{
+    setPhone(txt)
+}}
+value={phone}
             style={{
                 marginTop:5,
                 width:'90%',
@@ -77,6 +122,10 @@ function MyProfile() {
     />
 
 <Input
+ onChangeText={(txt)=>{
+    setEmail(txt)
+}}
+value={mail}
             style={{
                 marginTop:5,
                 width:'90%',
