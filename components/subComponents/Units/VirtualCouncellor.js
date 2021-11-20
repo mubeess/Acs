@@ -1,7 +1,8 @@
-import { Avatar, Button, Card, Divider, Icon,Input,Modal,Spinner,Text } from '@ui-kitten/components'
+import { Avatar, Button, Card, Divider, Icon,Input,Spinner,Text } from '@ui-kitten/components'
 import React, { useContext, useState } from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
+import Modal from "react-native-modal";
 
 
 
@@ -25,7 +26,7 @@ import AppContext from '../../../Context/app/appContext'
             <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>One Musty.zee</Text>
+                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
             </View>
@@ -129,7 +130,7 @@ import AppContext from '../../../Context/app/appContext'
             <Divider style={{width:'100%'}}/>
             <View style={{alignItems:'center'}}>
             <Avatar source={require('../../assets/avatar.png')}></Avatar>
-            <Text>African Coder</Text> 
+            <Text>{appProps.staff.username}</Text> 
             </View>
             <View style={{
                 position:'relative'
@@ -138,7 +139,7 @@ import AppContext from '../../../Context/app/appContext'
             <Input
             disabled
         multiline={true}
-        placeholder='ACS/001, ABJ-JABI,High Risk'
+        placeholder={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
         status='basic'
        
       /> 
@@ -151,7 +152,7 @@ import AppContext from '../../../Context/app/appContext'
       <Button onPress={()=>{
           setLoading(true)
           const record={
-              clientId:`${appProps.currentAlert.clientId}`,
+              clientId:appProps.currentAlert.clientId,
               clientActions:{
                   actionName:'Contact Counsellor',
                   staffId:appProps.staff.username,
@@ -208,16 +209,16 @@ import AppContext from '../../../Context/app/appContext'
        })
       }}  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
       </View>
-      <Modal style={{
+      
+    
+            </View>
+            <Modal style={{
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
       }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
         <Spinner status='basic'/>
       </Modal>
-    
-            </View>
-            
         </View>
     )
 }

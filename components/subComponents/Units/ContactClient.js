@@ -1,11 +1,54 @@
-import { Avatar, Button, Card, Divider, Icon,Input,Text } from '@ui-kitten/components'
-import React from 'react'
-import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
+import { Avatar, Button, Card, Divider, Icon,Input,Spinner,Text } from '@ui-kitten/components'
+import React, { useContext, useEffect, useState } from 'react'
+import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Linking, Alert  } from 'react-native'
 
-
+import AppContext from '../../../Context/app/appContext'
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+import CallLogs from 'react-native-call-log';
+import Modal from "react-native-modal";
 
 
  function ContactClient(props) {
+    const [isLoading,setLoading]=useState(false)
+    const appProps=useContext(AppContext)
+    const [callDuration,setCallDuration]=useState(0)
+    const [mainCallDuration,setMainCallDuration]=useState(0)
+    const [text,setText]=useState('')
+    const [listData, setListDate] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+          if (Platform.OS != 'ios') {
+            try {
+              //Ask for runtime permission
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+                {
+                  title: 'ACS App',
+                  message: 'Access your call logs',
+                  buttonNeutral: 'Ask Me Later',
+                  buttonNegative: 'Cancel',
+                  buttonPositive: 'OK',
+                },
+              );
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                CallLogs.loadAll().then((c) => setListDate(c));
+                CallLogs.load(3).then((c) => console.log(c));
+              } else {
+                console.log('Call Log permission denied');
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          } else {
+            console.log('Call Log permission denied');
+          }
+        }
+        fetchData();
+      }, []);
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -23,7 +66,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>One Musty.zee</Text>
+                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
             </View>
@@ -121,7 +164,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
                borderColor:'gray',
                borderRightWidth:1
            }}>56011 Longfellow Str. Detroit, MI 482227</Text>
-            <Button size='tiny'  appearance='filled' status='primary' accessoryLeft={<Icon name='globe-outline'/>}>
+            <Button onPress={()=>{
+                Linking.openURL('https://www.google.com/maps/place/9.2740331,12.4387026')
+            }}  size='tiny'  appearance='filled' status='primary' accessoryLeft={<Icon name='globe-outline'/>}>
                 Map
             </Button>
            </View>
@@ -131,7 +176,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             height:30,
             width:30
         }} fill='gray' name='person-outline'/>
-        <Text>One musty.zee</Text>
+        <Text>{appProps.staff.username}</Text>
         </View>
 
 
@@ -146,31 +191,128 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
         <View style={styles.icon}>
-        <TouchableOpacity>
-        <Icon style={{
-            height:30,
-            width:30
-        }} fill='green' name='phone-call-outline'/>
-        </TouchableOpacity>
-       
+        {
+            callDuration==0?(
+                <TouchableOpacity onPress={()=>{
+                    RNImmediatePhoneCall.immediatePhoneCall('08167099181')
+                    setTimeout(()=>{
+                        setCallDuration(1)
+                        setText('')
+                    },1000)
+                    
+                   }}>
+                   <Icon style={{
+                       height:30,
+                       width:30
+                   }} fill='green' name='phone-call-outline'/>
+                   </TouchableOpacity>
+                  
+            ):(
+                <TouchableOpacity onPress={()=>{
+                    setLoading(true)
+                    const record={
+                        clientId:appProps.currentAlert.clientId,
+                        clientActions:{
+                            actionName:'Call Client',
+                            staffId:appProps.staff.username,
+                            staffName:appProps.staff.firstName,
+                            documentation:'',
+                            callDration:mainCallDuration
+                        }
+                    }
+                    console.log('stopped call')
+                    CallLogs.load(1).then((c) =>{
+                        setText(`Last call duration is ${c[0].duration} Seconds`)
+                        setMainCallDuration(c[0].duration)
+
+                   
+
+                        fetch('https://tim-acs.herokuapp.com/staff/save-client-action',{
+                            method:'PUT',
+                            headers:{
+                              "Content-Type":'application/json'
+                            },
+                            body:JSON.stringify(record)
+                          }).then(res=>{
+                              res.json()
+                              .then(data=>{
+                                if (data.success) {
+                                    Alert.alert(
+                                        "Success",
+                                        "Successfuly Dispatched",
+                                        [
+                                          {
+                                            text: "Back",
+                                            style: "cancel"
+                                          },
+                                      
+                                        ]
+                                      );
+                                      setLoading(false)
+                                      props.navigation.goBack()
+                                }else{
+                                    Alert.alert(
+                                        "Error",
+                                        "An error occured",
+                                        [
+                                          {
+                                            text: "Back",
+                                            style: "cancel"
+                                          },
+                                      
+                                        ]
+                                      );
+                                      setLoading(false)
+                 
+                                }
+                                  console.log(data)
+                              }).catch(err=>{
+                                  setLoading(false)
+                                  console.log(err)
+                              })
+                          }).catch(err=>{
+                            setLoading(false)
+                            console.log(err)
+                        })
+
+
+
+
+                    });
+                    setCallDuration(0)
+                   }}>
+                   <Icon style={{
+                       height:30,
+                       width:30
+                   }} fill='red' name='stop-circle'/>
+                   </TouchableOpacity>
+                  
+            )
+        }
         
         </View>
          </View>
          <View style={styles.calling}>
-        <Text style={{
+         <Text style={{
             fontWeight:'bold',
             marginRight:10
         }}>
        Outgoing Call
         </Text>
         <Text>
-            10/05/2021
+            {callDuration?'Press The Red Button To Stop':''}
         </Text>
         <Text>
-            9:56Pm EST
+          {text}
         </Text>
          </View>
-            
+         <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal> 
         </View>
     )
 }

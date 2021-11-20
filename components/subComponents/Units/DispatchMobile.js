@@ -1,7 +1,8 @@
-import { Avatar, Button, Card, Divider, Icon,Input,Modal,Spinner,Text } from '@ui-kitten/components'
+import { Avatar, Button, Card, Divider, Icon,Input,Spinner,Text } from '@ui-kitten/components'
 import React, { useContext, useState } from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
+import Modal from "react-native-modal";
 
 
 
@@ -209,16 +210,16 @@ import AppContext from '../../../Context/app/appContext'
       }}  appearance='ghost' status='primary' accessoryLeft={<Icon name='arrow-upward-outline'/>}/>
       </View>
 
-      <Modal style={{
+     
+    
+            </View>
+            <Modal style={{
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
       }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
         <Spinner status='basic'/>
       </Modal>
-    
-            </View>
-            
         </View>
     )
 }

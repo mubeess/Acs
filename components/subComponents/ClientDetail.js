@@ -38,23 +38,27 @@ import AppContext from '../../Context/app/appContext'
                  setVisible(false)
              }} title='Dispatch Mobile Unit'/>
           <MenuItem onPress={()=>{
+                 appProps.setCurrentAlert(detail)
                  dispatchNavigation('Virtual')
                  setVisible(false)
              }} title='Contact Virtual Councellor'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('CallFirst')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                  
              }} title='Contact First Responder'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('ContactClient')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                
                  
              }} title='Contact Client'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('CallRef')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                  
                  
              }} title='Contact Referal Service'/>
@@ -62,6 +66,7 @@ import AppContext from '../../Context/app/appContext'
          <MenuItem onPress={()=>{
                  dispatchNavigation('Document')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                  
                  
              }} title='Document High Risk'/>
