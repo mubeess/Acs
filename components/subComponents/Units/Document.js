@@ -1,11 +1,13 @@
-import { Avatar, Button, Card, Divider, Icon,IndexPath,Input,Select,SelectItem,Text } from '@ui-kitten/components'
-import React,{useState} from 'react'
+import { Avatar, Button, Card, Divider, Icon,IndexPath,Input,Select,SelectItem,Spinner,Text } from '@ui-kitten/components'
+import React,{useContext, useState} from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
-
+import Modal from 'react-native-modal'
+import AppContext from '../../../Context/app/appContext'
 
 
 
  function Document(props) {
+     const appProps=useContext(AppContext)
     const myData=['Mobile Unit','Documentation']
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [action,setAction]=useState('')
@@ -13,8 +15,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
     const [actionTime,setActionTime]=useState('')
     const [actionMessage,setActionMessage]=useState('')
     const displayValue = myData[selectedIndex.row];
+    const [isLoading,setLoading]=useState(false)
     const renderOption = (title) => (
-        <SelectItem title={title}/>
+        <SelectItem key={title} title={title}/>
       );
     return (
         <View style={styles.container}>
@@ -33,7 +36,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>One Musty.zee</Text>
+                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
             </View>
@@ -76,7 +79,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
       </Select>
 
       <Input
-      onTextInput={(text)=>{
+      onChangeText={(text)=>{
         setUsername(text)
     }}
          style={{
@@ -86,13 +89,13 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             marginTop:10
         }}
         placeholder='User Name'
-        value={userName}
+      
          
       /> 
 
 
 <Input
-onTextInput={(text)=>{
+onChangeText={(text)=>{
     setActionTime(text)
 }}
          style={{
@@ -102,14 +105,14 @@ onTextInput={(text)=>{
             marginTop:10
         }}
         placeholder='Action Time'
-        value={actionTime}
+        
          
       /> 
 
 
 
 <Input
-onTextInput={(text)=>{
+onChangeText={(text)=>{
     setActionMessage(text)
 }}
          style={{
@@ -121,13 +124,19 @@ onTextInput={(text)=>{
         placeholder='Action Message'
         multiline={true}
         textStyle={{ minHeight: 84 }}
-        value={actionMessage}
+        
          
       /> 
 
 <Button
 onPress={()=>{
-    console.log(myData[selectedIndex.row])
+    const obj={
+        docType:myData[selectedIndex.row],
+        userName,
+        actionTime,
+        actionMessage
+    }
+    console.log(obj)
 }}         
  style={{
             width:'90%',
@@ -141,7 +150,13 @@ onPress={()=>{
            
             </ScrollView>
             
-            
+            <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
         </View>
     )
 }

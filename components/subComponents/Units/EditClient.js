@@ -1,13 +1,22 @@
-import { Avatar, Button, Card, CheckBox, Divider, Icon,IndexPath,Input,Select,SelectItem,Text } from '@ui-kitten/components'
-import React,{useState} from 'react'
+import { Avatar, Button, Card, CheckBox, Divider, Icon,IndexPath,Input,Select,SelectItem,Spinner,Text } from '@ui-kitten/components'
+import React,{useContext, useState} from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
+import Modal from 'react-native-modal'
+import AppContext from '../../../Context/app/appContext'
 
 
 
 
  function EditClient(props) {
+    const appProps=useContext(AppContext)
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [checked,setChecked]=useState(true)
+    const [name,setName]=useState('')
+    const [address,setAddress]=useState('')
+    const [phone,setPhone]=useState('')
+    const [riskLevel,setRiskLevel]=useState('')
+    const [sud,setSud]=useState('')
+    const [isLoading,setLoading]=useState(false)
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -25,7 +34,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>One Musty.zee</Text>
+                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
             </View>
@@ -33,7 +42,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             <Text style={{marginLeft:20}} appearance='hint' category='h6'>Edit Client</Text>
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
-            <Select
+            {/* <Select
          style={{
              width:'90%',
              marginRight:'auto',
@@ -46,9 +55,24 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
         <SelectItem title='Option 1'/>
         <SelectItem title='Option 2'/>
         <SelectItem title='Option 3'/>
-      </Select>
+      </Select> */}
+       <Input
+       disabled={true}
+       label='Client Code'
+         style={{
+            width:'90%',
+            marginRight:'auto',
+            marginLeft:'auto',
+            marginTop:10
+        }}
+        placeholder={appProps.currentAlert.clientId}
+         
+      /> 
         <View style={styles.myInp}>
         <Input
+          onChangeText={(text)=>{
+            setName(text)
+        }}
          style={{
             width:'40%',
             marginRight:'auto',
@@ -61,6 +85,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
 <Input
+  onChangeText={(text)=>{
+    setAddress(text)
+}}
          style={{
             width:'40%',
             marginRight:'auto',
@@ -76,6 +103,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
         <View style={styles.myInp}>
         <Input
+          onChangeText={(text)=>{
+            setPhone(text)
+        }}
          style={{
             width:'40%',
             marginRight:'auto',
@@ -88,6 +118,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
 <Input
+  onChangeText={(text)=>{
+    setRiskLevel(text)
+}}
          style={{
             width:'40%',
             marginRight:'auto',
@@ -101,6 +134,9 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
         </View>
         <View style={styles.myInp}>
         <Input
+          onChangeText={(text)=>{
+            setSud(text)
+        }}
          style={{
             width:'40%',
             marginRight:'auto',
@@ -113,13 +149,14 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
 
 
 <Input
+         disabled={true}
          style={{
             width:'40%',
             marginRight:'auto',
             marginLeft:'auto',
             marginTop:10
         }}
-        placeholder='Location'
+        placeholder={appProps.currentAlert.clientLocation}
          
       /> 
 
@@ -185,7 +222,13 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from
             
            
             </ScrollView>
-            
+            <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
             
         </View>
     )

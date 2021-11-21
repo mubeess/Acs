@@ -1,10 +1,11 @@
 import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem } from '@ui-kitten/components'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
-
+import AppContext from '../../Context/app/appContext'
 
  function HighRisk({dispatchNavigation,detail}) {
     const [visible,setVisible]=useState(false)
+    const appProps=useContext(AppContext)
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
@@ -35,32 +36,37 @@ import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacit
           <MenuItem onPress={()=>{
                  dispatchNavigation('Mobile')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
              }} title='Dispatch Mobile Unit'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('Virtual')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
              }} title='Contact Virtual Councellor'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('CallFirst')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                  
              }} title='Contact First Responder'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('ContactClient')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                
                  
              }} title='Contact Client'/>
           <MenuItem onPress={()=>{
                  dispatchNavigation('CallRef')
                  setVisible(false)
-                 
+                 appProps.setCurrentAlert(detail)
                  
              }} title='Contact Referal Service'/>
 
          <MenuItem onPress={()=>{
                  dispatchNavigation('Document')
                  setVisible(false)
+                 appProps.setCurrentAlert(detail)
                  
                  
              }} title='Document High Risk'/>

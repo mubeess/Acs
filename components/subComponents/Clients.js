@@ -1,10 +1,11 @@
-import { Divider,Icon,Text,Avatar,Popover,Layout, Modal, Spinner } from '@ui-kitten/components'
+import { Divider,Icon,Text,Avatar,Popover,Layout, Spinner } from '@ui-kitten/components'
 import React, { useEffect, useState } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 import ClientDetail from './ClientDetail'
 import HighRisk from './HighRisk'
 import Pusher from 'pusher-js/react-native';
 import notifee from '@notifee/react-native';
+import Modal from 'react-native-modal'
 
  function Clients(props) {
      const [visible,setVisible]=useState(false)
