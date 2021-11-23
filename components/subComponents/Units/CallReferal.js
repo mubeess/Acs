@@ -17,36 +17,7 @@ import Modal from "react-native-modal";
     const [listData, setListDate] = useState([]);
 
 
-    useEffect(() => {
-        async function fetchData() {
-          if (Platform.OS != 'ios') {
-            try {
-              //Ask for runtime permission
-              const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-                {
-                  title: 'ACS App',
-                  message: 'Access your call logs',
-                  buttonNeutral: 'Ask Me Later',
-                  buttonNegative: 'Cancel',
-                  buttonPositive: 'OK',
-                },
-              );
-              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                CallLogs.loadAll().then((c) => setListDate(c));
-                CallLogs.load(3).then((c) => console.log(c));
-              } else {
-                console.log('Call Log permission denied');
-              }
-            } catch (e) {
-              console.log(e);
-            }
-          } else {
-            console.log('Call Log permission denied');
-          }
-        }
-        fetchData();
-      }, []);
+   
 
 
     return (
@@ -206,7 +177,7 @@ import Modal from "react-native-modal";
                    </TouchableOpacity>
                   
             ):(
-                <TouchableOpacity onPress={()=>{
+                <Button size='tiny' onPress={()=>{
                     setLoading(true)
                     const record={
                         clientId:appProps.currentAlert.clientId,
@@ -279,11 +250,9 @@ import Modal from "react-native-modal";
                     });
                     setCallDuration(0)
                    }}>
-                   <Icon style={{
-                       height:30,
-                       width:30
-                   }} fill='red' name='stop-circle'/>
-                   </TouchableOpacity>
+                       Save Action
+                  
+                   </Button>
                   
             )
         }
@@ -298,7 +267,7 @@ import Modal from "react-native-modal";
        Outgoing Call
         </Text>
         <Text>
-            {callDuration?'Press The Red Button To Stop':''}
+            {callDuration?'Press The button to save action':''}
         </Text>
         <Text>
           {text}

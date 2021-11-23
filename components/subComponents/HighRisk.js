@@ -63,13 +63,7 @@ import AppContext from '../../Context/app/appContext'
                  
              }} title='Contact Referal Service'/>
 
-         <MenuItem onPress={()=>{
-                 dispatchNavigation('Document')
-                 setVisible(false)
-                 appProps.setCurrentAlert(detail)
-                 
-                 
-             }} title='Document High Risk'/>
+       
         </OverflowMenu>
         
         {/* <Popover

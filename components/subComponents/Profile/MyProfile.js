@@ -1,15 +1,37 @@
 import React, { useContext, useState } from 'react'
-import {Avatar, Divider, Icon, Input, Text,Button} from '@ui-kitten/components'
-import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
+import {Avatar, Divider, Icon, Input, Text,Button, Spinner} from '@ui-kitten/components'
+import { View,StyleSheet,ScrollView,TouchableOpacity, Alert } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
+import Modal from 'react-native-modal'
 import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 function MyProfile() {
     const appProps=useContext(AppContext)
-    const [name,setName]=useState('')
+    const [firstName,setFName]=useState('')
+    const [lastName,setLName]=useState('')
     const [phone,setPhone]=useState('')
     const [mail,setEmail]=useState('')
+    const [isLoading,setLoading]=useState(false)
+    const imageUrl=appProps.staff.image=='1.jpg'?'../../assets/prof.jpeg':`https://tim-acs.herokuapp.com/${appProps.staff.image}`
+    const createFormData = (photo) => {
+        const data = new FormData();
+        console.log("++++",photo)
+        // data.append('image', {
+        //     name: 'profilePic',
+        //     type: `image/${fileType}`,
+        //     uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+        //   });
+        data.append('photo', {
+          name:'profile_pic',
+          type: 'image/jpeg',
+          uri:photo.uri
+        });
+    
+        data.append('id', 1);
+        return data;
+      };
+    
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.nav}>
              <Text category='h6' style={{
                  fontWeight:'bold',
@@ -36,7 +58,64 @@ launchImageLibrary({
     } else if (response.error) {
       console.log('ImagePicker Error: ', response.error);
     }else {
-      const source = { uri: response.uri };
+        setLoading(true)
+        const createImg=new FormData()
+        createImg.append('photo', 'profile_pic');
+        createImg.append('file',{type:'image/jpg',name:'profile_pic.jpg',uri:response.assets[0].uri})
+        const source = { uri: response.assets[0].uri };
+        // const fileToUpload = source.uri;
+        // const data = new FormData();
+        // data.append('photo', 'profile_pic');
+        // data.append('file_attachment', fileToUpload);
+      
+      fetch(`https://tim-acs.herokuapp.com/staff/save-staff-profile-pic?username=${appProps.staff.username}`,{
+        method:'PUT',
+        headers:{
+          "Content-Type":'application/json'
+        },
+        body:new FormData(response.assets[0].uri)
+      }).then(res=>{
+          res.json()
+          .then(data=>{
+            if (data.success) {
+                Alert.alert(
+                    "Success",
+                    "Updated",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  setLoading(false)
+                  
+            }else{
+                Alert.alert(
+                    "Error",
+                    "An error occured",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  setLoading(false)
+
+            }
+              console.log(data)
+          }).catch(err=>{
+              setLoading(false)
+              console.log(err)
+          })
+      }).catch(err=>{
+        setLoading(false)
+        console.log(err)
+    })
+
       console.log('Response = ', source);
   
       // You can also display the image using data:
@@ -93,9 +172,9 @@ launchImageLibrary({
             <Divider style={{width:'100%'}}/>
             <Input
             onChangeText={(txt)=>{
-                setName(txt)
+                setFName(txt)
             }}
-            value={name}
+            
             style={{
                 marginTop:5,
                 width:'90%',
@@ -103,14 +182,30 @@ launchImageLibrary({
                 marginRight:'auto'
 
             }}
-      placeholder='Edit Name'
+      placeholder='Edit First Name'
+    />
+
+
+<Input
+            onChangeText={(txt)=>{
+                setLName(txt)
+            }}
+            
+            style={{
+                marginTop:5,
+                width:'90%',
+                marginLeft:'auto',
+                marginRight:'auto'
+
+            }}
+      placeholder='Edit Last Name'
     />
 
 <Input
- onChangeText={(txx)=>{
+ onChangeText={(txt)=>{
     setPhone(txt)
 }}
-value={phone}
+
             style={{
                 marginTop:5,
                 width:'90%',
@@ -121,11 +216,13 @@ value={phone}
       placeholder='Edit Phone Number'
     />
 
+    
+
 <Input
  onChangeText={(txt)=>{
     setEmail(txt)
 }}
-value={mail}
+
             style={{
                 marginTop:5,
                 width:'90%',
@@ -135,7 +232,71 @@ value={mail}
             }}
       placeholder='Edit Email'
     />
-  <Button  style={{
+  <Button onPress={()=>{
+      setLoading(true)
+      const obj={
+      firstName,
+      lastName,
+      phone,
+      email:mail
+
+
+      }
+     !firstName?delete obj.firstName:null
+     !lastName?delete obj.lastName:null
+     !phone?delete obj.phone:null
+     !mail?delete obj.email:null
+
+      console.log(obj)
+      fetch(`https://tim-acs.herokuapp.com/staff/edit-staff?username=${appProps.staff.username}`,{
+        method:'PUT',
+        headers:{
+          "Content-Type":'application/json'
+        },
+        body:JSON.stringify(obj)
+      }).then(res=>{
+          res.json()
+          .then(data=>{
+            if (data.success) {
+                Alert.alert(
+                    "Profile Updated",
+                    "Updated",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  appProps.setStaff(data.message)
+                  setLoading(false)
+                  
+            }else{
+                Alert.alert(
+                    "Error",
+                    "An error occured",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  setLoading(false)
+
+            }
+              console.log(data)
+          }).catch(err=>{
+              setLoading(false)
+              console.log(err)
+          })
+      }).catch(err=>{
+        setLoading(false)
+        console.log(err)
+    })
+  }}  style={{
                 marginTop:20,
                 width:'90%',
                 marginLeft:'auto',
@@ -144,7 +305,14 @@ value={mail}
             }} >
         Update Profile
       </Button>
-        </View>
+      <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <Spinner status='basic'/>
+      </Modal>
+        </ScrollView>
     )
 }
 const styles=StyleSheet.create({

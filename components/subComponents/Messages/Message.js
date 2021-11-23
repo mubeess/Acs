@@ -17,7 +17,7 @@ function Message(props) {
 
   useEffect(() => {
     console.log('++++++++',appProps.chatter)
-    fetch(`https://tim-acs.herokuapp.com/staff/get-prev-chart/?staffOneId=${appProps.staff.username}&staffTwoId=${appProps.chatter.username}`)
+    fetch(`https://tim-acs.herokuapp.com/staff/get-prev-chart/?senderId=${appProps.staff.username}&receiverId=${appProps.chatter.username}`)
     .then(res=>{
       res.json()
       .then(data=>{

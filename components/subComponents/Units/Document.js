@@ -1,21 +1,25 @@
 import { Avatar, Button, Card, Divider, Icon,IndexPath,Input,Select,SelectItem,Spinner,Text } from '@ui-kitten/components'
-import React,{useContext, useState} from 'react'
-import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
+import React,{useContext, useEffect, useState} from 'react'
+import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
 import Modal from 'react-native-modal'
 import AppContext from '../../../Context/app/appContext'
 
 
 
  function Document(props) {
+    
      const appProps=useContext(AppContext)
-    const myData=['Mobile Unit','Documentation']
+    const myData=['Mobile Unit','Contact Virtual Councellor','Contact First Responder','Contact Client','Contact Referal Servive']
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [action,setAction]=useState('')
-    const [userName,setUsername]=useState('')
+    const [userName,setUsername]=useState(appProps.currentAlert.staffId)
     const [actionTime,setActionTime]=useState('')
     const [actionMessage,setActionMessage]=useState('')
     const displayValue = myData[selectedIndex.row];
     const [isLoading,setLoading]=useState(false)
+    useEffect(()=>{
+   console.log("======",appProps.currentAlert)
+    },[])
     const renderOption = (title) => (
         <SelectItem key={title} title={title}/>
       );
@@ -41,7 +45,7 @@ import AppContext from '../../../Context/app/appContext'
             
             </View>
             <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>High Risk Action Documentation</Text>
+            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Action Documentation</Text>
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
          {/* <Select
@@ -64,7 +68,7 @@ import AppContext from '../../../Context/app/appContext'
             }
       
       </Select> */}
-      <Select
+      {/* <Select
         style={{
             width:'90%',
             marginRight:'auto',
@@ -76,9 +80,22 @@ import AppContext from '../../../Context/app/appContext'
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}>
         {myData.map(renderOption)}
-      </Select>
+      </Select> */}
+       <Input
+      disabled
+    style={{
+        width:'90%',
+        marginRight:'auto',
+        marginLeft:'auto',
+        marginTop:10
+    }}
+        placeholder={appProps.currentAlert.actionName}
+      
+         
+      /> 
 
       <Input
+      disabled
       onChangeText={(text)=>{
         setUsername(text)
     }}
@@ -88,7 +105,7 @@ import AppContext from '../../../Context/app/appContext'
             marginLeft:'auto',
             marginTop:10
         }}
-        placeholder='User Name'
+        placeholder={appProps.currentAlert.staffId}
       
          
       /> 
@@ -131,11 +148,65 @@ onChangeText={(text)=>{
 <Button
 onPress={()=>{
     const obj={
-        docType:myData[selectedIndex.row],
-        userName,
-        actionTime,
-        actionMessage
+        clientActionId:appProps.currentAlert.clientActionId,
+        clientId:userName,
+        // actionTime,
+        documentation:actionMessage
     }
+  setLoading(true)
+   
+    fetch('https://tim-acs.herokuapp.com/staff/document-client-action',{
+        method:'PUT',
+        headers:{
+          "Content-Type":'application/json'
+        },
+        body:JSON.stringify(obj)
+      }).then(res=>{
+          res.json()
+          .then(data=>{
+            if (data.success) {
+                Alert.alert(
+                    "Success",
+                    "Document Added",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  setLoading(false)
+                  props.navigation.navigate('Main')
+            }else{
+                Alert.alert(
+                    "Error",
+                    "An error occured",
+                    [
+                      {
+                        text: "Back",
+                        style: "cancel"
+                      },
+                  
+                    ]
+                  );
+                  setLoading(false)
+
+            }
+              console.log(data)
+          }).catch(err=>{
+              setLoading(false)
+              console.log(err)
+          })
+      }).catch(err=>{
+        setLoading(false)
+        console.log(err)
+    })
+
+
+
+
+
     console.log(obj)
 }}         
  style={{
