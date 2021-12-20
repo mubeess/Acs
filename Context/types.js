@@ -3,3 +3,5 @@ export const SET_ISLOGED='SET_ISLOGED';
 export const SET_STAFF='SET_STAFF';
 export const SET_CHAT='SET_CHAT';
 export const SET_CURRENT_ALERT='SET_CURRENT_ALERT';
+export const SET_NEWALERT='SET_NEWALERT';
+export const SET_NEWMESSAGE='SET_NEWMESSAGE';

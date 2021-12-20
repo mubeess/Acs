@@ -56,7 +56,7 @@ launchImageLibrary({
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error);
+      console.log('ImagePicker Error:', response.error);
     }else {
         setLoading(true)
         const createImg=new FormData()
@@ -182,7 +182,7 @@ launchImageLibrary({
                 marginRight:'auto'
 
             }}
-      placeholder='Edit First Name'
+      placeholder={appProps.staff.firstName}
     />
 
 
@@ -198,7 +198,7 @@ launchImageLibrary({
                 marginRight:'auto'
 
             }}
-      placeholder='Edit Last Name'
+      placeholder={appProps.staff.lastName}
     />
 
 <Input
@@ -213,7 +213,7 @@ launchImageLibrary({
                 marginRight:'auto'
 
             }}
-      placeholder='Edit Phone Number'
+      placeholder={appProps.staff.phone}
     />
 
     
@@ -230,7 +230,7 @@ launchImageLibrary({
                 marginRight:'auto'
 
             }}
-      placeholder='Edit Email'
+      placeholder={appProps.staff.email}
     />
   <Button onPress={()=>{
       setLoading(true)

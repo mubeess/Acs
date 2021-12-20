@@ -1,6 +1,6 @@
 import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
-import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert } from 'react-native'
+import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking } from 'react-native'
 import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
 import AppContext from '../../Context/app/appContext'
 import Modal from "react-native-modal";
@@ -118,7 +118,9 @@ import Modal from "react-native-modal";
     <Text appearance='hint'>
       Having isuues with login?
     </Text>
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={()=>{
+      Linking.openURL('mailto:mubarakibrahim2015@gmail.com?subject=Help')
+    }}>
     <Text style={{
         textAlign:'center',
         marginLeft:10,

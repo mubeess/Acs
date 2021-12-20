@@ -1,5 +1,5 @@
 import { Avatar, Button, Card, CheckBox, Divider, Icon,IndexPath,Input,Select,SelectItem,Spinner,Text } from '@ui-kitten/components'
-import React,{useContext, useState} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
 import Modal from 'react-native-modal'
 import AppContext from '../../../Context/app/appContext'
@@ -11,12 +11,28 @@ import AppContext from '../../../Context/app/appContext'
     const appProps=useContext(AppContext)
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [checked,setChecked]=useState(true)
+    const [question1,setQ1]=useState(false)
+    const [question2,setQ2]=useState(false)
+    const [question3,setQ3]=useState(false)
+    const [total,setTotal]=useState(0)
     const [name,setName]=useState('')
     const [address,setAddress]=useState('')
     const [phone,setPhone]=useState('')
     const [riskLevel,setRiskLevel]=useState('')
     const [sud,setSud]=useState('')
-    const [isLoading,setLoading]=useState(false)
+    const [isLoading,setLoading]=useState(false)  
+    const [myClient,setMyclient]=useState([])
+    useEffect(()=>{
+      fetch(`https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`)
+      .then(res=>{
+          res.json()
+          .then(data=>{
+            setMyclient([data.clientDemographic])
+           
+             
+          })
+      })
+    },[])
     return (
         <View style={styles.container}>
             <View style={styles.nav}>
@@ -25,7 +41,7 @@ import AppContext from '../../../Context/app/appContext'
             }}  style={styles.arr}>
             <Icon fill='black' name='arrow-back-outline' style={{
                    width:30,
-                   height:20
+                   height:20 
                }}/>
             </TouchableOpacity>
             <Image style={styles.logo} source={require('../../assets/logo.png')}/>
@@ -57,10 +73,10 @@ import AppContext from '../../../Context/app/appContext'
         <SelectItem title='Option 3'/>
       </Select> */}
        <Input
-       disabled={true}
+       disabled
        label='Client Code'
          style={{
-            width:'90%',
+            width:'95%',
             marginRight:'auto',
             marginLeft:'auto',
             marginTop:10
@@ -69,17 +85,21 @@ import AppContext from '../../../Context/app/appContext'
          
       /> 
         <View style={styles.myInp}>
-        <Input
+        <Input 
+          label='Full Name'
           onChangeText={(text)=>{
             setName(text)
         }}
          style={{
-            width:'40%',
+            width:'45%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'white'
+          
+            
         }}
-        placeholder='Name'
+        placeholder={myClient.length>0?myClient[0].fullName:''}
          
       /> 
 
@@ -89,12 +109,14 @@ import AppContext from '../../../Context/app/appContext'
     setAddress(text)
 }}
          style={{
-            width:'40%',
+            width:'45%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'white'
         }}
-        placeholder='Address'
+        placeholder={myClient.length>0?myClient[0].clientLocation:''}
+        label='Address'
          
       /> 
 
@@ -103,52 +125,59 @@ import AppContext from '../../../Context/app/appContext'
 
         <View style={styles.myInp}>
         <Input
+         label='Phone'
           onChangeText={(text)=>{
             setPhone(text)
         }}
          style={{
-            width:'40%',
+            width:'45%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'white'
         }}
-        placeholder='Phone Number'
+        placeholder={myClient.length>0?myClient[0].phone:''}
          
       /> 
 
 
 <Input
+disabled
   onChangeText={(text)=>{
     setRiskLevel(text)
 }}
          style={{
-            width:'40%',
+            width:'45%',
             marginRight:'auto',
             marginLeft:'auto',
             marginTop:10
         }}
-        placeholder='Risk Level'
+        placeholder={total>50?'High':'Low'}
+        label='Risk Level'
          
       /> 
 
         </View>
         <View style={styles.myInp}>
         <Input
+        disabled
+        label='SUD Level'
           onChangeText={(text)=>{
             setSud(text)
         }}
          style={{
-            width:'40%',
+            width:'95%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            
         }}
-        placeholder='SUD Level'
+        placeholder={total.toString()}
          
       /> 
 
 
-<Input
+{/* <Input
          disabled={true}
          style={{
             width:'40%',
@@ -158,7 +187,7 @@ import AppContext from '../../../Context/app/appContext'
         }}
         placeholder={appProps.currentAlert.clientLocation}
          
-      /> 
+      />  */}
 
         </View>
         
@@ -170,26 +199,50 @@ import AppContext from '../../../Context/app/appContext'
      <View style={styles.question}>
      <CheckBox
      style={{marginTop:10}}
-      checked={checked}
-      onChange={nextChecked => setChecked(nextChecked)}>
-     Question 1
+      checked={question1}
+      onChange={(nextChecked) =>{
+        setQ1(nextChecked)
+        if (nextChecked==true) {
+          setTotal(total+20)
+        }else{
+          setTotal(total-20)
+        }
+        
+      }}>
+     {myClient.length>0?Object.entries(myClient[0].sud)[0]:''}
     </CheckBox>
 
 
     <CheckBox
      style={{marginTop:10}}
-      checked={checked}
-      onChange={nextChecked => setChecked(nextChecked)}>
-     Question 2
+      checked={question2}
+      onChange={(nextChecked) =>{
+        setQ2(nextChecked)
+        if (nextChecked==true) {
+          setTotal(total+20)
+        }else{
+          setTotal(total-20)
+        }
+        
+      }}>
+     {myClient.length>0?Object.entries(myClient[0].sud)[1]:''}
     </CheckBox>
 
 
 
     <CheckBox
      style={{marginTop:10}}
-      checked={checked}
-      onChange={nextChecked => setChecked(nextChecked)}>
-     Question 3
+      checked={question3}
+      onChange={(nextChecked) =>{
+        setQ3(nextChecked)
+        if (nextChecked==true) {
+          setTotal(total+20)
+        }else{
+          setTotal(total-20)
+        }
+        
+      }}>
+     {myClient.length>0?Object.entries(myClient[0].sud)[2]:''}
     </CheckBox>
      </View>
    </Card>
@@ -197,7 +250,11 @@ import AppContext from '../../../Context/app/appContext'
 
 
 <View style={styles.myInp2}>
-<Button         
+<Button
+onPress={()=>{
+setSud(total)
+console.log(total)
+}}         
  style={{
     width:'40%',
     marginRight:'auto',

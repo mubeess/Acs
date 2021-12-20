@@ -15,6 +15,21 @@ import Modal from "react-native-modal";
     const [mainCallDuration,setMainCallDuration]=useState(0)
     const [text,setText]=useState('')
     const [listData, setListDate] = useState([]);
+    const [myClient,setMyclient]=useState([])
+
+
+     useEffect(()=>{
+        fetch(`https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`)
+        .then(res=>{
+            res.json()
+            .then(data=>{
+              setMyclient([data.clientDemographic])
+             
+               
+            })
+        })
+     },[])
+  
 
     // useEffect(() => {
     //     async function fetchData() {
@@ -89,19 +104,19 @@ import Modal from "react-native-modal";
 
             </View>
           
-        <View style={styles.clientDet}> 
+            <View style={styles.clientDet}> 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Name</Text>
-           <Text style={styles.inp}>Mubarak Ibrahim</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].fullName:''}</Text>
            </View>
 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Address</Text>
-           <Text style={styles.inp}>Karewa extension, Illorin st.</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].clientLocation:''}</Text>
            </View>
         </View>
 
@@ -113,14 +128,14 @@ import Modal from "react-native-modal";
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Client Code</Text>
-           <Text style={styles.inp}>ACS/0011</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].clientId:''}</Text>
            </View>
 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Phone Number</Text>
-           <Text style={styles.inp}>08164942224</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].phone:''}</Text>
            </View>
         </View>
 
@@ -133,19 +148,17 @@ import Modal from "react-native-modal";
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Risk Level</Text>
-           <Text style={styles.inp}>High Risk</Text>
+           <Text style={styles.inp}>{myClient.length>0&&myClient[0].sud.sudLevel>50?'High':'Low'}</Text>
            </View>
 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>SUD Level</Text>
-           <Text style={styles.inp}>90</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].sud.sudLevel:''}</Text>
            </View>
         </View>
            
-
-
 
 
 
@@ -163,7 +176,7 @@ import Modal from "react-native-modal";
                borderBottomColor:'black',
                borderColor:'gray',
                borderRightWidth:1
-           }}>56011 Longfellow Str. Detroit, MI 482227</Text>
+           }}>{myClient.length>0&&myClient[0].clientLocation}</Text>
             <Button onPress={()=>{
                 Linking.openURL('https://www.google.com/maps/place/9.2740331,12.4387026')
             }}  size='tiny'  appearance='filled' status='primary' accessoryLeft={<Icon name='globe-outline'/>}>
@@ -185,7 +198,7 @@ import Modal from "react-native-modal";
             height:30,
             width:30
         }} fill='gray' name='hash-outline'/>
-        <Text>911</Text>
+        <Text>{myClient.length>0?myClient[0].phone:''}</Text>
         </View>
 
 
@@ -194,7 +207,7 @@ import Modal from "react-native-modal";
         {
             callDuration==0?(
                 <TouchableOpacity onPress={()=>{
-                    RNImmediatePhoneCall.immediatePhoneCall('08167099181')
+                    RNImmediatePhoneCall.immediatePhoneCall(myClient.length>0?myClient[0].phone:'')
                     setTimeout(()=>{
                         setCallDuration(1)
                         setText('')

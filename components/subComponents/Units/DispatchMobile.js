@@ -10,6 +10,7 @@ import Modal from "react-native-modal";
      const [isLoading,setLoading]=useState(true)
      const appProps=useContext(AppContext)
      const [myAlert,setAlerts]=useState([])
+     const [dispatchTxt,setDispatchText]=useState('')
      const loadAlerts=()=>{
       fetch(`https://tim-acs.herokuapp.com/staff/get-staff-actions-base-on-client/?username=${appProps.staff.username}&clientId=${appProps.currentAlert.clientId}`)
       .then(res=>{
@@ -99,15 +100,15 @@ import Modal from "react-native-modal";
           <Text>
              {alt.actionName}
           </Text>
-          <Text style={{backgroundColor:'#051A49',color:'#ffffff'}}>
-             sent 10:05-9/10
+          <Text>
+            sent: {alt.month}
           </Text>
-         <Button onPress={()=>{
+         {/* <Button onPress={()=>{
             props.navigation.navigate('Document')
              appProps.setCurrentAlert(alt)
          }} style={{
            marginTop:10
-         }} size='tiny'>Document</Button> 
+         }} size='tiny'>Document</Button>  */}
             </View>
           
             </View>
@@ -135,7 +136,9 @@ import Modal from "react-native-modal";
             }}>
             <Text style={{marginLeft:20}}>Dispatch User</Text> 
             <Input
-        disabled={true}
+        onChangeText={(txt)=>{
+          setDispatchText(txt)
+        }}
         multiline={true}
         placeholder={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
         
@@ -155,7 +158,7 @@ import Modal from "react-native-modal";
                    actionName:'Mobile Unit',
                    staffId:appProps.staff.username,
                    staffName:appProps.staff.firstName,
-                   documentation:''
+                   documentation:dispatchTxt
                }
            }
            fetch('https://tim-acs.herokuapp.com/staff/save-client-action',{
@@ -262,7 +265,7 @@ const styles=StyleSheet.create({
     },
     card:{
         width:'90%',
-        height:150,
+        height:100,
         marginLeft:'auto',
         marginRight:'auto',
         marginTop:20,

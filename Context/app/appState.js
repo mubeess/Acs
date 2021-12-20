@@ -6,7 +6,9 @@ SET_LOADING,
 SET_ISLOGED,
 SET_STAFF,
 SET_CHAT,
-SET_CURRENT_ALERT
+SET_CURRENT_ALERT,
+SET_NEWALERT,
+SET_NEWMESSAGE
 } from '../types'
 
 
@@ -16,7 +18,9 @@ export default function AppState(props){
         loading:false,
         isLogged:false,
         chatter:{},
-        currentAlert:{}
+        currentAlert:{},
+        newMessage:false,
+        newAlert:false
     }
 const [state,dispatch]=useReducer(appReducer,initState)
 
@@ -25,6 +29,8 @@ const setIslogged=()=>dispatch({type:SET_ISLOGED})
 const setStaff=(staff)=>dispatch({type:SET_STAFF,payload:staff})
 const setChatter=(chatter)=>dispatch({type:SET_CHAT,payload:chatter})
 const setCurrentAlert=(curAlert)=>dispatch({type:SET_CURRENT_ALERT,payload:curAlert})
+const setNewAlert=()=>dispatch({type:SET_NEWALERT})
+const setNewMessage=()=>dispatch({type:SET_NEWMESSAGE})
 
 return <AppContext.Provider
 value={{
@@ -33,11 +39,15 @@ value={{
     isLogged:state.isLogged,
     chatter:state.chatter,
     currentAlert:state.currentAlert,
+    newMessage:state.newMessage,
+    newAlert:state.newAlert,
     setLoading,
     setIslogged,
     setStaff,
     setChatter,
-    setCurrentAlert
+    setCurrentAlert,
+    setNewAlert,
+    setNewMessage
 }}
 >
 

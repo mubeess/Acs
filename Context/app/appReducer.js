@@ -3,7 +3,9 @@ import {
     SET_ISLOGED,
     SET_STAFF,
     SET_CHAT,
-    SET_CURRENT_ALERT
+    SET_CURRENT_ALERT,
+    SET_NEWMESSAGE,
+    SET_NEWALERT
    
 }from '../types'
 
@@ -38,6 +40,18 @@ const AppReducer= (state,action)=>{
                                 ...state,
                                 currentAlert:action.payload
                             }
+           case SET_NEWMESSAGE:
+                let prevMessage=state.newMessage
+                return {
+                    ...state,
+                    newMessage:!prevMessage
+                }
+           case SET_NEWALERT:
+                let prevAlert=state.newAlert
+                return {
+                    ...state,
+                    newAlert:!prevAlert
+                }
             
         default:
         return state;

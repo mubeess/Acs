@@ -9,7 +9,7 @@ import AppContext from '../../../Context/app/appContext'
  function Document(props) {
     
      const appProps=useContext(AppContext)
-    const myData=['Mobile Unit','Contact Virtual Councellor','Contact First Responder','Contact Client','Contact Referal Servive']
+    const myData=['Mobile Unit','Contact Virtual Councellor','Contact First Responder','Contact Client','Contact Referal Service']
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [action,setAction]=useState('')
     const [userName,setUsername]=useState(appProps.currentAlert.staffId)
@@ -48,8 +48,8 @@ import AppContext from '../../../Context/app/appContext'
             <Text style={{marginLeft:20}} appearance='hint' category='h6'>Action Documentation</Text>
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
-         {/* <Select
-         value={myData[selectedIndex.row]}
+         <Select
+         value={myData[selectedIndex]}
          style={{
              width:'90%',
              marginRight:'auto',
@@ -57,8 +57,8 @@ import AppContext from '../../../Context/app/appContext'
              marginTop:10
          }}
          label='Action Type'
-        selectedIndex={myData[selectedIndex.row]}
         onSelect={(index)=>{
+            setSelectedIndex(index.row)
             console.log(index)
         } }>
             {
@@ -67,7 +67,7 @@ import AppContext from '../../../Context/app/appContext'
                 ))
             }
       
-      </Select> */}
+      </Select>
       {/* <Select
         style={{
             width:'90%',
@@ -81,18 +81,19 @@ import AppContext from '../../../Context/app/appContext'
         onSelect={index => setSelectedIndex(index)}>
         {myData.map(renderOption)}
       </Select> */}
-       <Input
+       {/* <Input
       disabled
     style={{
         width:'90%',
         marginRight:'auto',
         marginLeft:'auto',
-        marginTop:10
+        marginTop:10,
+        backgroundColor:'#f9f9f9'
     }}
         placeholder={appProps.currentAlert.actionName}
       
          
-      /> 
+      />  */}
 
       <Input
       disabled
@@ -103,15 +104,17 @@ import AppContext from '../../../Context/app/appContext'
             width:'90%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'#f9f9f9'
         }}
-        placeholder={appProps.currentAlert.staffId}
+        placeholder={appProps.staff.username}
       
          
       /> 
 
 
 <Input
+disabled
 onChangeText={(text)=>{
     setActionTime(text)
 }}
@@ -119,9 +122,11 @@ onChangeText={(text)=>{
             width:'90%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'#f9f9f9',
+            color:'white'
         }}
-        placeholder='Action Time'
+        placeholder={`${Date.now()}`}
         
          
       /> 
@@ -136,7 +141,8 @@ onChangeText={(text)=>{
             width:'90%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:50
+            marginTop:50,
+            backgroundColor:'white'
         }}
         placeholder='Action Message'
         multiline={true}

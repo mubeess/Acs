@@ -10,6 +10,7 @@ import Modal from "react-native-modal";
      const [isLoading,setLoading]=useState(true)
      const appProps=useContext(AppContext)
      const [myAlert,setAlerts]=useState([])
+     const [dispTxt,setDispTxt]=useState('')
 
 
      const loadAlerts=()=>{
@@ -104,15 +105,15 @@ import Modal from "react-native-modal";
           <Text>
              {alt.actionName}
           </Text>
-          <Text style={{backgroundColor:'#051A49',color:'#ffffff'}}>
-             sent 10:05-9/10
+          <Text>
+             sent: {alt.month}
           </Text>
-         <Button onPress={()=>{
+         {/* <Button onPress={()=>{
             props.navigation.navigate('Document')
              appProps.setCurrentAlert(alt)
          }} style={{
            marginTop:10
-         }} size='tiny'>Document</Button> 
+         }} size='tiny'>Document</Button>  */}
             </View>
           
             </View>
@@ -137,7 +138,9 @@ import Modal from "react-native-modal";
             }}>
             <Text style={{marginLeft:20}}>Dispatch User</Text> 
             <Input
-            disabled
+        onChangeText={(txt)=>{
+           setDispTxt(txt)
+        }}
         multiline={true}
         placeholder={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
         status='basic'
@@ -157,7 +160,7 @@ import Modal from "react-native-modal";
                   actionName:'Contact Counsellor',
                   staffId:appProps.staff.username,
                   staffName:appProps.staff.firstName,
-                  documentation:''
+                  documentation:dispTxt
               }
           } 
           setLoading(true)
@@ -264,7 +267,7 @@ const styles=StyleSheet.create({
     },
     card:{
         width:'90%',
-        height:150,
+        height:100,
         marginLeft:'auto',
         marginRight:'auto',
         marginTop:20,

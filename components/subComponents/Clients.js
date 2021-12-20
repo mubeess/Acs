@@ -78,8 +78,8 @@ import Modal from 'react-native-modal'
       filterAlert()
      },[])
      const dispatchNavigation=(chanel)=>{
-     
-      props.navigation.push(`${chanel}`)
+      // console.log(props.navigation)
+      props.navigation.navigate(`${chanel}`)
      }
     return (
         <View style={{
@@ -122,7 +122,7 @@ import Modal from 'react-native-modal'
   
   
 
-    <Text style={styles.text} status='basic'>High Risk Clients Action Table</Text>
+    <Text style={styles.text} status='basic'>Action Table</Text>
             <Divider style={styles.divide}/>
     <View style={styles.controlContainer}>
       <Text style={styles.text2} status='control'>Alert Timestamp</Text>

@@ -100,9 +100,11 @@ function Message(props) {
  
   return (
     <Chat
+    showUserAvatars
+    showUserNames
     theme={{
       ...defaultTheme,
-      colors: { ...defaultTheme.colors, inputBackground: '#f9f9f9',inputText:'#000000' },
+      colors: { ...defaultTheme.colors, inputBackground: '#f9f9f9',inputText:'#000000'},
     }}
         messages={messages}
         onSendPress={handleSendPress}
