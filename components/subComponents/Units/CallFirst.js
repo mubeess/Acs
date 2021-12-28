@@ -15,6 +15,7 @@ import Modal from "react-native-modal";
      const [text,setText]=useState('')
      const [listData, setListDate] = useState([]);
      const [myClient,setMyclient]=useState([])
+     const imageUrl=appProps.staff.image.split('public')
 
 
      useEffect(()=>{
@@ -22,6 +23,7 @@ import Modal from "react-native-modal";
         .then(res=>{
             res.json()
             .then(data=>{
+                console.log(data)
               setMyclient([data.clientDemographic])
              
                
@@ -52,7 +54,7 @@ import Modal from "react-native-modal";
             <Divider style={{width:'100%'}}/>
             <View style={styles.user}>
                 <View style={styles.subUser}>
-                <Avatar source={require('../../assets/avatar.png')}></Avatar>
+                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
                 <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
@@ -106,14 +108,14 @@ import Modal from "react-native-modal";
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>Risk Level</Text>
-           <Text style={styles.inp}>{myClient.length>0&&myClient[0].sud.sudLevel>50?'High':'Low'}</Text>
+           <Text style={styles.inp}>{myClient.length>0&&myClient[0].sud!==null?myClient[0].sud.sudLevel>50?'High':'Low':''}</Text>
            </View>
 
            <View style={styles.inpDet}>
            <Text style={[styles.inp,{
                fontWeight:'bold'
            }]}>SUD Level</Text>
-           <Text style={styles.inp}>{myClient.length>0?myClient[0].sud.sudLevel:''}</Text>
+           <Text style={styles.inp}>{myClient.length>0?myClient[0].sud!==null?myClient[0].sud.sudLevel:'':''}</Text>
            </View>
         </View>
            

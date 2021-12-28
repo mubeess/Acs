@@ -11,6 +11,7 @@ import Modal from "react-native-modal";
      const appProps=useContext(AppContext)
      const [myAlert,setAlerts]=useState([])
      const [dispatchTxt,setDispatchText]=useState('')
+     const imageUrl=appProps.staff.image.split('public')
      const loadAlerts=()=>{
       fetch(`https://tim-acs.herokuapp.com/staff/get-staff-actions-base-on-client/?username=${appProps.staff.username}&clientId=${appProps.currentAlert.clientId}`)
       .then(res=>{
@@ -128,7 +129,7 @@ import Modal from "react-native-modal";
             </ScrollView>
             <Divider style={{width:'100%'}}/>
             <View style={{alignItems:'center'}}>
-            <Avatar source={require('../../assets/avatar.png')}></Avatar>
+            <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
             <Text>{appProps.staff.username}</Text> 
             </View>
             <View style={{

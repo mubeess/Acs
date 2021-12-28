@@ -1,6 +1,6 @@
 import { Avatar, Button, Card, CheckBox, Divider, Icon,IndexPath,Input,Select,SelectItem,Spinner,Text } from '@ui-kitten/components'
 import React,{useContext, useEffect, useState} from 'react'
-import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions  } from 'react-native'
+import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
 import Modal from 'react-native-modal'
 import AppContext from '../../../Context/app/appContext'
 
@@ -9,26 +9,30 @@ import AppContext from '../../../Context/app/appContext'
 
  function EditClient(props) {
     const appProps=useContext(AppContext)
+    const [myClient,setMyclient]=useState([])
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [checked,setChecked]=useState(true)
     const [question1,setQ1]=useState(false)
     const [question2,setQ2]=useState(false)
     const [question3,setQ3]=useState(false)
     const [total,setTotal]=useState(0)
-    const [name,setName]=useState('')
-    const [address,setAddress]=useState('')
-    const [phone,setPhone]=useState('')
+    const [name,setName]=useState(myClient.length>0?myClient[0].fullName:'')
+    const [address,setAddress]=useState(myClient.length>0?myClient[0].address:'')
+    const [phone,setPhone]=useState(myClient.length>0?myClient[0].phone:'')
     const [riskLevel,setRiskLevel]=useState('')
     const [sud,setSud]=useState('')
     const [isLoading,setLoading]=useState(false)  
-    const [myClient,setMyclient]=useState([])
+   
+    const imageUrl=appProps.staff.image.split('public')
     useEffect(()=>{
       fetch(`https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`)
       .then(res=>{
           res.json()
           .then(data=>{
             setMyclient([data.clientDemographic])
-           
+            setAddress(data.clientDemographic.clientLocation)
+            setName(data.clientDemographic.fullName)
+            setPhone(data.clientDemographic.phone)
              
           })
       })
@@ -49,7 +53,7 @@ import AppContext from '../../../Context/app/appContext'
             <Divider style={{width:'100%'}}/>
             <View style={styles.user}>
                 <View style={styles.subUser}>
-                <Avatar source={require('../../assets/avatar.png')}></Avatar>
+                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
                 <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
@@ -209,7 +213,7 @@ disabled
         }
         
       }}>
-     {myClient.length>0?Object.entries(myClient[0].sud)[0]:''}
+     {myClient.length>0?myClient[0].sud!==null?Object.entries(myClient[0].sud)[0]:'':''}
     </CheckBox>
 
 
@@ -225,7 +229,7 @@ disabled
         }
         
       }}>
-     {myClient.length>0?Object.entries(myClient[0].sud)[1]:''}
+     {myClient.length>0?myClient[0].sud!==null?Object.entries(myClient[0].sud)[1]:'':''}
     </CheckBox>
 
 
@@ -242,7 +246,7 @@ disabled
         }
         
       }}>
-     {myClient.length>0?Object.entries(myClient[0].sud)[2]:''}
+     {myClient.length>0?myClient[0].sud!==null?Object.entries(myClient[0].sud)[2]:'':''}
     </CheckBox>
      </View>
    </Card>
@@ -265,7 +269,65 @@ console.log(total)
     Calculate
 </Button>
 
-<Button         
+<Button 
+onPress={()=>{
+  setLoading(true)
+  const record={
+    fullName:name,
+    address,
+    phone,
+    sudLevel:total
+  }
+  console.log(record)
+  fetch(`https://tim-acs.herokuapp.com/admin/edit-client/?clientId=${myClient.length>0?myClient[0].clientId:''}`,{
+    method:'PUT',
+    headers:{
+      "Content-Type":'application/json'
+    },
+    body:JSON.stringify(record)
+  }).then(res=>{
+      res.json()
+      .then(data=>{
+        if (data.success) {
+            Alert.alert(
+                "Success",
+                "Successfuly Dispatched",
+                [
+                  {
+                    text: "Back",
+                    style: "cancel"
+                  },
+              
+                ]
+              );
+              setLoading(false)
+              props.navigation.goBack()
+              
+        }else{
+            Alert.alert(
+                "Error",
+                "An error occured",
+                [
+                  {
+                    text: "Back",
+                    style: "cancel"
+                  },
+              
+                ]
+              );
+              setLoading(false)
+
+        }
+          console.log(data)
+      }).catch(err=>{
+          setLoading(false)
+          console.log(err)
+      })
+  }).catch(err=>{
+    setLoading(false)
+    console.log(err)
+})
+}}        
  style={{
     width:'40%',
     marginRight:'auto',

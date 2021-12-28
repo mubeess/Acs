@@ -40,6 +40,7 @@ import Modal from 'react-native-modal'
         .then(data=>{
           if (data.success==true) {
           setLoading(false)
+          
           setAlerts(data.message)
           }else{
             Alert.alert(

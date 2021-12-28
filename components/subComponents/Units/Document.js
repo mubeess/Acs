@@ -16,6 +16,7 @@ import AppContext from '../../../Context/app/appContext'
     const [actionTime,setActionTime]=useState('')
     const [actionMessage,setActionMessage]=useState('')
     const displayValue = myData[selectedIndex.row];
+    const imageUrl=appProps.staff.image.split('public')
     const [isLoading,setLoading]=useState(false)
     useEffect(()=>{
    console.log("======",appProps.currentAlert)
@@ -39,7 +40,7 @@ import AppContext from '../../../Context/app/appContext'
             <Divider style={{width:'100%'}}/>
             <View style={styles.user}>
                 <View style={styles.subUser}>
-                <Avatar source={require('../../assets/avatar.png')}></Avatar>
+                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
                 <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             

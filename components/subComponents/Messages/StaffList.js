@@ -8,11 +8,10 @@ import AppContext from '../../../Context/app/appContext'
      const appProps=useContext(AppContext)
      const [allStaff,setAllStaff]=useState([])
      useEffect(()=>{
-         fetch('https://tim-acs.herokuapp.com/staff/get-all-staff')
+         fetch('https://tim-acs.herokuapp.com/admin/get-all-staff')
          .then(res=>{
              res.json()
              .then(data=>{
-                //  console.log(data)
                  setAllStaff(data.message)
              })
          })
@@ -42,17 +41,20 @@ import AppContext from '../../../Context/app/appContext'
                  {
                      allStaff.length>0&&(
                          allStaff.map((staf,ind)=>{
-                            if (staf.username==appProps.staff.username) {
+                           
+                            if (staf.username==appProps.staff.username||staf.image=='1.jpg') {
                                 return null 
                             }else{
+                                const imageUrl=staf.image.split('public')
                                 return(
                                     <TouchableOpacity key={ind} onPress={()=>{
                                         props.navigation.navigate('Message')
                                         appProps.setChatter(staf)
                                         }}>
+                                            {console.log(imageUrl[1])}
                                         <View style={styles.individual}>
                                             <View style={styles.avatar}>
-                                            <Avatar size='large' source={require('../../assets/avatar.png')}/>
+                                            <Avatar size='large' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}}`}}/>
                                             </View>
                                             <View style={styles.mainDet}>
                                                 <View style={styles.names}>

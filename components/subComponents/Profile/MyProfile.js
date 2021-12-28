@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text,Button, Spinner} from '@ui-kitten/components'
-import { View,StyleSheet,ScrollView,TouchableOpacity, Alert } from 'react-native'
+import { View,StyleSheet,ScrollView,TouchableOpacity, Alert,Image } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
 import Modal from 'react-native-modal'
 import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
@@ -11,7 +11,7 @@ function MyProfile() {
     const [phone,setPhone]=useState('')
     const [mail,setEmail]=useState('')
     const [isLoading,setLoading]=useState(false)
-    const imageUrl=appProps.staff.image=='1.jpg'?'../../assets/prof.jpeg':`https://tim-acs.herokuapp.com/${appProps.staff.image}`
+    const imageUrl=appProps.staff.image.split('public')
     const createFormData = (photo) => {
         const data = new FormData();
         console.log("++++",photo)
@@ -32,6 +32,7 @@ function MyProfile() {
     
     return (
         <ScrollView style={styles.container}>
+          {console.log(imageUrl[1])}
             <View style={styles.nav}>
              <Text category='h6' style={{
                  fontWeight:'bold',
@@ -40,11 +41,12 @@ function MyProfile() {
             </View>
             <Divider style={{width:'100%'}}/>
             <View style={styles.avatar}>
+           
             <Avatar style={{
                 height:100,
                 width:100,
                 marginTop:5
-            }}  size='giant' source={require('../../assets/prof.jpeg')}/>
+            }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
             <TouchableOpacity onPress={async ()=>{
 
 launchImageLibrary({

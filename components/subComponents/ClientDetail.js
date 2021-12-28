@@ -70,13 +70,13 @@ import AppContext from '../../Context/app/appContext'
                  
              }} title='Edit'/>
 
-{/* <MenuItem onPress={()=>{
+<MenuItem onPress={()=>{
                  dispatchNavigation('Document')
                  setVisible(false)
                  appProps.setCurrentAlert(detail)
                  
                  
-             }} title='Document'/> */}
+             }} title='Document'/>
 
         </OverflowMenu>
         
