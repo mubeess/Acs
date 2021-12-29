@@ -9,8 +9,7 @@ import AppContext from '../../Context/app/appContext'
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
-        <Avatar source={require('../assets/avatar3.png')}/>
-        <Text>01/01/01</Text>
+        <Text>{detail.time}</Text>
         </View>
    
         <View style={styles.indi2}>
@@ -154,11 +153,14 @@ const styles=StyleSheet.create({
           backgroundColor:'#ffffff'
       },
       indi:{
-          height:70,
-          backgroundColor:'#f9f9f9',
-          display:'flex',
-          flexDirection:'row',
-          marginBottom:10
+        height:70,
+        backgroundColor:'#f9f9f9',
+        display:'flex',
+        flexDirection:'row',
+        marginBottom:10,
+        width:'96%',
+        marginRight:'auto',
+        marginLeft:'auto'
       },
       indi1:{
           width:'30%',

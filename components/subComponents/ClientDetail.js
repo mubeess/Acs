@@ -8,7 +8,6 @@ import AppContext from '../../Context/app/appContext'
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
-        <Avatar source={require('../assets/avatar.png')}/>
         <Text>{detail.clientId.split('').slice(0,10).map(dt=>dt)}</Text>
         </View>
    
@@ -127,7 +126,11 @@ const styles=StyleSheet.create({
           backgroundColor:'#f9f9f9',
           display:'flex',
           flexDirection:'row',
-          marginBottom:10
+          marginBottom:10,
+          width:'96%',
+          marginRight:'auto',
+          marginLeft:'auto'
+          
       },
       indi1:{
           width:'30%',

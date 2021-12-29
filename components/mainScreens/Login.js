@@ -1,16 +1,18 @@
 import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
-import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking } from 'react-native'
+import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking,Dimensions } from 'react-native'
 import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
 import AppContext from '../../Context/app/appContext'
 import Modal from "react-native-modal";
 
+const deviceHeight=Dimensions.get('window').height
 
  function Login(props) {
    const [userName,setUserName]=useState('')
    const [password,setPassword]=useState('')
    const [isLoading,setLoading]=useState(false)
    const appProps=useContext(AppContext)
+   
    useEffect(()=>{
    SplashScreen.hide()
 
@@ -31,8 +33,17 @@ import Modal from "react-native-modal";
         }} style={styles.container}>
         
         <View style={styles.container}>
-            <StatusBar backgroundColor='#ffffff'/>
-            <Image source={require('../assets/logo.png')} style={styles.logo}/>
+            <StatusBar backgroundColor='#1e4d94'/>
+            <View style={styles.blueBg}></View>
+            <View style={styles.mainInp}>
+       <Text style={{
+         textAlign:'center',
+         color:'#1e4d94',
+         marginTop:60
+       }} appearance='hint'>
+     LOGIN ACS
+    </Text>
+            
             <Input
              onChangeText={(text)=>{
               setUserName(text)
@@ -115,7 +126,9 @@ import Modal from "react-native-modal";
       Login
     </Button>
     <View style={styles.hint}>
-    <Text appearance='hint'>
+    <Text style={{
+      marginLeft:'auto'
+    }} appearance='hint'>
       Having isuues with login?
     </Text>
     <TouchableWithoutFeedback onPress={()=>{
@@ -125,11 +138,18 @@ import Modal from "react-native-modal";
         textAlign:'center',
         marginLeft:10,
         fontWeight:'bold',
+        color:'#1e4d94',
+        marginRight:'auto'
         
     }} appearance='hint'>
       Help
     </Text>
     </TouchableWithoutFeedback>
+            </View>
+            
+    </View>
+    <View style={styles.mainImage}>
+      <Image source={require('../assets/logo.png')} style={styles.logo}/>
     </View>
     <Modal style={{
         display:'flex',
@@ -147,28 +167,88 @@ import Modal from "react-native-modal";
 }
 const styles=StyleSheet.create({
  container:{
-     backgroundColor:'#ffffff',
+     backgroundColor:'#f9f9f9',
      display:'flex',
      flex:1,
-     alignItems:'center'
+     alignItems:'center',
+     position:'relative'
  },
  logo:{
-     width:200,
-     height:200,
-     marginTop:20
+     width:100,
+     height:100,
+    
  },
  input:{
-     width:'90%',
-     marginTop:20
+     width:'80%',
+     marginTop:20,
+     marginLeft:'auto',
+     marginRight:'auto',
+     borderRadius:10
  },
  button:{
-     width:'90%',
-     marginTop:40
+     width:'80%',
+     marginTop:40,
+     marginLeft:'auto',
+     marginRight:'auto',
+     borderRadius:10,
+     backgroundColor:'#1e4d94'
  },
  hint:{
    display:'flex',
    flexDirection:'row',
    marginTop:20
+ },
+ blueBg:{
+   position:'absolute',
+   height:deviceHeight/2,
+   width:'100%',
+   backgroundColor:'#1e4d94',
+  borderBottomLeftRadius:deviceHeight/5,
+  borderBottomRightRadius:deviceHeight/5,
+  shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowOpacity: 0.34,
+  shadowRadius: 0.34,
+  
+  elevation: 10,
+ },
+ mainInp:{
+   position:'absolute',
+   height:deviceHeight/1.6,
+   backgroundColor:'#ffffff',
+   marginTop:deviceHeight/4,
+   width:'80%',
+   marginLeft:'auto',
+   marginRight:'auto',
+   zIndex:10,
+   shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowOpacity: 0.34,
+  shadowRadius: 0.34,
+  
+  elevation: 10,
+  borderRadius:10
+ },
+ mainImage:{
+   width:100,
+   height:100,
+   backgroundColor:'#ffffff',
+   position:'absolute',
+   shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowOpacity: 0.34,
+  shadowRadius: 6.24,
+  
+  elevation: 10,
+  marginTop:(deviceHeight/4)-50,
+  zIndex:20,
+  borderRadius:100
  }
 })
 export default Login;

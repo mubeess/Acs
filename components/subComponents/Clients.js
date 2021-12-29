@@ -1,17 +1,20 @@
 import { Divider,Icon,Text,Avatar,Popover,Layout, Spinner } from '@ui-kitten/components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
 import ClientDetail from './ClientDetail'
 import HighRisk from './HighRisk'
 import Pusher from 'pusher-js/react-native';
 import notifee from '@notifee/react-native';
 import Modal from 'react-native-modal'
+import AppContext from '../../Context/app/appContext'
 
  function Clients(props) {
      const [visible,setVisible]=useState(false)
      const [allAlerts,setAlerts]=useState([])
      const [loading,setLoading]=useState(true)
      const [filteredAl,setFiltered]=useState([])
+     const appProps=useContext(AppContext)
+     const imageUrl=appProps.staff.image.split('public')
 
      async function onDisplayNotification() {
       // Create a channel
@@ -77,6 +80,7 @@ import Modal from 'react-native-modal'
       });
       loadAlerts()
       filterAlert()
+      console.log(allAlerts)
      },[])
      const dispatchNavigation=(chanel)=>{
       // console.log(props.navigation)
@@ -89,10 +93,29 @@ import Modal from 'react-native-modal'
             flex:1,
             alignItems:'center'
         }}>
-            <StatusBar backgroundColor='#051A49'/>
-            <Image style={styles.logo} source={require('../assets/logo.png')}/>
+            <StatusBar backgroundColor='#ffffff'/>
+            {/* <Avatar style={{
+                height:100,
+                width:100,
+                marginTop:5
+            }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
+            <View style={styles.info}>
+            <Text status='basic'>Admin Dashboard</Text>
+            <View style={{
+              flexDirection:'column',
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginLeft:40
+            }}>
+            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
+            </View>
+           
+            </View>
+            
             <Divider style={styles.divide}/>
-<ScrollView style={styles.mainClient}>
+<View style={styles.mainClient}>
 <Text style={styles.text} status='basic'>Clients Table</Text>
             <Divider style={styles.divide}/>
     <View style={styles.controlContainer}>
@@ -100,7 +123,7 @@ import Modal from 'react-native-modal'
       <Text style={styles.text2} status='control'>Client Location</Text>
       <Text style={styles.text2} status='control'>Level Of Risk</Text>
     </View>
-   
+   <ScrollView style={styles.infoCont}>
    {
      allAlerts.length>0&&(
        allAlerts.map((indAl,ind)=>(
@@ -121,7 +144,7 @@ import Modal from 'react-native-modal'
      )
    }
   
-  
+  </ScrollView>
 
     <Text style={styles.text} status='basic'>Action Table</Text>
             <Divider style={styles.divide}/>
@@ -130,6 +153,7 @@ import Modal from 'react-native-modal'
       <Text style={styles.text2} status='control'>Client Code</Text>
       <Text style={styles.text2} status='control'>Client Location</Text>
     </View>
+    <ScrollView style={styles.infoCont}>
      {
        
         allAlerts.length>0&&(
@@ -173,7 +197,7 @@ import Modal from 'react-native-modal'
   }
     
 
-
+   </ScrollView>
     
 
 
@@ -199,7 +223,7 @@ import Modal from 'react-native-modal'
       }} coverScreen={true} isVisible={loading} animationIn='fadeIn' animationOut='fadeOutDown'>
         <Spinner status='basic'/>
       </Modal>
-</ScrollView>
+</View>
     
    
         </View>
@@ -207,8 +231,8 @@ import Modal from 'react-native-modal'
 }
 const styles=StyleSheet.create({
     logo:{
-        width:100,
-        height:100
+        width:50,
+        height:50
     },
     divide:{
         width:'100%'
@@ -221,12 +245,15 @@ const styles=StyleSheet.create({
     controlContainer: {
         borderRadius: 4,
         padding: 4,
-        backgroundColor: '#051A49',
+        backgroundColor: '#1e4d94',
         alignSelf:'flex-start',
         display:'flex',
         flexDirection:'row',
         justifyContent:'space-around',
-        width:'100%'
+        width:'93%',
+        marginLeft:'auto',
+        marginRight:'auto'
+
         
       },
       text2:{
@@ -236,7 +263,8 @@ const styles=StyleSheet.create({
       },
       mainClient:{
           display:'flex',
-          flex:1
+          flex:1,
+          marginTop:20
       },
       client1:{
           height:Dimensions.get('window').height/2,
@@ -289,6 +317,16 @@ const styles=StyleSheet.create({
         marginLeft:'auto',
         marginRight:'auto',
         marginTop:10
+      },
+      info:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center'
+      },
+      infoCont:{
+        height:Dimensions.get('window').height/2,
+        backgroundColor:'#ffffff',
       }
     
 })
