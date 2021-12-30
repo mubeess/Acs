@@ -9,11 +9,12 @@ import Modal from 'react-native-modal'
 import AppContext from '../../Context/app/appContext'
 
  function Clients(props) {
+  const appProps=useContext(AppContext)
      const [visible,setVisible]=useState(false)
      const [allAlerts,setAlerts]=useState([])
      const [loading,setLoading]=useState(true)
      const [filteredAl,setFiltered]=useState([])
-     const appProps=useContext(AppContext)
+     
      const imageUrl=appProps.staff.image.split('public')
 
      async function onDisplayNotification() {
@@ -74,13 +75,13 @@ import AppContext from '../../Context/app/appContext'
 
     }
      useEffect(()=>{
-      channel.bind('alert', function(data) {
-        onDisplayNotification()
-          setAlerts(data.allAlert) 
-      });
+      // channel.bind('alert', function(data) {
+      //   onDisplayNotification()
+      //     setAlerts(data.allAlert) 
+      // });
       loadAlerts()
       filterAlert()
-      console.log(allAlerts)
+      console.log(appProps)
      },[])
      const dispatchNavigation=(chanel)=>{
       // console.log(props.navigation)

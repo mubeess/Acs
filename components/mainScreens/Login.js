@@ -93,9 +93,8 @@ const deviceHeight=Dimensions.get('window').height
           res.json()
           .then(data=>{
             if(data.success==true){
+              appProps.setStaff(data.newUser)
               props.navigation.navigate('Dashboard')
-              appProps.setStaff(data.newUser) 
-              console.log(data.newUser)
               setLoading(false)  
             }else{
               Alert.alert(
