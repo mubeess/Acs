@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text,Button, Spinner} from '@ui-kitten/components'
-import { View,StyleSheet,ScrollView,TouchableOpacity, Alert,Image } from 'react-native'
+import { View,StyleSheet,ScrollView,TouchableOpacity, Alert,Image, Dimensions } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
 import Modal from 'react-native-modal'
 import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
@@ -32,7 +32,6 @@ function MyProfile() {
     
     return (
         <ScrollView style={styles.container}>
-          {console.log(imageUrl[1])}
             <View style={styles.nav}>
              <Text category='h6' style={{
                  fontWeight:'bold',
@@ -40,13 +39,20 @@ function MyProfile() {
              }}>Profile</Text>
             </View>
             <Divider style={{width:'100%'}}/>
+            <View style={{
+              backgroundColor:'#ffffff',
+              borderBottomLeftRadius:200,
+              borderBottomRightRadius:200,
+              height:200
+            }}>
             <View style={styles.avatar}>
            
             <Avatar style={{
-                height:100,
-                width:100,
-                marginTop:5
-            }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+                height:70,
+                width:70,
+                marginTop:3
+            }}  size='giant'  source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+           
             <TouchableOpacity onPress={async ()=>{
 
 launchImageLibrary({
@@ -148,38 +154,49 @@ launchImageLibrary({
             }} fill='blue' name='cloud-upload'/>
             </TouchableOpacity>
             </View>
+
             <View style={styles.text}>
-                <Text  appearance='hint'>Name</Text>
                 <Text style={{
-                    fontWeight:'bold'
+                    fontWeight:'bold',
+                    fontSize:20
                 }}>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
 
             </View>
 
             <View style={styles.text}>
-                <Text  appearance='hint'>Staff Id</Text>
                 <Text style={{
-                    fontWeight:'bold'
+                    fontWeight:'400'
                 }}>{appProps.staff.username}</Text>
 
             </View>
 
             <View style={styles.text}>
-                <Text  appearance='hint'>Phone</Text>
                 <Text style={{
-                    fontWeight:'bold'
+                    fontWeight:'200',
+                    fontSize:12
                 }}>{appProps.staff.phone}</Text>
 
             </View>
-            <Divider style={{width:'100%'}}/>
+            </View>
+          
+{/* ************************************************************************************ */}
+            <View style={{
+              backgroundColor:'#ffffff',
+              height:Dimensions.get('window').height-300,
+              borderTopLeftRadius:100
+
+              
+              
+            }}>
             <Input
+            accessoryLeft={<Icon name='person-outline'/>}
             onChangeText={(txt)=>{
                 setFName(txt)
             }}
             
             style={{
-                marginTop:5,
-                width:'90%',
+                marginTop:100,
+                width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto'
 
@@ -189,13 +206,14 @@ launchImageLibrary({
 
 
 <Input
+ accessoryLeft={<Icon name='person-outline'/>}
             onChangeText={(txt)=>{
                 setLName(txt)
             }}
             
             style={{
                 marginTop:5,
-                width:'90%',
+                width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto'
 
@@ -204,13 +222,14 @@ launchImageLibrary({
     />
 
 <Input
+ accessoryLeft={<Icon name='phone-outline'/>}
  onChangeText={(txt)=>{
     setPhone(txt)
 }}
 
             style={{
                 marginTop:5,
-                width:'90%',
+                width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto'
 
@@ -221,13 +240,14 @@ launchImageLibrary({
     
 
 <Input
+ accessoryLeft={<Icon name='email-outline'/>}
  onChangeText={(txt)=>{
     setEmail(txt)
 }}
 
             style={{
                 marginTop:5,
-                width:'90%',
+                width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto'
 
@@ -300,13 +320,24 @@ launchImageLibrary({
     })
   }}  style={{
                 marginTop:20,
-                width:'90%',
+                width:'80%',
                 marginLeft:'auto',
-                marginRight:'auto'
+                marginRight:'auto',
+                backgroundColor:'#1e4d94'
 
             }} >
         Update Profile
       </Button>
+
+
+
+
+
+
+            </View>
+          
+         
+          
       <Modal style={{
         display:'flex',
         justifyContent:'center',
@@ -319,28 +350,29 @@ launchImageLibrary({
 }
 const styles=StyleSheet.create({
     container:{
-        backgroundColor:'#ffffff',
+        backgroundColor:'#1e4d94',
         display:'flex',
         flex:1
     },
     nav:{
-        height:50,
+        height:30,
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        backgroundColor:'#ffffff'
     }, 
     avatar:{
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
-        height:120
+        height:80
     },
     text:{
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        marginTop:10
+        marginTop:3
     }
 })
 export default MyProfile

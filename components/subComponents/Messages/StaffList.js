@@ -27,13 +27,13 @@ import AppContext from '../../../Context/app/appContext'
             <Divider style={{width:'100%'}}/>
             <Input
             style={{
-                width:'90%',
+                width:'80%',
                 height:20,
                 marginLeft:'auto',
                 marginRight:'auto',
                 marginTop:10
             }} 
-             accessoryRight={<Icon style={{}} name='search-outline'/>}
+             accessoryRight={<Icon  name='search-outline'/>}
              placeholder='Search' 
              size='small'/>
              
@@ -51,7 +51,7 @@ import AppContext from '../../../Context/app/appContext'
                                         props.navigation.navigate('Message')
                                         appProps.setChatter(staf)
                                         }}>
-                                            {console.log(imageUrl[1])}
+                                    
                                         <View style={styles.individual}>
                                             <View style={styles.avatar}>
                                             <Avatar size='large' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}}`}}/>
@@ -131,7 +131,7 @@ main:{
 },
 individual:{
     height:70,
-    backgroundColor:'#f9f9f9',
+    backgroundColor:'#ffffff',
     width:'90%',
     marginRight:'auto',
     marginLeft:'auto',
@@ -145,7 +145,7 @@ individual:{
 avatar:{
     height:50,
     width:50,
-    backgroundColor:'#f9f9f9',
+    backgroundColor:'#ffffff',
     marginLeft:'auto',
     marginRight:'auto',
     marginTop:'auto',
@@ -154,7 +154,7 @@ avatar:{
 mainDet:{
     width:'80%',
     height:'90%',
-    backgroundColor:'#f9f9f9',
+    backgroundColor:'#ffffff',
     marginLeft:'auto',
     marginRight:'auto',
     marginTop:'auto',

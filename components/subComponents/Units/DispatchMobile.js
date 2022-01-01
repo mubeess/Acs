@@ -48,27 +48,36 @@ import Modal from "react-native-modal";
      },[])
     return (
         <View style={styles.container}>
-            <View style={styles.nav}>
-            <TouchableOpacity onPress={()=>{
-                props.navigation.navigate('Main')
-            }}  style={styles.arr}>
-            <Icon fill='black' name='arrow-back-outline' style={{
-                   width:30,
-                   height:20
-               }}/>
-            </TouchableOpacity>
-            <Image style={styles.logo} source={require('../../assets/logo.png')}/>
+           <View style={styles.info}>
+            <Text status='basic'>Admin Dashboard</Text>
+            <View style={{
+              flexDirection:'column',
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginLeft:40
+            }}>
+            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
+           
+            </View>
+          
             <Divider style={{width:'100%'}}/>
-            <View style={styles.user}>
+            {/* <View style={styles.user}>
                 <View style={styles.subUser}>
                 <Avatar source={require('../../assets/avatar.png')}></Avatar>
                 <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
                 </View>
             
-            </View>
-            <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Dispatch Mobile Unit</Text>
+            </View> */}
+         <View style={{
+
+         }}>
+         <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
+         <Text style={{marginLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white'}}>Dispatch Mobile Unit</Text>
+         </View>
+           
             <Divider style={{width:'100%'}}/>
             <ScrollView style={styles.history}>
        {
@@ -242,9 +251,9 @@ const styles=StyleSheet.create({
         marginLeft:20
     },
     logo:{
-       width:100,
-       height:100,
-       marginLeft:'25%'
+       width:50,
+       height:50,
+       
     },
     user:{
         display:'flex',
@@ -288,6 +297,13 @@ const styles=StyleSheet.create({
       marginLeft:'auto',
       marginRight:'auto',
       marginTop:10
-    }
+    },
+    info:{
+      display:'flex',
+      flexDirection:'row',
+      justifyContent:'center',
+      alignItems:'center',
+      marginTop:10
+    },
 })
 export default DispatchMobile

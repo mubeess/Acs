@@ -323,7 +323,8 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        marginTop:10
       },
       infoCont:{
         height:Dimensions.get('window').height/2,
