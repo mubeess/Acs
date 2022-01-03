@@ -67,32 +67,44 @@ import Modal from "react-native-modal";
 
     return (
         <View style={styles.container}>
-            <View style={styles.nav}>
             <TouchableOpacity onPress={()=>{
-                props.navigation.navigate('Main')
-            }}  style={styles.arr}>
-            <Icon fill='black' name='arrow-back-outline' style={{
-                   width:30,
-                   height:20
-               }}/>
-            </TouchableOpacity>
-            <Image style={styles.logo} source={require('../../assets/logo.png')}/>
+      props.navigation.goBack()
+    }}>
+      <Icon style={{
+        width:25,
+        height:25,
+        marginLeft:20
+      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+    </TouchableOpacity>
+             <View style={styles.info}>
+            <Text status='basic'>Admin Dashboard</Text>
+            <View style={{
+              flexDirection:'column',
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginLeft:40
+            }}>
+            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
-            <Divider style={{width:'100%'}}/>
-            <View style={styles.user}>
-                <View style={styles.subUser}>
-                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
-                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
-                </View>
-            
+           
             </View>
+         
             <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Call Client</Text>
-            <Divider style={{width:'100%'}}/>
+            <View style={{
+                marginTop:10
+
+}}>
+<Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
+<Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Contact Client</Text>
+</View>
+            <Divider style={{width:'100%',marginTop:10}}/>
             <ScrollView style={styles.history}>
             <View style={{
                 display:'flex',
-                flexDirection:'row'
+                flexDirection:'row',
+                marginTop:10
             }}>
             <Text style={{marginLeft:20}}>Client Demographics</Text>
             <Button onPress={()=>{
@@ -190,7 +202,7 @@ import Modal from "react-native-modal";
             height:30,
             width:30
         }} fill='gray' name='person-outline'/>
-        <Text>{appProps.staff.username}</Text>
+        <Text style={{fontSize:12}}>{appProps.staff.username}</Text>
         </View>
 
 
@@ -344,9 +356,9 @@ const styles=StyleSheet.create({
         marginLeft:20
     },
     logo:{
-       width:100,
-       height:100,
-       marginLeft:'25%'
+       width:50,
+       height:50,
+       
     },
     user:{
         display:'flex',
@@ -364,7 +376,7 @@ const styles=StyleSheet.create({
     },
     history:{
         maxHeight:Dimensions.get('screen').height/3,
-        backgroundColor:'#f9f9f9'
+        backgroundColor:'#ffffff'
     },
     card:{
         width:'90%',
@@ -388,7 +400,7 @@ const styles=StyleSheet.create({
     },
     inpDet:{
         width:'50%',
-        backgroundColor:'#f9f9f9'
+        backgroundColor:'#ffffff'
     },
     inp:{
         marginLeft:20
@@ -420,7 +432,14 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'row'
 
-    }
+    },
+    info:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:10
+      },
 
 })
 export default ContactClient

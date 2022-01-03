@@ -1,7 +1,7 @@
-import { Icon } from '@ui-kitten/components';
+import { Icon,Avatar,Text } from '@ui-kitten/components';
 import React, { useState, useCallback, useEffect, useContext } from 'react'
 import { Chat, defaultTheme, MessageType } from '@flyerhq/react-native-chat-ui'
-import {TouchableOpacity} from 'react-native'
+import {TouchableOpacity, View,StyleSheet} from 'react-native'
 import Pusher from 'pusher-js/react-native';
 import AppContext from '../../../Context/app/appContext'
 
@@ -14,7 +14,7 @@ function Message(props) {
     cluster: 'mt1'
   });
   const channel = pusher.subscribe('notifications');
-
+  const imageUrl=appProps.chatter.image.split('public')
   useEffect(() => {
     console.log('++++++++',appProps.chatter)
     fetch(`https://tim-acs.herokuapp.com/staff/get-prev-chart/?senderId=${appProps.staff.username}&receiverId=${appProps.chatter.username}`)
@@ -99,6 +99,35 @@ function Message(props) {
   }
  
   return (
+    <View style={{
+      display:'flex',
+      flex:1,
+      backgroundColor:'white'
+    }}>
+    <View style={styles.head}>
+    <TouchableOpacity onPress={()=>{
+      props.navigation.goBack()
+    }}>
+      <Icon style={{
+        width:25,
+        height:25,
+        marginLeft:20
+      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+    </TouchableOpacity>
+
+    <Avatar style={{
+                height:40,
+                width:40,
+                marginLeft:50
+            }}  size='giant'   source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+    <View style={{
+      marginLeft:10
+    }}>
+      <Text>{appProps.chatter.firstName} {appProps.chatter.lastName}</Text>
+      <Text>{appProps.chatter.username}</Text>
+
+    </View>
+    </View>
     <Chat
     showUserAvatars
     showUserNames
@@ -110,8 +139,19 @@ function Message(props) {
         onSendPress={handleSendPress}
         user={{id:appProps.staff.username}}
       />
+    </View>
   )
 }
+const styles=StyleSheet.create({
+head:{
+  height:50,
+  width:'100%',
+  backgroundColor:'white',
+  flexDirection:'row',
+  alignItems:'center',
+  marginTop:10
+}
+})
 export default Message
 
 // onSend(messages)

@@ -48,6 +48,17 @@ import Modal from "react-native-modal";
      },[])
     return (
         <View style={styles.container}>
+                     <TouchableOpacity style={{
+                       marginTop:10
+                     }} onPress={()=>{
+      props.navigation.goBack()
+    }}>
+      <Icon style={{
+        width:25,
+        height:25,
+        marginLeft:20
+      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+    </TouchableOpacity>
            <View style={styles.info}>
             <Text status='basic'>Admin Dashboard</Text>
             <View style={{
@@ -75,7 +86,7 @@ import Modal from "react-native-modal";
 
          }}>
          <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-         <Text style={{marginLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white'}}>Dispatch Mobile Unit</Text>
+         <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text>
          </View>
            
             <Divider style={{width:'100%'}}/>
@@ -271,7 +282,8 @@ const styles=StyleSheet.create({
     },
     history:{
         maxHeight:Dimensions.get('screen').height/3,
-        backgroundColor:'#f9f9f9'
+        backgroundColor:'#f9f9f9',
+        marginTop:10
     },
     card:{
         width:'90%',
@@ -303,7 +315,7 @@ const styles=StyleSheet.create({
       flexDirection:'row',
       justifyContent:'center',
       alignItems:'center',
-      marginTop:10
+      
     },
 })
 export default DispatchMobile
