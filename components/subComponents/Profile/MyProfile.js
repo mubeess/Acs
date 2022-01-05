@@ -10,6 +10,7 @@ function MyProfile() {
     const [lastName,setLName]=useState('')
     const [phone,setPhone]=useState('')
     const [mail,setEmail]=useState('')
+    const [selectedPic,setSelectedPic]=useState(null)
     const [isLoading,setLoading]=useState(false)
     const imageUrl=appProps.staff.image
     const createFormData = (photo) => {
@@ -67,10 +68,11 @@ launchImageLibrary({
       console.log('ImagePicker Error:', response.error);
     }else {
         setLoading(true)
+        setSelectedPic(response.assets[0])
         const createImg=new FormData()
-        createImg.append('photo', 'profile_pic');
-        createImg.append('file',{type:'image/jpg',name:'profile_pic.jpg',uri:response.assets[0].uri})
-        const source = { uri: response.assets[0].uri };
+        createImg.append('profile_pic',selectedPic);
+        // createImg.append('file',{type:'image/jpg',name:'profile_pic.jpg',uri:response.assets[0].uri})
+        // const source = { uri: response.assets[0].uri };
         // const fileToUpload = source.uri;
         // const data = new FormData();
         // data.append('photo', 'profile_pic');
@@ -81,7 +83,7 @@ launchImageLibrary({
         headers:{
           "Content-Type":'application/json'
         },
-        body:new FormData(response.assets[0].uri)
+        body:createImg
       }).then(res=>{
           res.json()
           .then(data=>{
@@ -124,7 +126,7 @@ launchImageLibrary({
         console.log(err)
     })
 
-      console.log('Response = ', source);
+      
   
       // You can also display the image using data:
       // const source = { uri: 'data:image/jpeg;base64,' + response.data };

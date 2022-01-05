@@ -173,8 +173,8 @@ const styles=StyleSheet.create({
      position:'relative'
  },
  logo:{
-     width:100,
-     height:100,
+     width:70,
+     height:70,
     
  },
  input:{
@@ -249,7 +249,9 @@ const styles=StyleSheet.create({
   zIndex:20,
   borderRadius:100,
   borderWidth:1,
-  borderColor:'#f9f9f9'
+  borderColor:'#f9f9f9',
+  justifyContent:'center',
+  alignItems:'center'
  }
 })
 export default Login;
