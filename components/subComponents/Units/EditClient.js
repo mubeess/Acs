@@ -23,7 +23,7 @@ import AppContext from '../../../Context/app/appContext'
     const [sud,setSud]=useState('')
     const [isLoading,setLoading]=useState(false)  
    
-    const imageUrl=appProps.staff.image.split('public')
+    const imageUrl=appProps.staff.image
     useEffect(()=>{
       fetch(`https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`)
       .then(res=>{
@@ -39,7 +39,33 @@ import AppContext from '../../../Context/app/appContext'
     },[])
     return (
         <View style={styles.container}>
-            <View style={styles.nav}>
+                        <TouchableOpacity style={{
+                       marginTop:10
+                     }} onPress={()=>{
+      props.navigation.goBack()
+    }}>
+      <Icon style={{
+        width:25,
+        height:25,
+        marginLeft:20
+      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+    </TouchableOpacity>
+           <View style={styles.info}>
+            <Text status='basic'>Admin Dashboard</Text>
+            <View style={{
+              flexDirection:'column',
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginLeft:40
+            }}>
+            <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
+            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
+            </View>
+           
+            </View>
+
+            {/* <View style={styles.nav}>
             <TouchableOpacity onPress={()=>{
                 props.navigation.goBack()
             }}  style={styles.arr}>
@@ -49,18 +75,16 @@ import AppContext from '../../../Context/app/appContext'
                }}/>
             </TouchableOpacity>
             <Image style={styles.logo} source={require('../../assets/logo.png')}/>
-            </View>
+            </View> */}
             <Divider style={{width:'100%'}}/>
-            <View style={styles.user}>
-                <View style={styles.subUser}>
-                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
-                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
-                </View>
-            
-            </View>
-            <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Edit Client</Text>
-            <Divider style={{width:'100%'}}/>
+            <View style={{
+
+}}>
+<Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
+<Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Edit Client</Text>
+</View>
+  
+   <Divider style={{width:'100%',marginTop:10}}/>
             <ScrollView style={styles.history}>
             {/* <Select
          style={{
@@ -369,9 +393,9 @@ const styles=StyleSheet.create({
         marginLeft:20
     },
     logo:{
-       width:100,
-       height:100,
-       marginLeft:'25%'
+       width:50,
+       height:50,
+       borderRadius:50
     },
     user:{
         display:'flex',
@@ -417,6 +441,13 @@ const styles=StyleSheet.create({
         justifyContent:'space-around',
         marginTop:20,
         marginBottom:20
-    }
+    },
+    info:{
+      display:'flex',
+      flexDirection:'row',
+      justifyContent:'center',
+      alignItems:'center',
+      
+    },
 })
 export default EditClient

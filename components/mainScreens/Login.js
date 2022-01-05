@@ -247,7 +247,9 @@ const styles=StyleSheet.create({
   elevation: 10,
   marginTop:(deviceHeight/4)-50,
   zIndex:20,
-  borderRadius:100
+  borderRadius:100,
+  borderWidth:1,
+  borderColor:'#f9f9f9'
  }
 })
 export default Login;

@@ -15,7 +15,7 @@ import AppContext from '../../Context/app/appContext'
      const [loading,setLoading]=useState(true)
      const [filteredAl,setFiltered]=useState([])
      
-     const imageUrl=appProps.staff.image.split('public')
+     const imageUrl=appProps.staff.image
 
      async function onDisplayNotification() {
       // Create a channel
@@ -26,7 +26,7 @@ import AppContext from '../../Context/app/appContext'
       // Display a notification
       await notifee.displayNotification({
         title: 'Alert',
-        body: `New Alert Recived`,
+        body: `New Alert Received`,
         android: {
           channelId
         },
@@ -109,7 +109,7 @@ import AppContext from '../../Context/app/appContext'
               alignItems:'center',
               marginLeft:40
             }}>
-            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
@@ -233,7 +233,8 @@ import AppContext from '../../Context/app/appContext'
 const styles=StyleSheet.create({
     logo:{
         width:50,
-        height:50
+        height:50,
+        borderRadius:50
     },
     divide:{
         width:'100%'

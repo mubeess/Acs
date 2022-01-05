@@ -16,7 +16,7 @@ import Modal from "react-native-modal";
     const [text,setText]=useState('')
     const [listData, setListDate] = useState([]);
     const [myClient,setMyclient]=useState([])
-    const imageUrl=appProps.staff.image.split('public')
+    const imageUrl=appProps.staff.image
 
 
      useEffect(()=>{
@@ -85,7 +85,7 @@ import Modal from "react-native-modal";
               alignItems:'center',
               marginLeft:40
             }}>
-            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
@@ -358,6 +358,7 @@ const styles=StyleSheet.create({
     logo:{
        width:50,
        height:50,
+       borderRadius:50
        
     },
     user:{

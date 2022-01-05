@@ -11,7 +11,7 @@ import Modal from "react-native-modal";
      const appProps=useContext(AppContext)
      const [myAlert,setAlerts]=useState([])
      const [dispatchTxt,setDispatchText]=useState('')
-     const imageUrl=appProps.staff.image.split('public')
+     const imageUrl=appProps.staff.image
      const loadAlerts=()=>{
       fetch(`https://tim-acs.herokuapp.com/staff/get-staff-actions-base-on-client/?username=${appProps.staff.username}&clientId=${appProps.currentAlert.clientId}`)
       .then(res=>{
@@ -68,20 +68,14 @@ import Modal from "react-native-modal";
               alignItems:'center',
               marginLeft:40
             }}>
-            <Image style={styles.logo} source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
             </View>
           
             <Divider style={{width:'100%'}}/>
-            {/* <View style={styles.user}>
-                <View style={styles.subUser}>
-                <Avatar source={require('../../assets/avatar.png')}></Avatar>
-                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
-                </View>
             
-            </View> */}
          <View style={{
 
          }}>
@@ -89,7 +83,7 @@ import Modal from "react-native-modal";
          <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text>
          </View>
            
-            <Divider style={{width:'100%'}}/>
+            <Divider style={{width:'100%',marginTop:10}}/>
             <ScrollView style={styles.history}>
        {
          myAlert.length==0&&(
@@ -148,8 +142,8 @@ import Modal from "react-native-modal";
          
             </ScrollView>
             <Divider style={{width:'100%'}}/>
-            <View style={{alignItems:'center'}}>
-            <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
+            <View style={{alignItems:'center',marginTop:10}}>
+            <Avatar source={{uri:`${imageUrl}`}}></Avatar>
             <Text>{appProps.staff.username}</Text> 
             </View>
             <View style={{
@@ -264,6 +258,7 @@ const styles=StyleSheet.create({
     logo:{
        width:50,
        height:50,
+       borderRadius:50
        
     },
     user:{

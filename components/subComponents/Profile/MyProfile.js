@@ -11,7 +11,7 @@ function MyProfile() {
     const [phone,setPhone]=useState('')
     const [mail,setEmail]=useState('')
     const [isLoading,setLoading]=useState(false)
-    const imageUrl=appProps.staff.image.split('public')
+    const imageUrl=appProps.staff.image
     const createFormData = (photo) => {
         const data = new FormData();
         console.log("++++",photo)
@@ -51,7 +51,7 @@ function MyProfile() {
                 height:70,
                 width:70,
                 marginTop:3
-            }}  size='giant'  source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            }}  size='giant'  source={{uri: `${imageUrl}`}}/>
            
             <TouchableOpacity onPress={async ()=>{
 

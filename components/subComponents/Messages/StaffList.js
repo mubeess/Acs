@@ -45,16 +45,19 @@ import AppContext from '../../../Context/app/appContext'
                             if (staf.username==appProps.staff.username||staf.image=='1.jpg') {
                                 return null 
                             }else{
-                                const imageUrl=staf.image.split('public')
+                                const imageUrl=staf.image
                                 return(
                                     <TouchableOpacity key={ind} onPress={()=>{
                                         props.navigation.navigate('Message')
                                         appProps.setChatter(staf)
                                         }}>
-                                    
+                    
                                         <View style={styles.individual}>
                                             <View style={styles.avatar}>
-                                            <Avatar size='large' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}}`}}/>
+                                            <Avatar style={{
+                                                height:40,
+                                                width:40
+                                            }} size='large' source={{uri: `${imageUrl}}`}}/>
                                             </View>
                                             <View style={styles.mainDet}>
                                                 <View style={styles.names}>

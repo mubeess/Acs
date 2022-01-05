@@ -14,7 +14,7 @@ function Message(props) {
     cluster: 'mt1'
   });
   const channel = pusher.subscribe('notifications');
-  const imageUrl=appProps.chatter.image.split('public')
+  const imageUrl=appProps.chatter.image
   useEffect(() => {
     console.log('++++++++',appProps.chatter)
     fetch(`https://tim-acs.herokuapp.com/staff/get-prev-chart/?senderId=${appProps.staff.username}&receiverId=${appProps.chatter.username}`)
@@ -119,7 +119,7 @@ function Message(props) {
                 height:40,
                 width:40,
                 marginLeft:50
-            }}  size='giant'   source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/>
+            }}  size='giant'   source={{uri: `${imageUrl}`}}/>
     <View style={{
       marginLeft:10
     }}>
