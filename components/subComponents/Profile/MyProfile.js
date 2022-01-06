@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text,Button, Spinner} from '@ui-kitten/components'
-import { View,StyleSheet,ScrollView,TouchableOpacity, Alert,Image, Dimensions } from 'react-native'
+import { View,StyleSheet,ScrollView,TouchableOpacity, Alert,Image, Dimensions, Platform } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
+import axios from 'axios'
 import Modal from 'react-native-modal'
 import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 function MyProfile() {
@@ -60,7 +61,8 @@ launchImageLibrary({
     mediaType:'photo'
 
 },(response) => {
-    console.log('Response = ', response);
+    console.log('Response = ', response.assets);
+    // setSelectedPic(response.assets[0])
   
     if (response.didCancel) {
       console.log('User cancelled image picker');
@@ -68,82 +70,58 @@ launchImageLibrary({
       console.log('ImagePicker Error:', response.error);
     }else {
         setLoading(true)
-        setSelectedPic(response.assets[0])
+        
         const createImg=new FormData()
-        createImg.append('profile_pic',selectedPic);
-        // createImg.append('file',{type:'image/jpg',name:'profile_pic.jpg',uri:response.assets[0].uri})
-        // const source = { uri: response.assets[0].uri };
-        // const fileToUpload = source.uri;
-        // const data = new FormData();
-        // data.append('photo', 'profile_pic');
-        // data.append('file_attachment', fileToUpload);
-      
-      fetch(`https://tim-acs.herokuapp.com/staff/save-staff-profile-pic?username=${appProps.staff.username}`,{
-        method:'PUT',
-        headers:{
-          "Content-Type":'application/json'
-        },
-        body:createImg
-      }).then(res=>{
-          res.json()
-          .then(data=>{
-            if (data.success) {
-                Alert.alert(
-                    "Success",
-                    "Updated",
-                    [
-                      {
-                        text: "Back",
-                        style: "cancel"
-                      },
-                  
-                    ]
-                  );
-                  setLoading(false)
-                  
-            }else{
-                Alert.alert(
-                    "Error",
-                    "An error occured",
-                    [
-                      {
-                        text: "Back",
-                        style: "cancel"
-                      },
-                  
-                    ]
-                  );
-                  setLoading(false)
 
-            }
-              console.log(data)
-          }).catch(err=>{
-              setLoading(false)
-              console.log(err)
-          })
-      }).catch(err=>{
-        setLoading(false)
-        console.log(err)
-    })
+        
+        createImg.append('profile_pic',{
+          name: 'profile',
+          type: `${response.assets[0].type}`,
+          uri: Platform.OS === 'ios' ? response.assets[0].uri.replace('file://', '') : response.assets[0].uri,
+        });
 
-      
-  
-      // You can also display the image using data:
-      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-   
+        axios({
+          method:'PUT',
+          url:`https://tim-acs.herokuapp.com/staff/save-staff-profile-pic?username=${appProps.staff.username}`,
+          data:createImg
+        }).then(data=>{
+          setLoading(false)
+          if (data.data.success==true) {
+            appProps.setStaff(data.data.message)
+            Alert.alert(
+                              "Profile Pic Updated",
+                              "Updated",
+                              [
+                                {
+                                  text: "Back",
+                                  style: "cancel"
+                                },
+                            
+                              ]
+                            );
+            
+          }else{
+
+            Alert.alert(
+                              "Error",
+                              "An error occured",
+                              [
+                                {
+                                  text: "Back",
+                                  style: "cancel"
+                                },
+                            
+                              ]
+                            );
+
+          }
+          
+        })
+
+        
     }
   });
-            //  const result = await launchImageLibrary({
-            //         mediaType:'photo',
-            //         selectionLimit:1
-            //     });
-                // launchImageLibrary({
-                //     mediaType:'photo',
-                //     selectionLimit:1
-                // }, (res)=>{
-                // console.log(res)
-                // })
+            
 
             }} style={{
                 marginTop:'auto',

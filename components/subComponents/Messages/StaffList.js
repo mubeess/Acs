@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {Avatar, Divider, Icon, Input, Text} from '@ui-kitten/components'
-import { View,StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
+import { View,StyleSheet,ScrollView,TouchableOpacity,Image } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
 
 
@@ -54,10 +54,12 @@ import AppContext from '../../../Context/app/appContext'
                     
                                         <View style={styles.individual}>
                                             <View style={styles.avatar}>
-                                            <Avatar style={{
-                                                height:40,
-                                                width:40
-                                            }} size='large' source={{uri: `${imageUrl}}`}}/>
+                                                <Image style={{
+                                                    height:40,
+                                                    width:40,
+                                                    borderRadius:40
+                                                }} source={{uri:`${imageUrl}`}}></Image>
+                                           
                                             </View>
                                             <View style={styles.mainDet}>
                                                 <View style={styles.names}>
