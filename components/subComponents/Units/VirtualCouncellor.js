@@ -62,7 +62,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
              <View style={styles.info}>
            <Text style={{
                  color:'#3a3b3c',
-                 fontSize:14,
+                 fontSize:15,
                  fontWeight:'100'
              }}>Contact Virtual Councellor</Text>
             <View style={{
@@ -123,7 +123,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 <View style={{
   flex:1,
   backgroundColor:'f9f9f9',
-  height:250,
+  height:150,
   padding:10
   }}>
 
@@ -312,7 +312,7 @@ const styles=StyleSheet.create({
     },
     card:{
       width:Dimensions.get('window').width-50,
-      height:200,
+      height:110,
       backgroundColor:'#1e4d94',
       borderRadius:10,
       display:'flex',

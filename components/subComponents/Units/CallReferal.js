@@ -49,7 +49,7 @@ import Modal from "react-native-modal";
              <View style={styles.info}>
              <Text style={{
                  color:'#3a3b3c',
-                 fontSize:14,
+                 fontSize:15,
                  fontWeight:'100'
              }}>Contact Referal</Text>
             <View style={{

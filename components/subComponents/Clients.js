@@ -103,7 +103,7 @@ import AppContext from '../../Context/app/appContext'
             <View style={styles.info}>
             <Text style={{
                  color:'#3a3b3c',
-                 fontSize:14,
+                 fontSize:15,
                  fontWeight:'100'
              }} status='basic'>Dashboard</Text>
             <View style={{
