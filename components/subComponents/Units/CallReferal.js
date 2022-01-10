@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Divider, Icon,Input,Spinner,Text } from '@ui-kitten/components'
+import { Avatar, Button, Card, Divider, Icon,Input,MenuItem,OverflowMenu,Spinner,Text } from '@ui-kitten/components'
 import React,{useState,useContext,useEffect} from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert, Linking  } from 'react-native'
 
@@ -17,6 +17,8 @@ import Modal from "react-native-modal";
     const [listData, setListDate] = useState([]);
     const [myClient,setMyclient]=useState([])
     const imageUrl=appProps.staff.image
+    const [numbersVisible,setNumberVis]=useState(false)
+     const [numberToCall,setNumToCall]=useState('')
 
      useEffect(()=>{
         fetch(`https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`)
@@ -44,7 +46,7 @@ import Modal from "react-native-modal";
         width:25,
         height:25,
         marginLeft:20
-      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+      }} name='arrow-back-outline' fill='#3465ff'></Icon>
     </TouchableOpacity>
              <View style={styles.info}>
              <Text style={{
@@ -72,18 +74,18 @@ import Modal from "react-native-modal";
             <Divider style={{width:'100%'}}/>
             <View style={{
          height:30,
-         backgroundColor:'#1e4d94',
+         backgroundColor:'#3465ff',
          width:'100%'
          }}>
          {/* <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-         <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
+         <Text style={{paddingLeft:20,backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
          </View>
             {/* <View style={{
                 marginTop:10
 
 }}>
 <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-<Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Call Referal Service</Text>
+<Text style={{paddingLeft:20,backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%'}}>Call Referal Service</Text>
 </View>
             <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
@@ -190,20 +192,44 @@ import Modal from "react-native-modal";
            </View>
          <View style={styles.call}>
         <View style={styles.icon}>
-        <Icon style={{
+        <Avatar style={{
             height:30,
             width:30
-        }} fill='gray' name='person-outline'/>
+        }} source={{uri:`${imageUrl}`}}></Avatar>
         <Text style={{fontSize:12}}>{appProps.staff.username}</Text>
         </View>
 
 
         <View style={styles.icon}>
-        <Icon style={{
-            height:30,
-            width:30
-        }} fill='gray' name='hash-outline'/>
-        <Text>911</Text>
+
+        <OverflowMenu
+          anchor={()=>(
+            <TouchableOpacity onPress={()=>{
+                setNumberVis(true)
+            }}>
+            <Icon fill='black' name='hash-outline' style={{
+                width:30,
+                height:20
+            }}/>
+        </TouchableOpacity>
+          )}
+          visible={numbersVisible}
+          placement='top end'
+          onBackdropPress={() => setNumberVis(false)}>
+          <MenuItem onPress={()=>{  
+                  setNumToCall('911')
+                  setNumberVis(false)
+             }} title='911'/>
+         <MenuItem onPress={()=>{  
+                 setNumToCall('2112')
+                 setNumberVis(false)
+             }} title='2112'/>
+       
+
+       
+        </OverflowMenu>
+
+        <Text>{numberToCall}</Text>
         </View>
 
 
@@ -212,7 +238,7 @@ import Modal from "react-native-modal";
         {
             callDuration==0?(
                 <TouchableOpacity onPress={()=>{
-                    RNImmediatePhoneCall.immediatePhoneCall('08167099181')
+                    RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`)
                     setTimeout(()=>{
                         setCallDuration(1)
                         setText('')

@@ -58,7 +58,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
         width:25,
         height:25,
         marginLeft:20
-      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+      }} name='arrow-back-outline' fill='#3465ff'></Icon>
     </TouchableOpacity>
            <View style={styles.info}>
          <Text style={{
@@ -88,11 +88,11 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
             
          <View style={{
          height:30,
-         backgroundColor:'#1e4d94',
+         backgroundColor:'#3465ff',
          width:'100%'
          }}>
          {/* <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-         <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
+         <Text style={{paddingLeft:20,backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
          </View>
            
             {/* <Divider style={{width:'100%',marginTop:10}}/> */}
@@ -306,7 +306,7 @@ const styles=StyleSheet.create({
     card:{
         width:Dimensions.get('window').width-50,
         height:110,
-        backgroundColor:'#1e4d94',
+        backgroundColor:'#3465ff',
         borderRadius:10,
         display:'flex',
         justifyContent:'center',

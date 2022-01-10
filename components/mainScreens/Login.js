@@ -30,19 +30,19 @@ const deviceHeight=Dimensions.get('window').height
     return (
       <SafeAreaView style={{
         flex:1,
-        backgroundColor:'#1e4d94'
+        backgroundColor:'#3465ff'
       }}>
         <TouchableWithoutFeedback onPress={()=>{
             Keyboard.dismiss()
         }} style={styles.container}>
         
         <View style={styles.container}>
-            <StatusBar backgroundColor='#1e4d94'/>
+            <StatusBar backgroundColor='#3465ff'/>
             <View style={styles.blueBg}></View>
             <View style={styles.mainInp}>
        <Text style={{
          textAlign:'center',
-         color:'#1e4d94',
+         color:'#3465ff',
          marginTop:60
        }} appearance='hint'>
      LOGIN ACS
@@ -141,7 +141,7 @@ const deviceHeight=Dimensions.get('window').height
         textAlign:'center',
         marginLeft:10,
         fontWeight:'bold',
-        color:'#1e4d94',
+        color:'#3465ff',
         marginRight:'auto'
         
     }} appearance='hint'>
@@ -195,7 +195,7 @@ const styles=StyleSheet.create({
      marginLeft:'auto',
      marginRight:'auto',
      borderRadius:10,
-     backgroundColor:'#1e4d94'
+     backgroundColor:'#3465ff'
  },
  hint:{
    display:'flex',
@@ -206,7 +206,7 @@ const styles=StyleSheet.create({
    position:'absolute',
    height:deviceHeight/2,
    width:'100%',
-   backgroundColor:'#1e4d94',
+   backgroundColor:'#3465ff',
   borderBottomLeftRadius:deviceHeight/5,
   borderBottomRightRadius:deviceHeight/5,
   shadowOffset: {

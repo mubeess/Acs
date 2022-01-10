@@ -303,7 +303,7 @@ launchImageLibrary({
                 width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto',
-                backgroundColor:'#1e4d94'
+                backgroundColor:'#3465ff'
 
             }} >
         Update Profile
@@ -330,7 +330,7 @@ launchImageLibrary({
 }
 const styles=StyleSheet.create({
     container:{
-        backgroundColor:'#1e4d94',
+        backgroundColor:'#3465ff',
         display:'flex',
         flex:1
     },

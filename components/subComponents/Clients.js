@@ -102,9 +102,12 @@ import AppContext from '../../Context/app/appContext'
             }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
             <View style={styles.info}>
             <Text style={{
-                 color:'#3a3b3c',
+                 color:'white',
                  fontSize:15,
-                 fontWeight:'100'
+                 fontWeight:'100',
+                 backgroundColor:'#3465ff',
+                 width:'50%',
+                 textAlign:'center'
              }} status='basic'>Dashboard</Text>
             <View style={{
               flexDirection:'column',
@@ -117,14 +120,21 @@ import AppContext from '../../Context/app/appContext'
             }}>
             <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text style={{
-                 color:'#3a3b3c',
+                 color:'white',
                  fontSize:12,
                  fontWeight:'100'
              }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
             </View>
-            
+            <View style={{
+              width:'100%',
+              height:50,
+              backgroundColor:'#3465ff',
+              borderBottomRightRadius:50
+            }}>
+
+            </View>
             <Divider style={styles.divide}/>
 <View style={styles.mainClient}>
 <Text style={styles.text} status='basic'>Clients Table</Text>
@@ -244,7 +254,10 @@ const styles=StyleSheet.create({
     logo:{
         width:50,
         height:50,
-        borderRadius:50
+        borderRadius:50,
+        borderColor:'white',
+        borderWidth:2,
+        marginTop:5
     },
     divide:{
         width:'100%'
@@ -257,7 +270,7 @@ const styles=StyleSheet.create({
     controlContainer: {
         borderRadius: 4,
         padding: 4,
-        backgroundColor: '#1e4d94',
+        backgroundColor: '#3465ff',
         alignSelf:'flex-start',
         display:'flex',
         flexDirection:'row',
@@ -337,7 +350,11 @@ const styles=StyleSheet.create({
         alignItems:'center',
         marginTop:10,
         marginRight:10,
-        marginLeft:'auto'
+        marginLeft:'auto',
+        backgroundColor:'#3465ff',
+        width:'100%',
+      
+        borderTopLeftRadius:50
       },
       infoCont:{
         height:Dimensions.get('window').height/2,
