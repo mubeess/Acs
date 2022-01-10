@@ -3,7 +3,7 @@ import React, { useContext, useState,useEffect } from 'react'
 import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert  } from 'react-native'
 import AppContext from '../../../Context/app/appContext'
 import Modal from "react-native-modal";
-
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 
  function VirtualCouncellor(props) {
@@ -100,44 +100,56 @@ import Modal from "react-native-modal";
          )
        }
 
-       {
-         myAlert.length>0&&(
-           myAlert.map((alt,ind)=>(
-            <Card key={ind} style={styles.card}>
+   
+
+
+<View style={{
+  flex:1,
+  backgroundColor:'f9f9f9',
+  height:250,
+  padding:10
+  }}>
+
+
+<SwiperFlatList
+  style={{
+    backgroundColor:'f9f9f9',
+  }}
+      autoplay
+      autoplayDelay={2}
+      autoplayLoop
+      index={0}
+      showPagination
+      data={myAlert}
+      renderItem={({ item}) => (
+        <Card style={styles.card}>
             <View style={styles.card2}>
-            <View style={{maxWidth:'50%'}}>
-            <Avatar size='tiny' source={require('../../assets/avatar.png')}></Avatar>
-            <Text>{alt.staffName}</Text> 
+            <View style={{maxWidth:'100%',flexDirection:'row'}}>
+            <Text style={{color:'white'}}>Name:  </Text> 
+            <Text style={{color:'white'}}>{item.staffName}</Text> 
             </View>
-    
-            <View style={{maxWidth:'50%'}}>
+           
+            <View style={{maxWidth:'100%'}}>
             <View>
-           <Text>
-             {alt.staffId}
+           <Text style={{color:'white'}}>
+             Staff Id: {item.staffId}
           </Text>
-          <Text>
-             {alt.actionName}
+          <Text style={{color:'white'}}>
+             Action Type: {item.actionName}
           </Text>
-          <Text>
-             sent: {alt.month}
+          <Text style={{color:'white'}}>
+            Month: {item.month}
           </Text>
-         {/* <Button onPress={()=>{
-            props.navigation.navigate('Document')
-             appProps.setCurrentAlert(alt)
-         }} style={{
-           marginTop:10
-         }} size='tiny'>Document</Button>  */}
+        
             </View>
           
             </View>
             </View>
              </Card>
-           ))
-         )
-       }
+      )}
+    />
 
-
-        
+</View>
             
            
             </ScrollView>
@@ -280,19 +292,22 @@ const styles=StyleSheet.create({
         backgroundColor:'#f9f9f9'
     },
     card:{
-        width:'90%',
-        height:100,
-        marginLeft:'auto',
-        marginRight:'auto',
-        marginTop:20,
-
-       
-    },
-    card2:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-around'
-    },
+      width:Dimensions.get('window').width-50,
+      height:200,
+      backgroundColor:'#1e4d94',
+      borderRadius:10,
+      display:'flex',
+      justifyContent:'center',
+      alignItems:'center'
+    
+     
+     
+  },
+  card2:{
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'space-around'
+  },
     empty:{
       width:'80%',
       height:70,
