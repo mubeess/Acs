@@ -61,30 +61,41 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
            <View style={styles.info}>
-         <Text>Dispatch Mobile Unit</Text>
+         <Text style={{
+                 color:'#3a3b3c',
+                 fontSize:14,
+                 fontWeight:'100'
+             }}>Dispatch Mobile Unit</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              marginLeft:40
+              marginLeft:40,
+              marginBottom:20
             }}>
             <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
-            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
+            <Text style={{
+                 color:'#3a3b3c',
+                 fontSize:12,
+                 fontWeight:'100'
+             }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
             </View>
           
             <Divider style={{width:'100%'}}/>
-{/*             
+            
          <View style={{
-
+         height:30,
+         backgroundColor:'#1e4d94',
+         width:'100%'
          }}>
-         <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-         <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text>
+         {/* <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
+         <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
          </View>
            
-            <Divider style={{width:'100%',marginTop:10}}/> */}
+            {/* <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
        {
          myAlert.length==0&&(
@@ -153,7 +164,9 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
             </ScrollView>
             <Divider style={{width:'100%'}}/>
             <View style={{alignItems:'center',marginTop:10}}>
-            <Avatar source={{uri:`${imageUrl}`}}></Avatar>
+            <Avatar style={{
+              marginTop:20
+            }} source={{uri:`${imageUrl}`}}></Avatar>
             <Text>{appProps.staff.username}</Text> 
             </View>
             <View style={{
@@ -323,6 +336,8 @@ const styles=StyleSheet.create({
       flexDirection:'row',
       justifyContent:'center',
       alignItems:'center',
+      marginLeft:'auto',
+      marginRight:10
       
     },
 })

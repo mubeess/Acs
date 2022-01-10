@@ -101,16 +101,26 @@ import AppContext from '../../Context/app/appContext'
                 marginTop:5
             }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
             <View style={styles.info}>
-            <Text status='basic'>Dashboard</Text>
+            <Text style={{
+                 color:'#3a3b3c',
+                 fontSize:14,
+                 fontWeight:'100'
+             }} status='basic'>Dashboard</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              marginLeft:40
+              marginLeft:40,
+              marginBottom:20
+              
             }}>
             <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
-            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
+            <Text style={{
+                 color:'#3a3b3c',
+                 fontSize:12,
+                 fontWeight:'100'
+             }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
             </View>
@@ -325,7 +335,9 @@ const styles=StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        marginTop:10
+        marginTop:10,
+        marginRight:10,
+        marginLeft:'auto'
       },
       infoCont:{
         height:Dimensions.get('window').height/2,
