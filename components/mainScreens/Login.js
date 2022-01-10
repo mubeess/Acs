@@ -1,6 +1,6 @@
 import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
-import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking,Dimensions } from 'react-native'
+import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking,Dimensions,SafeAreaView } from 'react-native'
 import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
 import AppContext from '../../Context/app/appContext'
 import Modal from "react-native-modal";
@@ -28,6 +28,10 @@ const deviceHeight=Dimensions.get('window').height
         </TouchableWithoutFeedback>
       );
     return (
+      <SafeAreaView style={{
+        flex:1,
+        backgroundColor:'#1e4d94'
+      }}>
         <TouchableWithoutFeedback onPress={()=>{
             Keyboard.dismiss()
         }} style={styles.container}>
@@ -161,6 +165,7 @@ const deviceHeight=Dimensions.get('window').height
      
   
         </TouchableWithoutFeedback>
+        </SafeAreaView>
        
     )
 }

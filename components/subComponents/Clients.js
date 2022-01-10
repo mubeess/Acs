@@ -101,7 +101,7 @@ import AppContext from '../../Context/app/appContext'
                 marginTop:5
             }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
             <View style={styles.info}>
-            <Text status='basic'>Admin Dashboard</Text>
+            <Text status='basic'>Dashboard</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',

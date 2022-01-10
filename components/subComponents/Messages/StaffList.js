@@ -42,7 +42,7 @@ import AppContext from '../../../Context/app/appContext'
                      allStaff.length>0&&(
                          allStaff.map((staf,ind)=>{
                            
-                            if (staf.username==appProps.staff.username||staf.image=='1.jpg') {
+                            if (staf.username==appProps.staff.username||staf.image=='1.jpg'||staf.username.includes('ACS/ADMIN')) {
                                 return null 
                             }else{
                                 const imageUrl=staf.image
@@ -51,7 +51,7 @@ import AppContext from '../../../Context/app/appContext'
                                         props.navigation.navigate('Message')
                                         appProps.setChatter(staf)
                                         }}>
-                    
+                    {console.log(staf)}
                                         <View style={styles.individual}>
                                             <View style={styles.avatar}>
                                                 <Image style={{

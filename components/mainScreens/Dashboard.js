@@ -5,6 +5,7 @@ import Clients from '../subComponents/Clients';
 import MainScree from '../subComponents/MainScreen';
 import Messaging from '../subComponents/Messages/Messaging';
 import MyProfile from '../subComponents/Profile/MyProfile';
+import { SafeAreaView } from 'react-native';
 const { Navigator,Screen } =createBottomTabNavigator();
 
 const AlertIcon = (props) => (
@@ -47,7 +48,12 @@ const TabNavigator = () => (
 
  const Dashboard = () => {
 return(
+  <SafeAreaView style={{
+    flex:1,
+    backgroundColor:'#1e4d94'
+  }}>
     <TabNavigator/>
+    </SafeAreaView>
    )
  }
  

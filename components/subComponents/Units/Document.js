@@ -16,7 +16,7 @@ import AppContext from '../../../Context/app/appContext'
     const [actionTime,setActionTime]=useState('')
     const [actionMessage,setActionMessage]=useState('')
     const displayValue = myData[selectedIndex.row];
-    const imageUrl=appProps.staff.image.split('public')
+    const imageUrl=appProps.staff.image
     const [isLoading,setLoading]=useState(false)
     useEffect(()=>{
    console.log("======",appProps.currentAlert)
@@ -26,28 +26,40 @@ import AppContext from '../../../Context/app/appContext'
       );
     return (
         <View style={styles.container}>
-            <View style={styles.nav}>
-            <TouchableOpacity onPress={()=>{
-                props.navigation.navigate('Main')
-            }}  style={styles.arr}>
-            <Icon fill='black' name='arrow-back-outline' style={{
-                   width:30,
-                   height:20
-               }}/>
-            </TouchableOpacity>
-            <Image style={styles.logo} source={require('../../assets/logo.png')}/>
+           <TouchableOpacity style={{
+                       marginTop:10
+                     }} onPress={()=>{
+      props.navigation.goBack()
+    }}>
+      <Icon style={{
+        width:25,
+        height:25,
+        marginLeft:20
+      }} name='arrow-back-outline' fill='#1e4d94'></Icon>
+    </TouchableOpacity>
+           <View style={styles.info}>
+            <Text status='basic'>Dashboard</Text>
+            <View style={{
+              flexDirection:'column',
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginLeft:40
+            }}>
+            <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
+            <Text status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
+            </View>
+           
             </View>
             <Divider style={{width:'100%'}}/>
-            <View style={styles.user}>
-                <View style={styles.subUser}>
-                <Avatar source={{uri:`https://tim-acs.herokuapp.com${imageUrl[1]}`}}></Avatar>
-                <Text>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
-                </View>
-            
-            </View>
-            <Divider style={{width:'100%'}}/>
-            <Text style={{marginLeft:20}} appearance='hint' category='h6'>Action Documentation</Text>
-            <Divider style={{width:'100%'}}/>
+            <View style={{
+
+}}>
+<Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
+<Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Document Action</Text>
+</View>
+  
+   <Divider style={{width:'100%',marginTop:10}}/>
             <ScrollView style={styles.history}>
          <Select
          value={myData[selectedIndex]}
@@ -255,9 +267,9 @@ const styles=StyleSheet.create({
         marginLeft:20
     },
     logo:{
-       width:100,
-       height:100,
-       marginLeft:'25%'
+       width:50,
+       height:50,
+       borderRadius:50
     },
     user:{
         display:'flex',
@@ -289,6 +301,13 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         justifyContent:'space-around'
-    }
+    },
+    info:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        
+      },
 })
 export default Document
