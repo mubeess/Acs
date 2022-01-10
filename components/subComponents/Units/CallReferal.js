@@ -47,7 +47,7 @@ import Modal from "react-native-modal";
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
              <View style={styles.info}>
-            
+             <Text>Contact Referal</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
@@ -61,14 +61,14 @@ import Modal from "react-native-modal";
            
             </View>
             <Divider style={{width:'100%'}}/>
-            <View style={{
+            {/* <View style={{
                 marginTop:10
 
 }}>
 <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
 <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Call Referal Service</Text>
 </View>
-            <Divider style={{width:'100%',marginTop:10}}/>
+            <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
             <View style={{
                 display:'flex',
@@ -353,7 +353,8 @@ const styles=StyleSheet.create({
     },
     history:{
         maxHeight:Dimensions.get('screen').height/3,
-        backgroundColor:'#ffffff'
+        backgroundColor:'#ffffff',
+        marginTop:10
     },
     card:{
         width:'90%',

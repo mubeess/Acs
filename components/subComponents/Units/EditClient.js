@@ -51,7 +51,7 @@ import AppContext from '../../../Context/app/appContext'
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
            <View style={styles.info}>
-  
+           <Text>Edit Client</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
@@ -77,14 +77,14 @@ import AppContext from '../../../Context/app/appContext'
             <Image style={styles.logo} source={require('../../assets/logo.png')}/>
             </View> */}
             <Divider style={{width:'100%'}}/>
-            <View style={{
+            {/* <View style={{
 
 }}>
 <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
 <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Edit Client</Text>
 </View>
   
-   <Divider style={{width:'100%',marginTop:10}}/>
+   <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
             {/* <Select
          style={{

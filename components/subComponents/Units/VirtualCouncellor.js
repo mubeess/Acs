@@ -60,7 +60,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
              <View style={styles.info}>
-           
+           <Text>Contact Virtual Councellor</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
@@ -76,14 +76,14 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
           
             <Divider style={{width:'100%'}}/>
           
-                    <View style={{
+                    {/* <View style={{
                 marginTop:10
 
 }}>
 <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
 <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Contact Virtual Councellor</Text>
 </View>
-            <Divider style={{width:'100%',marginTop:10}}/>
+            <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
 
 

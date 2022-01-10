@@ -61,7 +61,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
            <View style={styles.info}>
-         
+         <Text>Dispatch Mobile Unit</Text>
             <View style={{
               flexDirection:'column',
               display:'flex',
@@ -76,7 +76,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
             </View>
           
             <Divider style={{width:'100%'}}/>
-            
+{/*             
          <View style={{
 
          }}>
@@ -84,7 +84,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
          <Text style={{paddingLeft:20,backgroundColor:'#1e4d94',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text>
          </View>
            
-            <Divider style={{width:'100%',marginTop:10}}/>
+            <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
        {
          myAlert.length==0&&(
