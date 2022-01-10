@@ -4,7 +4,7 @@ import { View, StyleSheet,TouchableOpacity, Image,ScrollView, Dimensions, Alert 
 import AppContext from '../../../Context/app/appContext'
 import Modal from "react-native-modal";
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-const colors = ['tomato', 'thistle', 'skyblue', 'teal'];
+
 
 
  function DispatchMobile(props) {
@@ -61,7 +61,7 @@ const colors = ['tomato', 'thistle', 'skyblue', 'teal'];
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
            <View style={styles.info}>
-            <Text status='basic'>Dashboard</Text>
+         
             <View style={{
               flexDirection:'column',
               display:'flex',

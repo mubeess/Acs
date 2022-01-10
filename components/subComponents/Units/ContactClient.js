@@ -77,7 +77,7 @@ import Modal from "react-native-modal";
       }} name='arrow-back-outline' fill='#1e4d94'></Icon>
     </TouchableOpacity>
              <View style={styles.info}>
-            <Text status='basic'>Dashboard</Text>
+            
             <View style={{
               flexDirection:'column',
               display:'flex',
