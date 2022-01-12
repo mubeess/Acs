@@ -18,6 +18,7 @@ import Modal from "react-native-modal";
      const imageUrl=appProps.staff.image
      const [numbersVisible,setNumberVis]=useState(false)
      const [numberToCall,setNumToCall]=useState('')
+     const [allNumbers,setAllNums]=useState([])
 
 
      useEffect(()=>{
@@ -25,8 +26,24 @@ import Modal from "react-native-modal";
         .then(res=>{
             res.json()
             .then(data=>{
-                console.log(data)
               setMyclient([data.clientDemographic])
+              fetch(`https://tim-acs.herokuapp.com/admin/get-all-actions`)
+              .then(res=>{
+                  res.json()
+                  .then(data=>{
+                      data.message.filter(dat=>{
+                          if(dat.actionName=='First Responding'){
+                              setAllNums([dat])
+                          }
+                      })
+                    
+                     
+                    
+                    
+                   
+                     
+                  })
+              })
              
                
             })
@@ -203,14 +220,27 @@ import Modal from "react-native-modal";
           visible={numbersVisible}
           placement='top end'
           onBackdropPress={() => setNumberVis(false)}>
-          <MenuItem onPress={()=>{  
+        {
+            allNumbers.length>0&&
+            allNumbers.map((dt)=>(
+                dt.contactList.map((cn,ind)=>(
+                    <MenuItem key={ind} onPress={()=>{  
+                        setNumToCall(`${cn.contact}`)
+                        setNumberVis(false)
+                   }} title={cn.contact}/>
+                ))
+            ))
+                
+            
+        }
+          {/* <MenuItem onPress={()=>{  
                   setNumToCall('911')
                   setNumberVis(false)
              }} title='911'/>
          <MenuItem onPress={()=>{  
                  setNumToCall('2112')
                  setNumberVis(false)
-             }} title='2112'/>
+             }} title='2112'/> */}
        
 
        
@@ -229,6 +259,9 @@ import Modal from "react-native-modal";
         {
             callDuration==0?(
                 <TouchableOpacity onPress={()=>{
+                    if (numberToCall=='') {
+                        return null
+                    }
                     RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`)
                     setTimeout(()=>{
                         setCallDuration(1)
@@ -285,7 +318,7 @@ import Modal from "react-native-modal";
                                       );
                                       setLoading(false)
                                       props.navigation.goBack()
-                                      console.log(mainCallDuration)
+                                   
                                 }else{
                                     Alert.alert(
                                         "Error",
@@ -301,14 +334,14 @@ import Modal from "react-native-modal";
                                       setLoading(false)
                  
                                 }
-                                  console.log(data)
+                                  
                               }).catch(err=>{
                                   setLoading(false)
-                                  console.log(err)
+                                  
                               })
                           }).catch(err=>{
                             setLoading(false)
-                            console.log(err)
+                            
                         })
 
 
