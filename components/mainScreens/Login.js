@@ -1,9 +1,10 @@
 import React,{useState,useEffect, useContext} from 'react'
 import SplashScreen from 'react-native-splash-screen'
-import { View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking,Dimensions,SafeAreaView } from 'react-native'
+import {TouchableOpacity , View,StatusBar,StyleSheet,Image,TouchableWithoutFeedback,Keyboard,Alert,Linking,Dimensions,SafeAreaView } from 'react-native'
 import { Input, Icon,Button,Text, Spinner } from '@ui-kitten/components'
 import AppContext from '../../Context/app/appContext'
 import Modal from "react-native-modal";
+
 
 const deviceHeight=Dimensions.get('window').height
 
@@ -11,6 +12,8 @@ const deviceHeight=Dimensions.get('window').height
    const [userName,setUserName]=useState('')
    const [password,setPassword]=useState('')
    const [isLoading,setLoading]=useState(false)
+   const [forgotPassOpen,setForgotPassOpen]=useState(false)
+   const [forgotUser,setForgotUser]=useState('')
    const appProps=useContext(AppContext)
    
    useEffect(()=>{
@@ -45,7 +48,7 @@ const deviceHeight=Dimensions.get('window').height
          color:'#3465ff',
          marginTop:60
        }} appearance='hint'>
-     LOGIN ACS
+     LOGIN ACRS
     </Text>
             
             <Input
@@ -132,10 +135,11 @@ const deviceHeight=Dimensions.get('window').height
     <Text style={{
       marginLeft:'auto'
     }} appearance='hint'>
-      Having isuues with login?
+      
     </Text>
     <TouchableWithoutFeedback onPress={()=>{
-      Linking.openURL('mailto:mubarakibrahim2015@gmail.com?subject=Help')
+      // Linking.openURL('mailto:mubarakibrahim2015@gmail.com?subject=Help')
+      setForgotPassOpen(true)
     }}>
     <Text style={{
         textAlign:'center',
@@ -145,7 +149,7 @@ const deviceHeight=Dimensions.get('window').height
         marginRight:'auto'
         
     }} appearance='hint'>
-      Help
+      Forgot password
     </Text>
     </TouchableWithoutFeedback>
             </View>
@@ -154,17 +158,136 @@ const deviceHeight=Dimensions.get('window').height
     <View style={styles.mainImage}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
     </View>
-    <Modal style={{
+    
+        </View>
+     
+  
+        </TouchableWithoutFeedback>
+        <Modal style={{
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
       }} coverScreen={true} isVisible={isLoading} animationIn='fadeIn' animationOut='fadeOutDown'>
         <Spinner status='basic'/>
       </Modal>
-        </View>
+
+
+      <Modal style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }} coverScreen={true} isVisible={forgotPassOpen} animationIn='fadeIn' animationOut='fadeOutDown'>
+        <View style={{
+          height:230,
+          width:'90%',
+          backgroundColor:'white',
+          borderRadius:10,
+          shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.24,
+          
+          elevation: 10,
+          shadowColor:'#f9f9f9',
+          padding:20
+
+        }}>
+    <TouchableOpacity onPress={()=>{
+       setForgotPassOpen(false)
+    }}>
+     <Icon style={{
+       height:30,
+       width:30
+     }} fill='#000000' name='arrow-back-outline'/>
+     </TouchableOpacity>
+     <Text style={{
+       textAlign:'center'
+     }}>Reset Password</Text>
+      <Input
+      label='enter your username'
+             onChangeText={(text)=>{
+              setForgotUser(text)
+              }}
+            accessoryRight={<Icon name='person-outline'/>}
+            style={styles.input}
+            textAlign='center'
+             placeholder='User Name'
+    />
+
+    <Button onPress={()=>{
+      if (forgotUser=='') {
+        return Alert.alert(
+          "Error",
+          "Username is empty",
+          [
+            {
+              text: "Back",
+              style: "cancel"
+            },
+        
+          ]
+        );
+      }else{
+        setLoading(true)
+        fetch(`https://tim-acs.herokuapp.com/admin/forget-password/?username=${forgotUser}`,{
+          method:'POST',
+          headers:{
+            "Content-Type":'application/json'
+          }
+        }).then(res=>{
+          res.json()
+          .then(data=>{
+            setLoading(false)
+            if(data.success==true){
+              Alert.alert(
+                "Successfuly Reset",
+                "Password successfully reset and sent to your mail",
+                [
+                  {
+                    text: "Back",
+                    style: "cancel"
+                  },
+              
+                ]
+              );
+             setForgotUser('')
+             setForgotPassOpen(false)
+            }else{
+              Alert.alert(
+                "Error",
+                "Something went wrong!",
+                [
+                  {
+                    text: "Back",
+                    style: "cancel"
+                  },
+              
+                ]
+              );
+              setLoading(false)
+            }
+          }).catch(err=>{
+            setLoading(false)
+          })
+        }).catch(err=>{
+          setLoading(false)
+        })
+
+      }
+      
      
-  
-        </TouchableWithoutFeedback>
+      //  props.navigation.navigate('Dashboard')
+     }} style={{
+      width:'80%',
+      marginLeft:'auto',
+      marginRight:'auto',
+      marginTop:10
+    }}>Reset Password</Button>
+        </View>
+    
+      </Modal>
         </SafeAreaView>
        
     )
