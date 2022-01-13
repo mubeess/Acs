@@ -43,9 +43,9 @@ function MyProfile() {
             <Divider style={{width:'100%'}}/>
             <View style={{
               backgroundColor:'#ffffff',
-              borderBottomLeftRadius:200,
-              borderBottomRightRadius:200,
-              height:200
+              // borderBottomLeftRadius:200,
+              // borderBottomRightRadius:200,
+              height:300
             }}>
             <View style={styles.avatar}>
            
@@ -157,13 +157,17 @@ launchImageLibrary({
                 }}>{appProps.staff.phone}</Text>
 
             </View>
+            <Image style={{
+              height:200,
+              width:'100%'
+            }} source={require('../../assets/curve.png')}></Image>
             </View>
           
 {/* ************************************************************************************ */}
             <View style={{
               backgroundColor:'#ffffff',
               height:Dimensions.get('window').height-300,
-              borderTopLeftRadius:100
+              // borderTopLeftRadius:100
 
               
               
@@ -175,7 +179,6 @@ launchImageLibrary({
             }}
             
             style={{
-                marginTop:100,
                 width:'80%',
                 marginLeft:'auto',
                 marginRight:'auto'

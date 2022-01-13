@@ -127,6 +127,10 @@ import AppContext from '../../Context/app/appContext'
             </View>
            
             </View>
+            {/* <Image style={{
+              width:'100%',
+              height:200
+            }} source={require('../assets/curve.png')}></Image> */}
             <View style={{
               width:'100%',
               height:50,
