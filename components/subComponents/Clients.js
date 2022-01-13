@@ -102,10 +102,10 @@ import AppContext from '../../Context/app/appContext'
             }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
             <View style={styles.info}>
             <Text style={{
-                 color:'white',
-                 fontSize:15,
-                 fontWeight:'100',
-                 backgroundColor:'#3465ff',
+               
+                 fontSize:18,
+                 fontWeight:'500',
+                
                  width:'50%',
                  textAlign:'center'
              }} status='basic'>Dashboard</Text>
@@ -120,26 +120,29 @@ import AppContext from '../../Context/app/appContext'
             }}>
             <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text style={{
-                 color:'white',
+                 
                  fontSize:12,
                  fontWeight:'100'
              }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            
             </View>
-            {/* <Image style={{
+            <Image style={{
               width:'100%',
-              height:200
-            }} source={require('../assets/curve.png')}></Image> */}
-            <View style={{
+              height:100,
+              transform:[
+                {scaleX:1.5}
+              ]
+            }} source={require('../assets/curve.png')}></Image>
+            {/* <View style={{
               width:'100%',
               height:50,
               backgroundColor:'#3465ff',
               borderBottomRightRadius:50
             }}>
 
-            </View>
-            <Divider style={styles.divide}/>
+            </View> */}
+            {/* <Divider style={styles.divide}/> */}
 <View style={styles.mainClient}>
 <Text style={styles.text} status='basic'>Clients Table</Text>
             <Divider style={styles.divide}/>
@@ -293,7 +296,7 @@ const styles=StyleSheet.create({
       mainClient:{
           display:'flex',
           flex:1,
-          marginTop:20
+          
       },
       client1:{
           height:Dimensions.get('window').height/2,
@@ -352,10 +355,10 @@ const styles=StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        marginTop:10,
+        marginTop:5,
         marginRight:10,
         marginLeft:'auto',
-        backgroundColor:'#3465ff',
+        backgroundColor:'#ffffff',
         width:'100%',
       
         borderTopLeftRadius:50
