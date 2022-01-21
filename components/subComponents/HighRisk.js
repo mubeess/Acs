@@ -1,6 +1,6 @@
-import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem } from '@ui-kitten/components'
+import { Divider,Icon,Text,Avatar,Popover,Layout, OverflowMenu, MenuItem, Button  } from '@ui-kitten/components'
 import React, { useContext, useState } from 'react'
-import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity } from 'react-native'
+import { View,Image,StyleSheet, ScrollView,Dimensions, StatusBar,TouchableOpacity} from 'react-native'
 import AppContext from '../../Context/app/appContext'
 
  function HighRisk({dispatchNavigation,detail}) {
@@ -9,15 +9,15 @@ import AppContext from '../../Context/app/appContext'
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
-        <Text>{detail.time}</Text>
+        <Text>11111111</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>{detail.clientId}</Text>
+        <Text>ffffffff</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>{detail.clientLocation}</Text>
+        <Text>yryryryryryr</Text>
         <OverflowMenu
           anchor={()=>(
             <TouchableOpacity onPress={()=>{
@@ -33,34 +33,11 @@ import AppContext from '../../Context/app/appContext'
           placement='left'
           onBackdropPress={() => setVisible(false)}>
           <MenuItem onPress={()=>{
-                 dispatchNavigation('Mobile')
-                 setVisible(false)
-                 appProps.setCurrentAlert(detail)
-             }} title='Dispatch Mobile Unit'/>
-          <MenuItem onPress={()=>{
-                 dispatchNavigation('Virtual')
-                 setVisible(false)
-                 appProps.setCurrentAlert(detail)
-             }} title='Contact Virtual Councellor'/>
-          <MenuItem onPress={()=>{
-                 dispatchNavigation('CallFirst')
-                 setVisible(false)
-                 appProps.setCurrentAlert(detail)
-                 
-             }} title='Contact First Responder'/>
-          <MenuItem onPress={()=>{
-                 dispatchNavigation('ContactClient')
-                 setVisible(false)
-                 appProps.setCurrentAlert(detail)
-               
-                 
-             }} title='Contact Client'/>
-          <MenuItem onPress={()=>{
                  dispatchNavigation('CallRef')
                  setVisible(false)
                  appProps.setCurrentAlert(detail)
                  
-             }} title='Contact Referal Service'/>
+             }} title='Document'/>
 
        
         </OverflowMenu>

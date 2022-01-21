@@ -14,6 +14,8 @@ import AppContext from '../../Context/app/appContext'
      const [allAlerts,setAlerts]=useState([])
      const [loading,setLoading]=useState(true)
      const [filteredAl,setFiltered]=useState([])
+     const [allActions,setAllActions]=useState([])
+
      
      const imageUrl=appProps.staff.image
 
@@ -42,9 +44,16 @@ import AppContext from '../../Context/app/appContext'
       .then(res=>{
         res.json()
         .then(data=>{
-          if (data.success==true) {
           setLoading(false)
-          
+          if (data.success==true) {
+         
+          fetch(`https://tim-acs.herokuapp.com/staff/get-staff-actions-base-on-client/?username=${appProps.staff.username}&clientId=${appProps.currentAlert.clientId}`)
+          .then(res=>{
+            res.json()
+            .then(datas=>{
+              console.log("+++++++",datas)
+            })
+          })
           setAlerts(data.message)
           }else{
             Alert.alert(
@@ -177,22 +186,18 @@ import AppContext from '../../Context/app/appContext'
     <Text style={styles.text} status='basic'>Action Table</Text>
             <Divider style={styles.divide}/>
     <View style={styles.controlContainer}>
-      <Text style={styles.text2} status='control'>Alert Timestamp</Text>
+      <Text style={styles.text2} status='control'>Timestamp</Text>
       <Text style={styles.text2} status='control'>Client Code</Text>
       <Text style={styles.text2} status='control'>Client Location</Text>
     </View>
     <ScrollView style={styles.infoCont}>
      {
        
-        allAlerts.length>0&&(
-          allAlerts.map((indAl,ind)=>{
-            if (indAl.riskLevel=='high') {
-              return(
-               <HighRisk detail={indAl} key={ind} dispatchNavigation={dispatchNavigation}></HighRisk>
-              )
-            }else{
-              return null
-            }
+        allActions.length>0&&(
+          allActions.map((indAl,ind)=>{
+            return(
+              <HighRisk key={ind} dispatchNavigation={dispatchNavigation}></HighRisk>
+            )
    
           })
         )
@@ -200,8 +205,8 @@ import AppContext from '../../Context/app/appContext'
      }
 
 
-{
-     allAlerts.length==0&&(
+{/* {
+     allActions.length==0&&(
        <View style={styles.empty}>
          <Text appearance='hint'>No Alerts Available</Text>
          <Icon fill='black' name='alert-triangle-outline' style={{
@@ -210,12 +215,12 @@ import AppContext from '../../Context/app/appContext'
             }}/>
        </View>
      )
-   }
+   } */}
     
   {
-    filterAlert.length==0&&(
+    allActions.length==0&&(
       <View style={styles.empty}>
-        <Text appearance='hint'>No High Risk Alerts!!</Text>
+        <Text appearance='hint'>No Actions Available</Text>
         <Icon fill='black' name='alert-triangle-outline' style={{
                 width:30,
                 height:20

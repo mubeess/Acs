@@ -7,7 +7,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 
  function VirtualCouncellor(props) {
-     const [isLoading,setLoading]=useState(true)
+     const [isLoading,setLoading]=useState(false)
      const appProps=useContext(AppContext)
      const [myAlert,setAlerts]=useState([])
      const [dispTxt,setDispTxt]=useState('')
@@ -45,9 +45,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
         console.log(err)
       })
     }
-     useEffect(()=>{
-      loadAlerts()
-     },[])
+   
     return (
         <View style={styles.container}>
                  <TouchableOpacity onPress={()=>{
@@ -104,7 +102,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
             <ScrollView style={styles.history}>
 
 
-
+{/* 
             {
          myAlert.length==0&&(
           <View style={styles.empty}>
@@ -115,7 +113,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
              }}/>
         </View>
          )
-       }
+       } */}
 
    
 
@@ -128,7 +126,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
   }}>
 
 
-<SwiperFlatList
+{/* <SwiperFlatList
   style={{
     backgroundColor:'f9f9f9',
   }}
@@ -164,7 +162,33 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
             </View>
              </Card>
       )}
-    />
+    /> */}
+    {
+     myAlert.length>0&&(
+      <Card style={styles.card}>
+      <View style={styles.card2}>
+      <View style={{maxWidth:'100%'}}>
+      <View style={{
+        padding:5
+      }}>
+      <Text style={{color:'white'}}>Name:{myAlert[0].staffName}</Text> 
+     <Text style={{color:'white'}}>
+       Staff Id: {myAlert[0].staffId}
+    </Text>
+    <Text style={{color:'white'}}>
+       Action Type: {myAlert[0].actionName}
+    </Text>
+    <Text style={{color:'white'}}>
+      Client Id: {myAlert[0].clientId}
+    </Text>
+  
+      </View>
+    
+      </View>
+      </View>
+       </Card>
+     )
+   }
 
 </View>
             
@@ -197,6 +221,9 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
        marginTop:20
     }}>
       <Button onPress={()=>{
+         if (myAlert.length>0) {
+          return null
+        }
           setLoading(true)
           const record={
               clientId:appProps.currentAlert.clientId,
@@ -230,7 +257,12 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
                        ]
                      );
                      setLoading(false)
-                     props.navigation.goBack()
+                     setAlerts([{
+                      actionName:'Mobile Unit',
+                      staffId:appProps.staff.username,
+                      staffName:appProps.staff.firstName,
+                      clientId:`${appProps.currentAlert.clientId}`
+                  }])
                }else{
                    Alert.alert(
                        "Error",
@@ -312,7 +344,7 @@ const styles=StyleSheet.create({
     },
     card:{
       width:Dimensions.get('window').width-50,
-      height:110,
+      height:130,
       backgroundColor:'#3465ff',
       borderRadius:10,
       display:'flex',
