@@ -54,7 +54,7 @@ import AppContext from '../../../Context/app/appContext'
            <Text style={{
                  color:'#3a3b3c',
                  fontSize:15,
-                 fontWeight:'100'
+                 
              }}>Edit Client</Text>
             <View style={{
               flexDirection:'column',
@@ -68,7 +68,7 @@ import AppContext from '../../../Context/app/appContext'
             <Text style={{
                  color:'#3a3b3c',
                  fontSize:12,
-                 fontWeight:'100'
+                 
              }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            

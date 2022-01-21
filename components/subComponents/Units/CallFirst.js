@@ -85,7 +85,6 @@ import Modal from "react-native-modal";
             <Image style={styles.logo} source={{uri: `${imageUrl}`}}/>
             <Text style={{
                  color:'#3a3b3c',
-                 fontWeight:'100',
                  fontSize:12
             }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>

@@ -80,7 +80,7 @@ import Modal from "react-native-modal";
              <Text style={{
                  color:'#3a3b3c',
                  fontSize:15,
-                 fontWeight:'100'
+                 
              }}>Contact Client</Text>
             <View style={{
               flexDirection:'column',
@@ -94,7 +94,7 @@ import Modal from "react-native-modal";
             <Text style={{
                  color:'#3a3b3c',
                  fontSize:12,
-                 fontWeight:'100'
+                 
              }} status='basic'>{appProps.staff.firstName} {appProps.staff.lastName}</Text>
             </View>
            

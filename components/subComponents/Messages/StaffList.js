@@ -69,7 +69,7 @@ import AppContext from '../../../Context/app/appContext'
                                                 <Text appearance='hint' style={{
                                                     marginLeft:'auto',
                                                     marginRight:10,
-                                                    fontWeight:'100'
+                                                    
                                                 }}>10:00</Text>
                                                 </View>
                                                 <View>
