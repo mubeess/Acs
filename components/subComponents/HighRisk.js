@@ -9,15 +9,16 @@ import AppContext from '../../Context/app/appContext'
     return (
         <View style={styles.indi}>
         <View style={styles.indi1}>
-        <Text>11111111</Text>
+        <Text>{detail.createdAt}</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>ffffffff</Text>
+        
+        <Text>{detail.clientId}</Text>
         </View>
    
         <View style={styles.indi2}>
-        <Text>yryryryryryr</Text>
+        <Text>{detail.clientName}</Text>
         <OverflowMenu
           anchor={()=>(
             <TouchableOpacity onPress={()=>{
@@ -33,7 +34,7 @@ import AppContext from '../../Context/app/appContext'
           placement='left'
           onBackdropPress={() => setVisible(false)}>
           <MenuItem onPress={()=>{
-                 dispatchNavigation('CallRef')
+                 dispatchNavigation('Document')
                  setVisible(false)
                  appProps.setCurrentAlert(detail)
                  

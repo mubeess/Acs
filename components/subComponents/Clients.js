@@ -51,7 +51,7 @@ import AppContext from '../../Context/app/appContext'
           .then(res=>{
             res.json()
             .then(datas=>{
-              console.log("respondd actions",datas)
+             setAllActions(datas.data)
             })
           })
           setAlerts(data.message)
@@ -188,18 +188,18 @@ import AppContext from '../../Context/app/appContext'
     <View style={styles.controlContainer}>
       <Text style={styles.text2} status='control'>Timestamp</Text>
       <Text style={styles.text2} status='control'>Client Code</Text>
-      <Text style={styles.text2} status='control'>Client Location</Text>
+      <Text style={styles.text2} status='control'>Client Name</Text>
     </View>
     <ScrollView style={styles.infoCont}>
      {
        
         allActions.length>0&&(
-          allActions.map((indAl,ind)=>{
-            return(
-              <HighRisk key={ind} dispatchNavigation={dispatchNavigation}></HighRisk>
+          allActions.map((indAl,ind)=>
+            (
+              <HighRisk detail={indAl} key={ind} dispatchNavigation={dispatchNavigation}></HighRisk>
             )
    
-          })
+          )
         )
       
      }

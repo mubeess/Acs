@@ -78,7 +78,7 @@ import AppContext from '../../../Context/app/appContext'
   
    <Divider style={{width:'100%',marginTop:10}}/> */}
             <ScrollView style={styles.history}>
-         <Select
+         {/* <Select
          value={myData[selectedIndex]}
          style={{
              width:'90%',
@@ -97,33 +97,24 @@ import AppContext from '../../../Context/app/appContext'
                 ))
             }
       
-      </Select>
-      {/* <Select
-        style={{
+      </Select> */}
+     
+      <Input
+      disabled
+      onChangeText={(text)=>{
+        setUsername(text)
+    }}
+         style={{
             width:'90%',
             marginRight:'auto',
             marginLeft:'auto',
-            marginTop:10
+            marginTop:10,
+            backgroundColor:'#f9f9f9'
         }}
-        placeholder='Default'
-        value={displayValue}
-        selectedIndex={selectedIndex}
-        onSelect={index => setSelectedIndex(index)}>
-        {myData.map(renderOption)}
-      </Select> */}
-       {/* <Input
-      disabled
-    style={{
-        width:'90%',
-        marginRight:'auto',
-        marginLeft:'auto',
-        marginTop:10,
-        backgroundColor:'#f9f9f9'
-    }}
         placeholder={appProps.currentAlert.actionName}
       
          
-      />  */}
+      /> 
 
       <Input
       disabled
@@ -156,7 +147,7 @@ onChangeText={(text)=>{
             backgroundColor:'#f9f9f9',
             color:'white'
         }}
-        placeholder={`${Date.now()}`}
+        placeholder={`${appProps.currentAlert.createdAt}`}
         
          
       /> 
@@ -185,7 +176,7 @@ onChangeText={(text)=>{
 onPress={()=>{
     const obj={
         clientActionId:appProps.currentAlert.clientActionId,
-        clientId:userName,
+        clientId:appProps.currentAlert.clientId,
         // actionTime,
         documentation:actionMessage
     }
