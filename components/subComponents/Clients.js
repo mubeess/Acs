@@ -47,11 +47,11 @@ import AppContext from '../../Context/app/appContext'
           setLoading(false)
           if (data.success==true) {
          
-          fetch(`https://tim-acs.herokuapp.com/staff/get-staff-actions-base-on-client/?username=${appProps.staff.username}&clientId=${appProps.currentAlert.clientId}`)
+          fetch(`https://tim-acs.herokuapp.com/admin/get-all-clients-dispatch-action-at-particular-time`)
           .then(res=>{
             res.json()
             .then(datas=>{
-              console.log("+++++++",datas)
+              console.log("respondd actions",datas)
             })
           })
           setAlerts(data.message)
