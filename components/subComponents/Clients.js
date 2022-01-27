@@ -8,6 +8,7 @@ import {
   Spinner,
 } from '@ui-kitten/components';
 import React, {useEffect, useState, useContext} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   Image,
@@ -15,6 +16,7 @@ import {
   ScrollView,
   Dimensions,
   StatusBar,
+  navigation,
   TouchableOpacity,
 } from 'react-native';
 import ClientDetail from './ClientDetail';
@@ -31,8 +33,10 @@ function Clients(props) {
   const [loading, setLoading] = useState(true);
   const [filteredAl, setFiltered] = useState([]);
   const [allActions, setAllActions] = useState([]);
+  const [reloaded, setReloaded] = useState([true]);
 
   const imageUrl = appProps.staff.image;
+  
 
   async function onDisplayNotification() {
     // Create a channel
@@ -43,7 +47,7 @@ function Clients(props) {
     // Display a notification
     await notifee.displayNotification({
       title: 'Alert',
-      body: `New Alert Received`,
+      body: 'New Alert Received',
       android: {
         channelId,
       },
@@ -62,13 +66,6 @@ function Clients(props) {
           .then(data => {
             setLoading(false);
             if (data.success == true) {
-              fetch(
-                `https://tim-acs.herokuapp.com/admin/get-all-clients-dispatch-action-at-particular-time`,
-              ).then(res => {
-                res.json().then(datas => {
-                  setAllActions(datas.data);
-                });
-              });
               setAlerts(data.message);
             } else {
               Alert.alert('Error', 'Something went wrong when fetching data!', [
@@ -88,7 +85,21 @@ function Clients(props) {
         console.log(err);
       });
   };
-
+  const loadActions = async () => {
+    setLoading(true);
+    try {
+      fetch(
+        'https://tim-acs.herokuapp.com/admin/get-all-clients-dispatch-action-at-particular-time',
+      ).then(res => {
+        setLoading(false);
+        res.json().then(datas => {
+          setAllActions(datas.data);
+        });
+      });
+    } catch (e) {
+      console.log('eror', e);
+    }
+  };
   function filterAlert() {
     const filteredAll =
       allAlerts.length > 0
@@ -96,17 +107,26 @@ function Clients(props) {
         : [];
     filteredAll.length > 0 ? setFiltered(filteredAll) : null;
   }
+
   useEffect(() => {
-    // channel.bind('alert', function(data) {
-    //   onDisplayNotification()
-    //     setAlerts(data.allAlert)
-    // });
+    channel.bind('alert', function (data) {
+      onDisplayNotification();
+      setAlerts(data.allAlert);
+    });
     loadAlerts();
     filterAlert();
-    console.log('The prop', appProps);
+    // loadActions();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setReloaded(false);
+      loadActions();
+    }, [reloaded]),
+  );
+
   const dispatchNavigation = chanel => {
-    // console.log(props.navigation)
+    console.log('pops', props.navigation);
     props.navigation.navigate(`${chanel}`);
   };
   return (
