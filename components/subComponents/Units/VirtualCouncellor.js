@@ -248,7 +248,15 @@ function VirtualCouncellor(props) {
         style={{
           position: 'relative',
         }}>
-        <Text style={{marginLeft: 20}}>Dispatch User</Text>
+        <Text
+          style={{
+            marginLeft: 20,
+            marginBottom: 10,
+            fontSize: 16,
+            fontWeight: '500',
+          }}>
+          Dispatch User
+        </Text>
         <Input
           onChangeText={txt => {
             setDispTxt(txt);
