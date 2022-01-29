@@ -43,38 +43,38 @@ function ContactClient(props) {
         setMyclient([data.clientDemographic]);
       });
     });
-  }, []);
+    // }, []);
 
-  // useEffect(() => {
-  //     async function fetchData() {
-  //       if (Platform.OS != 'ios') {
-  //         try {
-  //           //Ask for runtime permission
-  //           const granted = await PermissionsAndroid.request(
-  //             PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-  //             {
-  //               title: 'ACS App',
-  //               message: 'Access your call logs',
-  //               buttonNeutral: 'Ask Me Later',
-  //               buttonNegative: 'Cancel',
-  //               buttonPositive: 'OK',
-  //             },
-  //           );
-  //           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //             CallLogs.loadAll().then((c) => setListDate(c));
-  //             CallLogs.load(3).then((c) => console.log(c));
-  //           } else {
-  //             console.log('Call Log permission denied');
-  //           }
-  //         } catch (e) {
-  //           console.log(e);
-  //         }
-  //       } else {
-  //         console.log('Call Log permission denied');
-  //       }
-  //     }
-  //     fetchData();
-  //   }, []);
+    // useEffect(() => {
+    async function fetchData() {
+      if (Platform.OS != 'ios') {
+        try {
+          //Ask for runtime permission
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+            {
+              title: 'ACS App',
+              message: 'Access your call logs',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            CallLogs.loadAll().then(c => setListDate(c));
+            CallLogs.load(3).then(c => console.log(c));
+          } else {
+            console.log('Call Log permission denied');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        console.log('Call Log permission denied');
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -317,7 +317,9 @@ function ContactClient(props) {
             fill="gray"
             name="person-outline"
           />
-          <Text style={{fontSize: 12}}>{appProps.staff.username}</Text>
+          <Text style={{fontSize: 14}}>
+            {appProps.staff.firstName} {appProps.staff.lastName}
+          </Text>
         </View>
 
         <View style={styles.icon}>

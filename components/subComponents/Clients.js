@@ -36,7 +36,6 @@ function Clients(props) {
   const [reloaded, setReloaded] = useState([true]);
 
   const imageUrl = appProps.staff.image;
-  
 
   async function onDisplayNotification() {
     // Create a channel
@@ -93,6 +92,7 @@ function Clients(props) {
       ).then(res => {
         setLoading(false);
         res.json().then(datas => {
+          console.log('ror', datas);
           setAllActions(datas.data);
         });
       });
@@ -144,12 +144,15 @@ function Clients(props) {
                 marginTop:5
             }}  size='giant' source={{uri: `https://tim-acs.herokuapp.com${imageUrl[1]}`}}/> */}
       <View style={styles.info}>
+        <Image
+          source={require('../assets/logo.png')}
+          style={{width: 70, marginLeft: 10, marginRight: 25, height: 70}}
+        />
         <Text
           style={{
             fontSize: 18,
             fontWeight: '500',
 
-            width: '50%',
             textAlign: 'center',
           }}
           status="basic">
@@ -203,7 +206,7 @@ function Clients(props) {
             Client Location
           </Text>
           <Text style={styles.text2} status="control">
-            Level Of Risk
+            Risk Level
           </Text>
         </View>
         <ScrollView style={styles.infoCont}>
@@ -247,12 +250,17 @@ function Clients(props) {
         </View>
         <ScrollView style={styles.infoCont}>
           {allActions.length > 0 &&
-            allActions.map((indAl, ind) => (
-              <HighRisk
-                detail={indAl}
-                key={ind}
-                dispatchNavigation={dispatchNavigation}></HighRisk>
-            ))}
+            allActions.map((indAl, ind) => {
+              if (indAl.createdAt !== '' || indAl.createdAt !== null) {
+                indAl.createdAt = new Date(indAl.createdAt).toLocaleString();
+              }
+              return (
+                <HighRisk
+                  detail={indAl}
+                  key={ind}
+                  dispatchNavigation={dispatchNavigation}></HighRisk>
+              );
+            })}
 
           {/* {
      allActions.length==0&&(

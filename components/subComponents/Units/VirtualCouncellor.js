@@ -70,6 +70,7 @@ function VirtualCouncellor(props) {
         console.log('SAS', myClient);
       });
     });
+    // loadAlerts();
   }, []);
 
   return (
@@ -210,18 +211,24 @@ function VirtualCouncellor(props) {
                       padding: 5,
                     }}>
                     <Text style={{color: 'white'}}>
-                      Name:{myAlert[0].staffName}
+                      Client Code:{appProps.currentAlert.clientId}
                     </Text>
                     <Text style={{color: 'white'}}>
-                      Staff Id: {myAlert[0].staffId}
+                      {appProps.currentAlert.clientLocation}
                     </Text>
                     <Text style={{color: 'white'}}>
-                      Action Type: {myAlert[0].actionName}
-                    </Text>
-                    <Text style={{color: 'white'}}>
-                      Client Id: {myAlert[0].clientId}
+                      Severity Level: {appProps.currentAlert.riskLevel}
                     </Text>
                   </View>
+                  <Text
+                    style={{
+                      color: 'blue',
+                      backgroundColor: 'white',
+                      marginRight: -30,
+                      paddingLeft: 10,
+                    }}>
+                    {new Date().toLocaleString()}
+                  </Text>
                 </View>
               </View>
             </Card>
@@ -242,7 +249,9 @@ function VirtualCouncellor(props) {
             marginBottom: 10,
           }}
           source={{uri: `${imageUrl}`}}></Avatar>
-        <Text>{appProps.staff.username}</Text>
+        <Text style={{fontSize: 16}}>
+          {appProps.staff.firstName} {appProps.staff.lastName}
+        </Text>
       </View>
       <View
         style={{
@@ -262,7 +271,7 @@ function VirtualCouncellor(props) {
             setDispTxt(txt);
           }}
           multiline={true}
-          value={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
+          defaultValue={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
           status="basic"
         />
         <View
@@ -397,13 +406,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   card: {
-    width: Dimensions.get('window').width - 50,
-    height: 130,
-    backgroundColor: '#3465ff',
+    height: 'auto',
+    backgroundColor: 'rgba(52,101,255, 0.86)',
     borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   card2: {
     display: 'flex',

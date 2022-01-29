@@ -283,7 +283,9 @@ function CallFirst(props) {
             }}
             source={{uri: `${imageUrl}`}}></Avatar>
 
-          <Text style={{fontSize: 14}}>{appProps.staff.username}</Text>
+          <Text style={{fontSize: 14}}>
+            {appProps.staff.firstName} {appProps.staff.lastName}
+          </Text>
         </View>
 
         <View style={styles.icon}>

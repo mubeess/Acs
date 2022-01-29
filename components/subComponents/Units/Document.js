@@ -113,7 +113,7 @@ function Document(props) {
    <Divider style={{width:'100%',marginTop:10}}/> */}
       <ScrollView style={styles.history}>
         {/* <Select
-         value={myData[selectedIndex]}
+         defaultValue={myData[selectedIndex]}
          style={{
              width:'90%',
              marginRight:'auto',
@@ -192,7 +192,7 @@ function Document(props) {
           }}
           placeholder="Action Message"
           multiline={true}
-          value={appProps.currentAlert.documentation}
+          defaultValue={appProps.currentAlert.documentation}
           textStyle={{minHeight: 84}}
         />
 

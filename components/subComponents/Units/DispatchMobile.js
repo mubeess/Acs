@@ -29,6 +29,7 @@ function DispatchMobile(props) {
   const [dispatchTxt, setDispatchText] = useState('');
   const imageUrl = appProps.staff.image;
   const [myClient, setMyclient] = useState([]);
+  const [sentMsg, setSentMsg] = useState([]);
 
   const loadAlerts = () => {
     fetch(
@@ -40,7 +41,7 @@ function DispatchMobile(props) {
           .then(data => {
             if (data.success == true) {
               setLoading(false);
-              console.log(data);
+              console.log('hey asy', appProps.currentAlert);
               setAlerts(data.message);
             } else {
               Alert.alert('Error', 'Something went wrong when fetching data!', [
@@ -67,9 +68,10 @@ function DispatchMobile(props) {
     ).then(res => {
       res.json().then(datas => {
         setMyclient([datas.clientDemographic]);
-        console.log('SAS', myClient);
+        console.log('SAS', appProps.currentAlert);
       });
     });
+    //loadAlerts();
   }, []);
 
   return (
@@ -206,18 +208,24 @@ function DispatchMobile(props) {
                       padding: 5,
                     }}>
                     <Text style={{color: 'white'}}>
-                      Name:{myAlert[0].staffName}
+                      Client Code:{appProps.currentAlert.clientId}
                     </Text>
                     <Text style={{color: 'white'}}>
-                      Staff Id: {myAlert[0].staffId}
+                      {appProps.currentAlert.clientLocation}
                     </Text>
                     <Text style={{color: 'white'}}>
-                      Action Type: {myAlert[0].actionName}
-                    </Text>
-                    <Text style={{color: 'white'}}>
-                      Client Id: {myAlert[0].clientId}
+                      Severity Level: {appProps.currentAlert.riskLevel}
                     </Text>
                   </View>
+                  <Text
+                    style={{
+                      color: 'blue',
+                      backgroundColor: 'white',
+                      marginRight: -30,
+                      paddingLeft: 10,
+                    }}>
+                    {new Date().toLocaleString()}
+                  </Text>
                 </View>
               </View>
             </Card>
@@ -238,7 +246,9 @@ function DispatchMobile(props) {
             marginBottom: 10,
           }}
           source={{uri: `${imageUrl}`}}></Avatar>
-        <Text>{appProps.staff.username}</Text>
+        <Text style={{fontSize: 14}}>
+          {appProps.staff.firstName} {appProps.staff.lastName}
+        </Text>
       </View>
       <View
         style={{
@@ -250,13 +260,15 @@ function DispatchMobile(props) {
             marginBottom: 10,
             fontSize: 16,
             fontWeight: '500',
-          }}>Dispatch User</Text>
+          }}>
+          Dispatch User
+        </Text>
         <Input
           onChangeText={txt => {
             setDispatchText(txt);
           }}
           multiline={true}
-          value={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
+          defaultValue={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
         />
         <View
           style={{
@@ -292,6 +304,8 @@ function DispatchMobile(props) {
                     .json()
                     .then(data => {
                       if (data.success) {
+                        setSentMsg(data)
+
                         Alert.alert('Success', 'Successfuly Dispatched', [
                           {
                             text: 'Back',
@@ -390,14 +404,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card: {
-    width: Dimensions.get('window').width - 50,
-    height: 130,
-    backgroundColor: '#3465ff',
+    height: 'auto',
+    backgroundColor: 'rgba(52,101,255, 0.86)',
     borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
