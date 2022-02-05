@@ -146,7 +146,7 @@ function Clients(props) {
       <View style={styles.info}>
         <Image
           source={require('../assets/logo.png')}
-          style={{width: 70, marginLeft: 10, marginRight: 25, height: 70}}
+          style={{width: 70, marginLeft: 10, marginRight: 65, height: 70}}
         />
         <Text
           style={{
@@ -156,7 +156,7 @@ function Clients(props) {
             textAlign: 'center',
           }}
           status="basic">
-          Dashboard
+          {/*  Dashboard */}
         </Text>
         <View
           style={{

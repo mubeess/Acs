@@ -40,7 +40,7 @@ function CallFirst(props) {
   const [numberToCall, setNumToCall] = useState('');
   const [allNumbers, setAllNums] = useState([]);
   const [clientImg, setClientImg] = useState([]);
-  
+  const [recipientImg, setRecipientImg] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -53,7 +53,7 @@ function CallFirst(props) {
           res => {
             res.json().then(data => {
               data.message.filter(dat => {
-                if (dat.actionName == 'First Responding') {
+                if (dat.actionName == 'Contact First Responder') {
                   setAllNums([dat]);
                 }
               });
@@ -111,7 +111,7 @@ function CallFirst(props) {
               fontSize: 12,
             }}
             status="basic">
-            { myClient.length > 0 ? myClient[0].fullName : ''}
+            {myClient.length > 0 ? myClient[0].fullName : ''}
           </Text>
         </View>
       </View>
@@ -299,10 +299,12 @@ function CallFirst(props) {
                   fill="black"
                   name="hash-outline"
                   style={{
-                    width: 30,
+                    // width: 30,
                     height: 20,
+                    textAlign: 'center',
                   }}
                 />
+                <Text style={{fontSize: 12, marginBottom: 3}}>Choose Contact</Text>
               </TouchableOpacity>
             )}
             visible={numbersVisible}
@@ -330,7 +332,15 @@ function CallFirst(props) {
                  setNumberVis(false)
              }} title='2112'/> */}
           </OverflowMenu>
-
+          <Image
+            style={styles.logo}
+            source={{
+              uri:
+                recipientImg == null
+                  ? `${recipientImg}`
+                  : 'https://picsum.photos/300',
+            }}
+          />
           <Text>{numberToCall}</Text>
         </View>
 
@@ -425,13 +435,6 @@ function CallFirst(props) {
         </View>
       </View>
       <View style={styles.calling}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            marginRight: 10,
-          }}>
-          Outgoing Call
-        </Text>
         <Text>{callDuration ? 'Press The button to save action' : ''}</Text>
         <Text>{text}</Text>
       </View>
@@ -447,6 +450,14 @@ function CallFirst(props) {
         animationOut="fadeOutDown">
         <Spinner status="basic" />
       </Modal>
+      <Text
+        style={{
+          marginRight: 10,
+          textAlign: 'center',
+          fontSize: 12,
+        }}>
+        Outgoing Call: {new Date().toLocaleString()}
+      </Text>
     </View>
   );
 }

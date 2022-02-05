@@ -40,6 +40,7 @@ function CallReferal(props) {
   const [numberToCall, setNumToCall] = useState('');
   const [allNumbers, setAllNums] = useState([]);
   const [clientImg, setClientImg] = useState([]);
+  const [recipientImg, setRecipientImg] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -52,7 +53,7 @@ function CallReferal(props) {
           res => {
             res.json().then(data => {
               data.message.filter(dat => {
-                if (dat.actionName == 'Call Referal') {
+                if (dat.actionName == 'Contact Referral Service') {
                   setAllNums([dat]);
                 }
               });
@@ -316,10 +317,13 @@ function CallReferal(props) {
                   fill="black"
                   name="hash-outline"
                   style={{
-                    width: 30,
+                    textAlign: 'center',
                     height: 20,
                   }}
                 />
+                <Text style={{fontSize: 12, marginBottom: 3}}>
+                  Choose Contact
+                </Text>
               </TouchableOpacity>
             )}
             visible={numbersVisible}
@@ -339,6 +343,15 @@ function CallReferal(props) {
                 )),
               )}
           </OverflowMenu>
+          <Image
+            style={styles.logo}
+            source={{
+              uri:
+                recipientImg == null
+                  ? `${recipientImg}`
+                  : 'https://picsum.photos/300',
+            }}
+          />
 
           <Text>{numberToCall}</Text>
         </View>
@@ -434,13 +447,6 @@ function CallReferal(props) {
         </View>
       </View>
       <View style={styles.calling}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            marginRight: 10,
-          }}>
-          Outgoing Call
-        </Text>
         <Text>{callDuration ? 'Press The button to save action' : ''}</Text>
         <Text>{text}</Text>
       </View>
@@ -456,6 +462,14 @@ function CallReferal(props) {
         animationOut="fadeOutDown">
         <Spinner status="basic" />
       </Modal>
+      <Text
+        style={{
+          marginRight: 10,
+          textAlign: 'center',
+          fontSize: 12,
+        }}>
+        Outgoing Call: {new Date().toLocaleString()}
+      </Text>
     </View>
   );
 }

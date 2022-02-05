@@ -373,12 +373,16 @@ function EditClient(props) {
                     .json()
                     .then(data => {
                       if (data.success) {
-                        Alert.alert('Success', 'Successfuly Dispatched', [
-                          {
-                            text: 'Back',
-                            style: 'cancel',
-                          },
-                        ]);
+                        Alert.alert(
+                          'Success',
+                          'Successfuly Edited Client Details',
+                          [
+                            {
+                              text: 'Okay',
+                              style: 'cancel',
+                            },
+                          ],
+                        );
                         setLoading(false);
                         props.navigation.goBack();
                       } else {

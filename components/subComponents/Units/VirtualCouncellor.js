@@ -28,6 +28,7 @@ function VirtualCouncellor(props) {
   const [myAlert, setAlerts] = useState([]);
   const [dispTxt, setDispTxt] = useState('');
   const imageUrl = appProps.staff.image;
+  const [recipientImg, setRecipientImg] = useState([]);
   const [myClient, setMyclient] = useState([]);
 
   const loadAlerts = () => {
@@ -94,7 +95,7 @@ function VirtualCouncellor(props) {
             color: '#3a3b3c',
             fontSize: 15,
           }}>
-          Contact Virtual Councellor
+          Contact Virtual Counsellor
         </Text>
         <View
           style={{
@@ -134,6 +135,24 @@ function VirtualCouncellor(props) {
         }}>
         {/* <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
          <Text style={{paddingLeft:20,backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
+      </View>
+
+      <View
+        style={{
+          alignItems: 'center',
+          margin: 10,
+        }}>
+        <Image
+          style={styles.logo}
+          source={{
+            uri:
+              recipientImg == null
+                ? `${recipientImg}`
+                : 'https://picsum.photos/300',
+          }}
+        />
+        <Text style={{marginTop: 10, fontWeight: '500'}}>Recipient </Text>
+        <Text>911</Text>
       </View>
 
       {/* <View style={{
@@ -209,6 +228,7 @@ function VirtualCouncellor(props) {
                   <View
                     style={{
                       padding: 5,
+                      paddingLeft: 10,
                     }}>
                     <Text style={{color: 'white'}}>
                       Client Code:{appProps.currentAlert.clientId}
@@ -220,25 +240,24 @@ function VirtualCouncellor(props) {
                       Severity Level: {appProps.currentAlert.riskLevel}
                     </Text>
                   </View>
-                  <Text
-                    style={{
-                      color: 'blue',
-                      backgroundColor: 'white',
-                      marginRight: -30,
-                      paddingLeft: 10,
-                    }}>
-                    {new Date().toLocaleString()}
-                  </Text>
                 </View>
               </View>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  fontSize: 10,
+                  textAlign: 'right',
+                  marginTop: 5,
+                }}>
+                Sent: {new Date().toLocaleString()}
+              </Text>
             </Card>
           )}
         </View>
       </ScrollView>
-      <Divider style={{width: '100%'}} />
       <View
         style={{
-          alignItems: 'flex-start',
+          alignItems: 'center',
           margin: 10,
           border: '1px solid #232419',
           marginLeft: 15,
@@ -255,12 +274,13 @@ function VirtualCouncellor(props) {
       </View>
       <View
         style={{
-          position: 'relative',
+          alignItems: 'center',
+          marginBottom: 40,
         }}>
         <Text
           style={{
             marginLeft: 20,
-            marginBottom: 10,
+            marginBottom: 30,
             fontSize: 16,
             fontWeight: '500',
           }}>
@@ -271,15 +291,18 @@ function VirtualCouncellor(props) {
             setDispTxt(txt);
           }}
           multiline={true}
-          defaultValue={`${appProps.currentAlert.clientId}, ${appProps.currentAlert.clientLocation}, ${appProps.currentAlert.riskLevel}`}
+          defaultValue={`Client Code: ${appProps.currentAlert.clientId}, 
+Client Location:${appProps.currentAlert.clientLocation}, 
+Severity Level: ${appProps.currentAlert.riskLevel}`}
           status="basic"
         />
         <View
           style={{
-            position: 'absolute',
-            display: 'flex',
-            marginLeft: '80%',
-            marginTop: 20,
+            position: 'relative',
+            right: 0,
+            marginRight: 0,
+            marginTop: -40,
+            marginLeft: '85%',
           }}>
           <Button
             onPress={() => {
@@ -406,20 +429,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   card: {
+    width: '95%',
+    backgroundColor: 'rgba(52,101,255, 0.16)',
+    // borderRadius: 10,
+    // display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    margin: 5,
+    // paddingBottom: 3,
     height: 'auto',
-    backgroundColor: 'rgba(52,101,255, 0.86)',
-    borderRadius: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   card2: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // justifyContent: 'space-around',
+    backgroundColor: 'rgba(52,101,255, 0.86)',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   empty: {
     width: '80%',
