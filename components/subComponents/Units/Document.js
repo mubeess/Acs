@@ -29,7 +29,7 @@ function Document(props) {
   const appProps = useContext(AppContext);
   const myData = [
     'Mobile Unit',
-    'Contact Virtual Counsellor',
+    'Contact Virtual Counselor',
     'Contact First Responder',
     'Contact Client',
     'Contact Referal Service',

@@ -45,6 +45,7 @@ function EditClient(props) {
   );
   const [riskLevel, setRiskLevel] = useState('');
   const [sud, setSud] = useState('');
+  const [currentSud, setCurrentSud] = useState('');
   const [isLoading, setLoading] = useState(false);
 
   const imageUrl = appProps.staff.image;
@@ -53,9 +54,11 @@ function EditClient(props) {
       `https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`,
     ).then(res => {
       res.json().then(data => {
+        console.log('user ', data);
         setMyclient([data.clientDemographic]);
         setAddress(data.clientDemographic.clientLocation);
         setName(data.clientDemographic.fullName);
+        setCurrentSud(data.clientDemographic.sud);
         setPhone(data.clientDemographic.phone);
       });
     });
@@ -168,7 +171,7 @@ function EditClient(props) {
             marginLeft: 'auto',
             marginTop: 10,
           }}
-          placeholder={appProps.currentAlert.clientId}
+          defaultValue={appProps.currentAlert.clientId}
         />
         <View style={styles.myInp}>
           <Input
@@ -183,7 +186,7 @@ function EditClient(props) {
               marginTop: 10,
               backgroundColor: 'white',
             }}
-            placeholder={myClient.length > 0 ? myClient[0].fullName : ''}
+            defaultValue={myClient.length > 0 ? myClient[0].fullName : ''}
           />
 
           <Input
@@ -197,7 +200,7 @@ function EditClient(props) {
               marginTop: 10,
               backgroundColor: 'white',
             }}
-            placeholder={myClient.length > 0 ? myClient[0].clientLocation : ''}
+            defaultValue={myClient.length > 0 ? myClient[0].clientLocation : ''}
             label="Address"
           />
         </View>
@@ -215,7 +218,7 @@ function EditClient(props) {
               marginTop: 10,
               backgroundColor: 'white',
             }}
-            placeholder={myClient.length > 0 ? myClient[0].phone : ''}
+            defaultValue={myClient.length > 0 ? myClient[0].phone : ''}
           />
 
           <Input
@@ -228,8 +231,9 @@ function EditClient(props) {
               marginRight: 'auto',
               marginLeft: 'auto',
               marginTop: 10,
+              textTransform: 'capitalize',
             }}
-            placeholder={total > 50 ? 'High' : 'Low'}
+            defaultValue={myClient.length > 0 ? myClient[0].riskLevel : ''}
             label="Risk Level"
           />
         </View>
@@ -246,7 +250,7 @@ function EditClient(props) {
               marginLeft: 'auto',
               marginTop: 10,
             }}
-            placeholder={total.toString()}
+            defaultValue={currentSud.toString()}
           />
 
           {/* <Input
@@ -257,7 +261,7 @@ function EditClient(props) {
             marginLeft:'auto',
             marginTop:10
         }}
-        placeholder={appProps.currentAlert.clientLocation}
+        defaultValue={appProps.currentAlert.clientLocation}
          
       />  */}
         </View>
@@ -275,6 +279,7 @@ function EditClient(props) {
             <CheckBox
               style={{marginTop: 10}}
               checked={question1}
+              label="SUD Question 1"
               onChange={nextChecked => {
                 setQ1(nextChecked);
                 if (nextChecked == true) {
@@ -283,11 +288,7 @@ function EditClient(props) {
                   setTotal(total - 20);
                 }
               }}>
-              {myClient.length > 0
-                ? myClient[0].sud !== null
-                  ? Object.entries(myClient[0].sud)[0]
-                  : ''
-                : ''}
+              {'SUD Question 1'}
             </CheckBox>
 
             <CheckBox
@@ -301,11 +302,7 @@ function EditClient(props) {
                   setTotal(total - 20);
                 }
               }}>
-              {myClient.length > 0
-                ? myClient[0].sud !== null
-                  ? Object.entries(myClient[0].sud)[1]
-                  : ''
-                : ''}
+              {'SUD Question 2'}
             </CheckBox>
 
             <CheckBox
@@ -319,11 +316,7 @@ function EditClient(props) {
                   setTotal(total - 20);
                 }
               }}>
-              {myClient.length > 0
-                ? myClient[0].sud !== null
-                  ? Object.entries(myClient[0].sud)[2]
-                  : ''
-                : ''}
+              {'SUD Question 3'}
             </CheckBox>
           </View>
         </Card>
@@ -331,7 +324,7 @@ function EditClient(props) {
         <View style={styles.myInp2}>
           <Button
             onPress={() => {
-              setSud(total);
+              setCurrentSud(total);
               console.log(total);
             }}
             style={{
@@ -351,9 +344,10 @@ function EditClient(props) {
               setLoading(true);
               const record = {
                 fullName: name,
-                address,
+                clientLocation: address,
                 phone,
-                sudLevel: total,
+                sud: currentSud,
+
               };
               console.log(record);
               fetch(

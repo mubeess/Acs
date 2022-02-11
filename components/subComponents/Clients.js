@@ -63,6 +63,7 @@ function Clients(props) {
         res
           .json()
           .then(data => {
+            console.log('alerts', data);
             setLoading(false);
             if (data.success == true) {
               setAlerts(data.message);
@@ -92,7 +93,6 @@ function Clients(props) {
       ).then(res => {
         setLoading(false);
         res.json().then(datas => {
-          console.log('ror', datas);
           setAllActions(datas.data);
         });
       });

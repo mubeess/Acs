@@ -74,7 +74,7 @@ function ClientDetail({dispatchNavigation, detail}) {
               dispatchNavigation('Virtual');
               setVisible(false);
             }}
-            title="Contact Virtual Counsellor"
+            title="Contact Virtual Counselor"
           />
           <MenuItem
             onPress={() => {

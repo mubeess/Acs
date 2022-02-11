@@ -95,7 +95,7 @@ function VirtualCouncellor(props) {
             color: '#3a3b3c',
             fontSize: 15,
           }}>
-          Contact Virtual Counsellor
+          Contact Virtual Counselor
         </Text>
         <View
           style={{
@@ -148,11 +148,11 @@ function VirtualCouncellor(props) {
             uri:
               recipientImg == null
                 ? `${recipientImg}`
-                : 'https://picsum.photos/300',
+                : `https://i.pravatar.cc/300/?u=${appProps.currentAlert.clientId}`,
           }}
         />
         <Text style={{marginTop: 10, fontWeight: '500'}}>Recipient </Text>
-        <Text>911</Text>
+        <Text>Dr Kenya Thomas</Text>
       </View>
 
       {/* <View style={{
@@ -313,7 +313,7 @@ Severity Level: ${appProps.currentAlert.riskLevel}`}
               const record = {
                 clientId: appProps.currentAlert.clientId,
                 clientActions: {
-                  actionName: 'Contact Counsellor',
+                  actionName: 'Contact Counselor',
                   staffId: appProps.staff.username,
                   staffName: appProps.staff.firstName,
                   documentation: dispTxt,

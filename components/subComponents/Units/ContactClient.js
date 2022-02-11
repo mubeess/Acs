@@ -22,7 +22,7 @@ import {
 
 import AppContext from '../../../Context/app/appContext';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
-import CallLogs from 'react-native-call-log';
+import CallDetectorManager from 'react-native-call-detection'
 import Modal from 'react-native-modal';
 
 function ContactClient(props) {
@@ -34,7 +34,8 @@ function ContactClient(props) {
   const [listData, setListDate] = useState([]);
   const [myClient, setMyclient] = useState([]);
   const imageUrl = appProps.staff.image;
-
+  const [callStartTime, setCallStartTime] = useState([]);
+  const [callEndTime, setCallEndTime] = useState([]);
   useEffect(() => {
     fetch(
       `https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`,
@@ -43,37 +44,6 @@ function ContactClient(props) {
         setMyclient([data.clientDemographic]);
       });
     });
-    // }, []);
-
-    // useEffect(() => {
-    async function fetchData() {
-      if (Platform.OS != 'ios') {
-        try {
-          //Ask for runtime permission
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-            {
-              title: 'ACS App',
-              message: 'Access your call logs',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            CallLogs.loadAll().then(c => setListDate(c));
-            CallLogs.load(3).then(c => console.log(c));
-          } else {
-            console.log('Call Log permission denied');
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        console.log('Call Log permission denied');
-      }
-    }
-    fetchData();
   }, []);
 
   return (
@@ -309,42 +279,82 @@ function ContactClient(props) {
       </View>
       <View style={styles.call}>
         <View style={styles.icon}>
-          <Icon
+        <Avatar
             style={{
               height: 30,
               width: 30,
             }}
-            fill="gray"
-            name="person-outline"
-          />
+            source={{uri: `${imageUrl}`}}></Avatar>
           <Text style={{fontSize: 14}}>
             {appProps.staff.firstName} {appProps.staff.lastName}
           </Text>
         </View>
 
         <View style={styles.icon}>
-          <Icon
-            style={{
-              height: 30,
-              width: 30,
+          <Image
+            style={styles.logo}
+            source={{
+              uri:
+                myClient.length > 0 && myClient[0].image !== '1.jpg'
+                  ? `${myClient[0].image}`
+                  : 'https://picsum.photos/200',
             }}
-            fill="gray"
-            name="hash-outline"
           />
-          <Text>{myClient.length > 0 ? myClient[0].phone : ''}</Text>
+          <Text style={{marginTop: 10}}>{myClient.length > 0 ? myClient[0].phone : ''}</Text>
         </View>
 
         <View style={styles.icon}>
           {callDuration == 0 ? (
             <TouchableOpacity
               onPress={() => {
-                RNImmediatePhoneCall.immediatePhoneCall(
-                  myClient.length > 0 ? myClient[0].phone : '',
+                const numberToCall = myClient.length > 0 && myClient[0].phone;
+                if (numberToCall == '') {
+                  Alert.alert(
+                    'Missing Phone Number',
+                    `No phone number was found on client's profile`,
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'cancel',
+                      },
+                    ],
+                  );
+                  return null;
+                }
+                RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
+                this.callDetector = new CallDetectorManager(
+                  event => {
+                    // For iOS event will be either "Connected",
+                    // "Disconnected","Dialing" and "Incoming"
+                    // For Android event will be either "Offhook",
+                    // "Disconnected", "Incoming" or "Missed"
+                    if (event === 'Disconnected') {
+                      // Do something call got disconnected
+                      this.callDetector && this.callDetector.dispose();
+                      console.log('start time', callStartTime);
+                      if (callStartTime !== undefined) {
+                        setCallEndTime(new Date());
+                        const timeDifference =
+                          (callStartTime.getTime() - callEndTime.getTime()) /
+                          1000;
+                        setCallDuration(timeDifference);
+                      }
+                    } else if (event === 'Connected' || event === 'Offhook') {
+                      // Do something call got connected
+                      // This clause will only be executed for iOS
+                      setCallStartTime(new Date());
+                    }
+                  },
+                  false,
+                  () => {
+                    console.log('call error');
+                  },
+                  {
+                    title: 'Phone State Permission',
+                    message:
+                      'This app needs access to your phone state in order to make and/or to recieve incoming calls.',
+                  },
                 );
-                setTimeout(() => {
-                  setCallDuration(1);
-                  setText('');
-                }, 1000);
               }}>
               <Icon
                 style={{
@@ -370,55 +380,49 @@ function ContactClient(props) {
                     callDration: mainCallDuration,
                   },
                 };
-                console.log('stopped call');
-                CallLogs.load(1).then(c => {
-                  setText(`Last call duration is ${c[0].duration} Seconds`);
-                  setMainCallDuration(c[0].duration);
+                setText(`Last call duration is ${callDuration} Seconds`);
+                setMainCallDuration(callDuration);
 
-                  fetch(
-                    'https://tim-acs.herokuapp.com/staff/save-client-action',
-                    {
-                      method: 'PUT',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(record),
+                fetch(
+                  'https://tim-acs.herokuapp.com/staff/save-client-action',
+                  {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
                     },
-                  )
-                    .then(res => {
-                      res
-                        .json()
-                        .then(data => {
-                          if (data.success) {
-                            Alert.alert('Success', 'Successfuly Dispatched', [
-                              {
-                                text: 'Back',
-                                style: 'cancel',
-                              },
-                            ]);
-                            setLoading(false);
-                            props.navigation.goBack();
-                          } else {
-                            Alert.alert('Error', 'An error occured', [
-                              {
-                                text: 'Back',
-                                style: 'cancel',
-                              },
-                            ]);
-                            setLoading(false);
-                          }
-                          console.log(data);
-                        })
-                        .catch(err => {
+                    body: JSON.stringify(record),
+                  },
+                )
+                  .then(res => {
+                    res
+                      .json()
+                      .then(data => {
+                        if (data.success) {
+                          Alert.alert('Success', 'Successfuly saved', [
+                            {
+                              text: 'Back',
+                              style: 'cancel',
+                            },
+                          ]);
                           setLoading(false);
-                          console.log(err);
-                        });
-                    })
-                    .catch(err => {
-                      setLoading(false);
-                      console.log(err);
-                    });
-                });
+                          props.navigation.goBack();
+                        } else {
+                          Alert.alert('Error', 'An error occured', [
+                            {
+                              text: 'Back',
+                              style: 'cancel',
+                            },
+                          ]);
+                          setLoading(false);
+                        }
+                      })
+                      .catch(err => {
+                        setLoading(false);
+                      });
+                  })
+                  .catch(err => {
+                    setLoading(false);
+                  });
                 setCallDuration(0);
               }}>
               Save action
@@ -427,13 +431,6 @@ function ContactClient(props) {
         </View>
       </View>
       <View style={styles.calling}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            marginRight: 10,
-          }}>
-          Outgoing Call
-        </Text>
         <Text>{callDuration ? 'Press The button to save action' : ''}</Text>
         <Text>{text}</Text>
       </View>
@@ -449,6 +446,16 @@ function ContactClient(props) {
         animationOut="fadeOutDown">
         <Spinner status="basic" />
       </Modal>
+      <Text
+        style={{
+          marginRight: 10,
+          textAlign: 'center',
+          fontSize: 12,
+        }}>
+        {callStartTime === undefined
+          ? `Outgoing Call Started: ${new Date().toLocaleString()}`
+          : 'Waiting for call'}
+      </Text>
     </View>
   );
 }
@@ -490,6 +497,7 @@ const styles = StyleSheet.create({
   history: {
     maxHeight: Dimensions.get('screen').height / 3,
     backgroundColor: '#ffffff',
+    marginTop: 10,
   },
   card: {
     width: '90%',
@@ -508,6 +516,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 15,
+    backgroundColor: 'white',
   },
   inpDet: {
     width: '50%',

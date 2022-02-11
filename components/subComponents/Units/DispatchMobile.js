@@ -116,7 +116,7 @@ function DispatchMobile(props) {
               uri:
                 myClient.length > 0 && myClient[0].image !== '1.jpg'
                   ? `${myClient[0].image}`
-                  : 'https://picsum.photos/200',
+                  : `https://picsum.photos/200/?u=${appProps.staff.username}`,
             }}
           />
           <Text
@@ -153,11 +153,11 @@ function DispatchMobile(props) {
             uri:
               recipientImg == null
                 ? `${recipientImg}`
-                : 'https://picsum.photos/300',
+                : `https://i.pravatar.cc/300/?u=${appProps.currentAlert.clientId}`,
           }}
         />
         <Text style={{marginTop: 10, fontWeight: '500'}}>Recipient </Text>
-        <Text>911</Text>
+        <Text>Maxwell Manor</Text>
       </View>
 
       {/* <Divider style={{width:'100%',marginTop:10}}/> */}

@@ -24,7 +24,7 @@ import {
 
 import AppContext from '../../../Context/app/appContext';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
-import CallLogs from 'react-native-call-log';
+import CallDetectorManager from 'react-native-call-detection'
 import Modal from 'react-native-modal';
 
 function CallReferal(props) {
@@ -41,7 +41,8 @@ function CallReferal(props) {
   const [allNumbers, setAllNums] = useState([]);
   const [clientImg, setClientImg] = useState([]);
   const [recipientImg, setRecipientImg] = useState([]);
-
+  const [callStartTime, setCallStartTime] = useState([]);
+  const [callEndTime, setCallEndTime] = useState([]);
   useEffect(() => {
     fetch(
       `https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`,
@@ -252,7 +253,7 @@ function CallReferal(props) {
             <Text style={styles.inp}>
               {myClient.length > 0
                 ? myClient[0].sud !== null
-                  ? myClient[0].sud.sudLevel
+                  ? myClient[0].sud
                   : ''
                 : ''}
             </Text>
@@ -343,16 +344,17 @@ function CallReferal(props) {
                 )),
               )}
           </OverflowMenu>
-          <Image
-            style={styles.logo}
-            source={{
-              uri:
-                recipientImg == null
-                  ? `${recipientImg}`
-                  : 'https://picsum.photos/300',
-            }}
-          />
-
+          {numberToCall !== '' && (
+            <Image
+              style={styles.logo}
+              source={{
+                uri:
+                  recipientImg == null
+                    ? `${recipientImg}`
+                    : `https://i.pravatar.cc/300/?u=${numberToCall}`,
+              }}
+            />
+          )}
           <Text>{numberToCall}</Text>
         </View>
 
@@ -360,14 +362,53 @@ function CallReferal(props) {
           {callDuration == 0 ? (
             <TouchableOpacity
               onPress={() => {
-                if (numberToCall == '') {
+                if (numberToCall === '') {
+                  Alert.alert(
+                    'No Contact Selected',
+                    'Please Choose a contact to call',
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'cancel',
+                      },
+                    ],
+                  );
                   return null;
                 }
                 RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
-                setTimeout(() => {
-                  setCallDuration(1);
-                  setText('');
-                }, 1000);
+                this.callDetector = new CallDetectorManager(
+                  event => {
+                    // For iOS event will be either "Connected",
+                    // "Disconnected","Dialing" and "Incoming"
+                    // For Android event will be either "Offhook",
+                    // "Disconnected", "Incoming" or "Missed"
+                    if (event === 'Disconnected') {
+                      // Do something call got disconnected
+                      this.callDetector && this.callDetector.dispose();
+                      console.log('start cakk time', callStartTime);
+                      if (callStartTime !== undefined) {
+                        setCallEndTime(new Date());
+                        const timeDifference =
+                          (callStartTime.getTime() - callEndTime.getTime()) /
+                          1000;
+                        setCallDuration(timeDifference);
+                      }
+                    } else if (event === 'Connected' || event === 'Offhook') {
+                      // Do something call got connected
+                      // This clause will only be executed for iOS
+                      setCallStartTime(new Date());
+                    }
+                  },
+                  false,
+                  () => {
+                    console.log('call error');
+                  },
+                  {
+                    title: 'Phone State Permission',
+                    message:
+                      'This app needs access to your phone state in order to make and/or to recieve incoming calls.',
+                  },
+                );
               }}>
               <Icon
                 style={{
@@ -394,51 +435,49 @@ function CallReferal(props) {
                   },
                 };
 
-                CallLogs.load(1).then(c => {
-                  setText(`Last call duration is ${c[0].duration} Seconds`);
-                  setMainCallDuration(c[0].duration);
+                setText(`Last call duration is ${callDuration} Seconds`);
+                setMainCallDuration(callDuration);
 
-                  fetch(
-                    'https://tim-acs.herokuapp.com/staff/save-client-action',
-                    {
-                      method: 'PUT',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(record),
+                fetch(
+                  'https://tim-acs.herokuapp.com/staff/save-client-action',
+                  {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
                     },
-                  )
-                    .then(res => {
-                      res
-                        .json()
-                        .then(data => {
-                          if (data.success) {
-                            Alert.alert('Success', 'Successfuly Dispatched', [
-                              {
-                                text: 'Back',
-                                style: 'cancel',
-                              },
-                            ]);
-                            setLoading(false);
-                            props.navigation.goBack();
-                          } else {
-                            Alert.alert('Error', 'An error occured', [
-                              {
-                                text: 'Back',
-                                style: 'cancel',
-                              },
-                            ]);
-                            setLoading(false);
-                          }
-                        })
-                        .catch(err => {
+                    body: JSON.stringify(record),
+                  },
+                )
+                  .then(res => {
+                    res
+                      .json()
+                      .then(data => {
+                        if (data.success) {
+                          Alert.alert('Success', 'Successfuly saved', [
+                            {
+                              text: 'Back',
+                              style: 'cancel',
+                            },
+                          ]);
                           setLoading(false);
-                        });
-                    })
-                    .catch(err => {
-                      setLoading(false);
-                    });
-                });
+                          props.navigation.goBack();
+                        } else {
+                          Alert.alert('Error', 'An error occured', [
+                            {
+                              text: 'Back',
+                              style: 'cancel',
+                            },
+                          ]);
+                          setLoading(false);
+                        }
+                      })
+                      .catch(err => {
+                        setLoading(false);
+                      });
+                  })
+                  .catch(err => {
+                    setLoading(false);
+                  });
                 setCallDuration(0);
               }}>
               Save Action
@@ -468,7 +507,9 @@ function CallReferal(props) {
           textAlign: 'center',
           fontSize: 12,
         }}>
-        Outgoing Call: {new Date().toLocaleString()}
+        {callStartTime === undefined
+          ? `Outgoing Call Started: ${new Date().toLocaleString()}`
+          : 'Waiting for call'}
       </Text>
     </View>
   );
