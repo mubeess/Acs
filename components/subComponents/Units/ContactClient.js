@@ -300,7 +300,9 @@ function ContactClient(props) {
                   : 'https://picsum.photos/200',
             }}
           />
-          <Text style={{marginTop: 10}}>{myClient.length > 0 ? myClient[0].phone : ''}</Text>
+          <Text style={{marginTop: 10}}>
+            {myClient.length > 0 ? myClient[0].phone : ''}
+          </Text>
         </View>
 
         <View style={styles.icon}>
