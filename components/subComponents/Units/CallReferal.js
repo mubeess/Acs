@@ -65,6 +65,17 @@ function CallReferal(props) {
     });
   }, []);
 
+  useEffect(() => {
+    if (isLoading || !isLoading) {
+      console.log('loading Status: ', isLoading);
+    }
+    console.log('call duration ', callDuration);
+    console.log('main durantion', mainCallDuration);
+    console.log('call start', callStartTime);
+    console.log('call ednt', callEndTime);
+  }, [callDuration, mainCallDuration, text, callStartTime, callEndTime]);
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -86,7 +97,7 @@ function CallReferal(props) {
             color: '#3a3b3c',
             fontSize: 15,
           }}>
-          Contact Referal
+          Contact Referral
         </Text>
         <View
           style={{
@@ -375,28 +386,42 @@ function CallReferal(props) {
                   );
                   return null;
                 }
+                var sT, eT;
+                sT = new Date();
+                setCallStartTime(sT);
                 RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
                 this.callDetector = new CallDetectorManager(
-                  event => {
+                  (event, phoneNumber) => {
                     // For iOS event will be either "Connected",
                     // "Disconnected","Dialing" and "Incoming"
                     // For Android event will be either "Offhook",
                     // "Disconnected", "Incoming" or "Missed"
+                    if (event === 'Connected || Offhook') {
+                      // Do something call got connected
+                      sT = new Date();
+                      setCallStartTime(sT);
+                      console.log('call started on connect at ', callStartTime);
+                      // console.log('call Connected at ');
+                      // This clause will only be executed for iOS
+                    }
                     if (event === 'Disconnected') {
+                      // console.log('call disconnected at ');
+                      // Do something call got disconnected
+                      eT = new Date();
+                      setCallEndTime(eT);
+                      console.log('call ended at ', eT);
+                      if (sT !== null && eT !== null) {
+                        const timeDifference =
+                          (eT.getTime() - sT.getTime()) / 1000;
+                        setCallDuration(timeDifference);
+                        setMainCallDuration(callDuration);
+                        console.log('call lasted for ', timeDifference);
+                        console.log('start call time', sT);
+                        console.log('call durantion', callDuration);
+                        console.log('call ednt', eT);
+                      }
                       // Do something call got disconnected
                       this.callDetector && this.callDetector.dispose();
-                      console.log('start cakk time', callStartTime);
-                      if (callStartTime !== undefined) {
-                        setCallEndTime(new Date());
-                        const timeDifference =
-                          (callStartTime.getTime() - callEndTime.getTime()) /
-                          1000;
-                        setCallDuration(timeDifference);
-                      }
-                    } else if (event === 'Connected' || event === 'Offhook') {
-                      // Do something call got connected
-                      // This clause will only be executed for iOS
-                      setCallStartTime(new Date());
                     }
                   },
                   false,
@@ -427,11 +452,11 @@ function CallReferal(props) {
                 const record = {
                   clientId: appProps.currentAlert.clientId,
                   clientActions: {
-                    actionName: 'Call Refral',
+                    actionName: 'Contact Referral Service',
                     staffId: appProps.staff.username,
-                    staffName: appProps.staff.firstName,
+                    staffName: appProps.staff.firstName + ' ' + appProps.staff.lastName,
                     documentation: '',
-                    callDration: mainCallDuration,
+                    callDration: callDuration,
                   },
                 };
 
@@ -507,9 +532,7 @@ function CallReferal(props) {
           textAlign: 'center',
           fontSize: 12,
         }}>
-        {callStartTime === undefined
-          ? `Outgoing Call Started: ${new Date().toLocaleString()}`
-          : 'Waiting for call'}
+        {callDuration ? `${text}` : 'Waiting for call'}
       </Text>
     </View>
   );
@@ -597,14 +620,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calling: {
-    height: 50,
-    width: '90%',
+    height: 30,
+    width: '80%',
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    paddingTop: 5,
   },
   info: {
     display: 'flex',

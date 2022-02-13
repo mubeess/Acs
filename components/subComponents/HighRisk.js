@@ -82,7 +82,7 @@ import AppContext from '../../Context/app/appContext'
               <Divider style={{width:'100%'}}/>
 
               <TouchableOpacity>
-                  <Text appearance='hint' category='h6'>Contact Referal Service</Text>
+                  <Text appearance='hint' category='h6'>Contact Referral Service</Text>
               </TouchableOpacity>
               <Divider style={{width:'100%'}}/>
    

@@ -41,9 +41,8 @@ function CallFirst(props) {
   const [allNumbers, setAllNums] = useState([]);
   const [clientImg, setClientImg] = useState([]);
   const [recipientImg, setRecipientImg] = useState([]);
-  const [callStartTime, setCallStartTime] = useState([]);
-  const [callEndTime, setCallEndTime] = useState([]);
-
+  const [callStartTime, setCallStartTime] = useState(null);
+  const [callEndTime, setCallEndTime] = useState(null);
   useEffect(() => {
     fetch(
       `https://tim-acs.herokuapp.com/staff/get-client-demographic/?clientId=${appProps.currentAlert.clientId}`,
@@ -65,6 +64,16 @@ function CallFirst(props) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (isLoading || !isLoading) {
+      console.log('loading Status: ', isLoading);
+    }
+    console.log('call duration ', callDuration);
+    console.log('main durantion', mainCallDuration);
+    console.log('call start', callStartTime);
+    console.log('call ednt', callEndTime);
+  }, [callDuration, mainCallDuration, text, callStartTime, callEndTime]);
 
   return (
     <View style={styles.container}>
@@ -102,7 +111,7 @@ function CallFirst(props) {
             style={styles.logo}
             source={{
               uri:
-                clientImg === '1.jpg'
+                clientImg !== '1.jpg'
                   ? `${clientImg}`
                   : 'https://picsum.photos/200',
             }}
@@ -124,18 +133,7 @@ function CallFirst(props) {
           height: 30,
           backgroundColor: '#3465ff',
           width: '100%',
-        }}>
-        {/* <Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-         <Text style={{paddingLeft:20,backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%'}}>Dispatch Mobile Unit</Text> */}
-      </View>
-      {/* <View style={{
-                marginTop:10
-
-}}>
-<Text style={{marginLeft:20,fontWeight:'400'}} appearance='hint' category='label'>Action Type</Text>
-<Text style={{backgroundColor:'#3465ff',marginRight:20,color:'white',width:'100%',paddingLeft:20}}>Call First Responder</Text>
-</View>
-            <Divider style={{width:'100%',marginTop:10}}/> */}
+        }}></View>
       <ScrollView style={styles.history}>
         <Text style={{marginLeft: 20}}>Client Demographics</Text>
         <View style={styles.clientDet}>
@@ -214,11 +212,7 @@ function CallFirst(props) {
               Risk Level
             </Text>
             <Text style={styles.inp}>
-              {myClient.length > 0 && myClient[0].sud !== null
-                ? myClient[0].sud.sudLevel > 50
-                  ? 'High'
-                  : 'Low'
-                : ''}
+              {myClient.length > 0 ? myClient[0].riskLevel : ''}
             </Text>
           </View>
 
@@ -233,11 +227,7 @@ function CallFirst(props) {
               SUD Level
             </Text>
             <Text style={styles.inp}>
-              {myClient.length > 0
-                ? myClient[0].sud !== null
-                  ? myClient[0].sud.sudLevel
-                  : ''
-                : ''}
+              {myClient.length > 0 ? myClient[0].sud : ''}
             </Text>
           </View>
         </View>
@@ -346,6 +336,9 @@ function CallFirst(props) {
           {callDuration == 0 ? (
             <TouchableOpacity
               onPress={() => {
+                var sT, eT;
+                sT = new Date();
+                setCallStartTime(sT);
                 if (numberToCall === '') {
                   Alert.alert(
                     'No Contact Selected',
@@ -359,27 +352,42 @@ function CallFirst(props) {
                   );
                   return null;
                 }
-                RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
+                // RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
+                Linking.openURL(`tel:${numberToCall}`).catch(err => {
+                  console.log(err);
+                });
                 this.callDetector = new CallDetectorManager(
-                  event => {
+                  (event, phoneNumber) => {
                     // For iOS event will be either "Connected",
                     // "Disconnected","Dialing" and "Incoming"
                     // For Android event will be either "Offhook",
                     // "Disconnected", "Incoming" or "Missed"
+                    if (event === 'Connected || Offhook') {
+                      // Do something call got connected
+                      sT = new Date();
+                      setCallStartTime(sT);
+                      console.log('call started on connect at ', callStartTime);
+                      // console.log('call Connected at ');
+                      // This clause will only be executed for iOS
+                    }
                     if (event === 'Disconnected') {
+                      // console.log('call disconnected at ');
+                      // Do something call got disconnected
+                      eT = new Date();
+                      setCallEndTime(eT);
+                      console.log('call ended at ', eT);
+                      if (sT !== null && eT !== null) {
+                        const timeDifference =
+                          (eT.getTime() - sT.getTime()) / 1000;
+                        setCallDuration(timeDifference);
+                        setMainCallDuration(callDuration);
+                        console.log('call lasted for ', timeDifference);
+                        console.log('start call time', sT);
+                        console.log('call durantion', callDuration);
+                        console.log('call ednt', eT);
+                      }
                       // Do something call got disconnected
                       this.callDetector && this.callDetector.dispose();
-                      console.log('start cakk time', callStartTime);
-                      if (callStartTime !== undefined) {
-                        const timeDifference =
-                          (callStartTime.getTime() - callEndTime.getTime()) /
-                          1000;
-                        setCallDuration(timeDifference);
-                      }
-                    } else if (event === 'Connected' || event === 'Offhook') {
-                      // Do something call got connected
-                      // This clause will only be executed for iOS
-                      setCallStartTime(new Date());
                     }
                   },
                   false,
@@ -412,9 +420,9 @@ function CallFirst(props) {
                   clientActions: {
                     actionName: 'Call First Responder',
                     staffId: appProps.staff.username,
-                    staffName: appProps.staff.firstName,
+                    staffName: appProps.staff.firstName + ' ' + appProps.staff.lastName,
                     documentation: '',
-                    callDration: mainCallDuration,
+                    callDration: callDuration,
                   },
                 };
 
@@ -490,9 +498,7 @@ function CallFirst(props) {
           textAlign: 'center',
           fontSize: 12,
         }}>
-        {callStartTime === undefined
-          ? `Outgoing Call Started: ${new Date().toLocaleString()}`
-          : 'Waiting for call'}
+        {callDuration ? `${text}` : 'Waiting for call'}
       </Text>
     </View>
   );
@@ -581,14 +587,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calling: {
-    height: 50,
-    width: '90%',
+    height: 30,
+    width: '80%',
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    paddingTop: 5,
   },
   info: {
     display: 'flex',

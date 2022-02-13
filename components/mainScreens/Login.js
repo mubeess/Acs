@@ -27,16 +27,19 @@ function Login(props) {
   const [forgotPassOpen, setForgotPassOpen] = useState(false);
   const [forgotUser, setForgotUser] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInStaff, setLoggedInStaff] = useState([]);
   const appProps = useContext(AppContext);
 
-  const storeStaff = async value => {
+  async function storeStaff(value) {
     try {
+      // console.log('valeu', value);
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('STAFF', jsonValue);
+      // console.log('storesd token');
     } catch (e) {
       // saving error
     }
-  };
+  }
 
   const storeStaffToken = async value => {
     try {
@@ -46,14 +49,17 @@ function Login(props) {
     }
   };
 
-  const getStaff = async () => {
+  async function getStaff() {
     try {
       const jsonValue = await AsyncStorage.getItem('STAFF');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
+      // console.log('saved value', jsonValue);
+      return jsonValue;
+
+      // return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       // error reading value
     }
-  };
+  }
 
   const getStaffToken = async () => {
     try {
@@ -66,17 +72,18 @@ function Login(props) {
 
   useEffect(() => {
     SplashScreen.hide();
-    const loggedInstaff = getStaff();
-    const staffToken = getStaffToken();
-    console.log('he', loggedInstaff);
-    console.log('he------', staffToken);
-
-    if (loggedInstaff.STAFF && loggedInstaff.STAFF.userId !== null) {
-      setIsLoggedIn(true);
-      appProps.setStaff(loggedInstaff);
-      props.navigation.navigate('Dashboard');
-    }
-  }, []);
+    // const staffToken = async getStaffToken();
+    // getStaff().then(data => {
+    //   if (data && data.token !== null) {
+    //     storeStaff(data);
+    //     appProps.setStaff(data);
+    //     console.log('user from login', data);
+    //     setLoading(false);
+    //     setIsLoggedIn(true);
+    //     props.navigation.navigate('Dashboard');
+    //   }
+    // });
+  }, [isLoading]);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -162,11 +169,13 @@ function Login(props) {
                       res
                         .json()
                         .then(data => {
-                          if (data.success == true) {
+                          if (data.success === true) {
                             storeStaff(data.newUser);
                             appProps.setStaff(data.newUser);
+                            console.log('user from login', data.newUser);
                             props.navigation.navigate('Dashboard');
                             setLoading(false);
+                            setIsLoggedIn(true);
                           } else {
                             Alert.alert(
                               'Error',

@@ -32,7 +32,7 @@ function Document(props) {
     'Contact Virtual Counselor',
     'Contact First Responder',
     'Contact Client',
-    'Contact Referal Service',
+    'Contact Referral Service',
   ];
   const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
   const [action, setAction] = useState('');

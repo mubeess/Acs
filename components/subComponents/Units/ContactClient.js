@@ -46,6 +46,16 @@ function ContactClient(props) {
     });
   }, []);
 
+  useEffect(() => {
+    if (isLoading || !isLoading) {
+      console.log('loading Status: ', isLoading);
+    }
+    console.log('call duration ', callDuration);
+    console.log('main durantion', mainCallDuration);
+    console.log('call start', callStartTime);
+    console.log('call ednt', callEndTime);
+  }, [callDuration, mainCallDuration, text, callStartTime, callEndTime]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -323,28 +333,26 @@ function ContactClient(props) {
                   );
                   return null;
                 }
+                var sT, eT;
+                sT = new Date();
+                setCallStartTime(sT);
                 RNImmediatePhoneCall.immediatePhoneCall(`${numberToCall}`);
                 this.callDetector = new CallDetectorManager(
-                  event => {
-                    // For iOS event will be either "Connected",
-                    // "Disconnected","Dialing" and "Incoming"
-                    // For Android event will be either "Offhook",
-                    // "Disconnected", "Incoming" or "Missed"
+                  (event, phoneNumber) => {
+                    if (event === 'Connected || Offhook') {
+                      sT = new Date();
+                      setCallStartTime(sT);
+                    }
                     if (event === 'Disconnected') {
-                      // Do something call got disconnected
-                      this.callDetector && this.callDetector.dispose();
-                      console.log('start time', callStartTime);
-                      if (callStartTime !== undefined) {
-                        setCallEndTime(new Date());
+                      eT = new Date();
+                      setCallEndTime(eT);
+                      if (sT !== null && eT !== null) {
                         const timeDifference =
-                          (callStartTime.getTime() - callEndTime.getTime()) /
-                          1000;
+                          (eT.getTime() - sT.getTime()) / 1000;
                         setCallDuration(timeDifference);
+                        setMainCallDuration(callDuration);
                       }
-                    } else if (event === 'Connected' || event === 'Offhook') {
-                      // Do something call got connected
-                      // This clause will only be executed for iOS
-                      setCallStartTime(new Date());
+                      this.callDetector && this.callDetector.dispose();
                     }
                   },
                   false,
@@ -375,11 +383,11 @@ function ContactClient(props) {
                 const record = {
                   clientId: appProps.currentAlert.clientId,
                   clientActions: {
-                    actionName: 'Call Client',
+                    actionName: 'Contact Client',
                     staffId: appProps.staff.username,
-                    staffName: appProps.staff.firstName,
+                    staffName: appProps.staff.firstName + ' ' + appProps.staff.lastName,
                     documentation: '',
-                    callDration: mainCallDuration,
+                    callDration: callDuration,
                   },
                 };
                 setText(`Last call duration is ${callDuration} Seconds`);
@@ -454,9 +462,7 @@ function ContactClient(props) {
           textAlign: 'center',
           fontSize: 12,
         }}>
-        {callStartTime === undefined
-          ? `Outgoing Call Started: ${new Date().toLocaleString()}`
-          : 'Waiting for call'}
+        {callDuration ? `${text}` : 'Waiting for call'}
       </Text>
     </View>
   );
@@ -545,14 +551,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calling: {
-    height: 50,
-    width: '90%',
+    height: 30,
+    width: '80%',
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    paddingTop: 5,
   },
   info: {
     display: 'flex',

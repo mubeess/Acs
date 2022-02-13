@@ -98,7 +98,7 @@ function ClientDetail({dispatchNavigation, detail}) {
               setVisible(false);
               appProps.setCurrentAlert(detail);
             }}
-            title="Contact Referal Service"
+            title="Contact Refferal Service"
           />
           <MenuItem
             onPress={() => {
